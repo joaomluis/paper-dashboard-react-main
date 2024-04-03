@@ -23,6 +23,7 @@ import Typography from "views/Typography.js";
 import TableList from "views/Tables.js";
 import Maps from "views/Map.js";
 import UserPage from "views/User.js";
+import DynamicTable from "views/table.jsx";
 
 var routes = [
   {
@@ -73,6 +74,14 @@ var routes = [
     icon: "nc-icon nc-caps-small",
     component: <Typography />,
     layout: "/admin",
+  }, 
+  {
+    path: "/users",
+    name: "Users",
+    icon: "nc-icon nc-single-02",
+    component: <DynamicTable />,
+    layout: "/admin",
+
   }
   
 ];
