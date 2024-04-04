@@ -21,9 +21,10 @@ import Notifications from "views/Notifications.js";
 import Icons from "views/Icons.js";
 import Typography from "views/Typography.js";
 import TableList from "views/Tables.js";
-import Maps from "views/Map.js";
 import UserPage from "views/User.js";
 import DynamicTable from "views/table.jsx";
+import Login from "views/login.jsx";
+import Register from "views/register.jsx";
 
 var routes = [
   {
@@ -38,13 +39,6 @@ var routes = [
     name: "Icons",
     icon: "nc-icon nc-diamond",
     component: <Icons />,
-    layout: "/admin",
-  },
-  {
-    path: "/maps",
-    name: "Maps",
-    icon: "nc-icon nc-pin-3",
-    component: <Maps />,
     layout: "/admin",
   },
   {
@@ -81,8 +75,24 @@ var routes = [
     icon: "nc-icon nc-single-02",
     component: <DynamicTable />,
     layout: "/admin",
+  },
+  {
+    path: "/login",
+    name: "Login",
+    icon: "nc-icon nc-single-02",
+    component: <Login />,
+    layout: "/auth",
+  },
 
-  }
+  {
+    path: "/register",
+    name: "Register",
+    icon: "nc-icon nc-single-02",
+    component: <Register />,
+    layout: "/auth",
+  },
+
+
   
 ];
 export default routes;
