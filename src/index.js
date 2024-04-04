@@ -34,8 +34,8 @@ root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/auth/*" element={<AuthLayout />} />
-      <Route path="/admin/*" element={<AdminLayout />} />
-      <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+      <Route path="/agile-up/*" element={<AdminLayout />} />
+      <Route path="/" element={<Navigate to="/auth/login" replace />} />
     </Routes>
   </BrowserRouter>
 );

@@ -25,6 +25,7 @@ import UserPage from "views/User.js";
 import DynamicTable from "views/table.jsx";
 import Login from "views/login.jsx";
 import Register from "views/register.jsx";
+import RecoverPassword from "views/RecoverPassword.jsx";
 
 var routes = [
   {
@@ -32,49 +33,49 @@ var routes = [
     name: "Dashboard",
     icon: "nc-icon nc-bank",
     component: <Dashboard />,
-    layout: "/admin",
+    layout: "/agile-up",
   },
   {
     path: "/icons",
     name: "Icons",
     icon: "nc-icon nc-diamond",
     component: <Icons />,
-    layout: "/admin",
+    layout: "/agile-up",
   },
   {
     path: "/notifications",
     name: "Notifications",
     icon: "nc-icon nc-bell-55",
     component: <Notifications />,
-    layout: "/admin",
+    layout: "/agile-up",
   },
   {
     path: "/user-page",
     name: "User Profile",
     icon: "nc-icon nc-single-02",
     component: <UserPage />,
-    layout: "/admin",
+    layout: "/agile-up",
   },
   {
     path: "/tables",
     name: "Table List",
     icon: "nc-icon nc-tile-56",
     component: <TableList />,
-    layout: "/admin",
+    layout: "/agile-up",
   },
   {
     path: "/typography",
     name: "Typography",
     icon: "nc-icon nc-caps-small",
     component: <Typography />,
-    layout: "/admin",
-  }, 
+    layout: "/agile-up",
+  },
   {
     path: "/users",
     name: "Users",
     icon: "nc-icon nc-single-02",
     component: <DynamicTable />,
-    layout: "/admin",
+    layout: "/agile-up",
   },
   {
     path: "/login",
@@ -92,7 +93,12 @@ var routes = [
     layout: "/auth",
   },
 
-
-  
+  {
+    path: "/recover",
+    name: "Recover Password",
+    icon: "nc-icon nc-single-02",
+    component: <RecoverPassword />,
+    layout: "/auth",
+  },
 ];
 export default routes;

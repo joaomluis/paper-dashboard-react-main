@@ -50,19 +50,22 @@ function Dashboard(props) {
     mainPanel.current.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [location]);
-  
+
+  const filteredRoutes = routes.filter(route => route.layout !== "/auth");
+
+
   return (
     <div className="wrapper">
       <Sidebar
         {...props}
-        routes={routes}
+        routes={filteredRoutes}
         bgColor={backgroundColor}
         activeColor={activeColor}
       />
       <div className="main-panel" ref={mainPanel}>
         <DemoNavbar {...props} />
         <Routes>
-          {routes.map((prop, key) => {
+          {filteredRoutes.map((prop, key) => {
             return (
               <Route
                 path={prop.path}
