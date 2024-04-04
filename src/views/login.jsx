@@ -32,16 +32,55 @@ import {
   Col,
 } from "reactstrap";
 
-import {Link} from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import useUserStore from "../store/useUserStore.jsx";
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const setUser = useUserStore((state) => state.setUser);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch(
+        "http://localhost:8080/project_backend/rest/users/login",
+        {
+          method: "POST",
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username, password }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        setUser(data);
+
+        navigate("/agile-up/dashboard");
+      } else if (response.status === 404) {
+        console.log("Wrong username or password");
+      } else {
+        alert("Something went wrong:(");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="login template d-flex justify-content-center align-items-center vh-100 bg-transparent">
         <Row>
           <Col md={6} lg={12}>
             <div className=" form_container p-5 rounded bg-white">
-              <form action="">
+              <form action="" onSubmit={handleSubmit}>
                 <h3 className="text-center">Sign In</h3>
                 <div className="mb-2">
                   <label htmlFor="email">Username</label>
@@ -49,6 +88,9 @@ const Login = () => {
                     type="text"
                     placeholder="Enter Username"
                     className="form-control"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="mb-2">
@@ -57,17 +99,32 @@ const Login = () => {
                     type="password"
                     placeholder="Enter Password"
                     className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
                 </div>
 
                 <div className="d-flex justify-content-center align-items-center">
-                  <button className="btn btn-primary ">Sign in</button>
+                  
+                    <button className="btn btn-primary ">Sign in</button>
+                  
                 </div>
                 <div
-                  style={{ display: "flex", justifyContent: "space-between", marginTop: "15px"}}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: "15px",
+                  }}
                 >
-                  <Link to="/auth/recover"> <a>Forgot Password?</a> </Link>
-                  <Link to="/auth/register"> <a>Sign up</a> </Link>
+                  <Link to="/auth/recover">
+                    {" "}
+                    <a>Forgot Password?</a>{" "}
+                  </Link>
+                  <Link to="/auth/register">
+                    {" "}
+                    <a>Sign up</a>{" "}
+                  </Link>
                 </div>
               </form>
             </div>

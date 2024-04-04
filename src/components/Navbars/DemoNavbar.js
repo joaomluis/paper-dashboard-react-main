@@ -17,7 +17,7 @@
 
 */
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -29,12 +29,50 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Container
+  Container,
 } from "reactstrap";
 
 import routes from "routes.js";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+
+import { useState } from "react";
+import useUserStore from "../../store/useUserStore.jsx";
+
 function Header(props) {
+  const token = useUserStore((state) => state.token);
+  const navigate = useNavigate();
+  const setLoggedIn = useUserStore((state) => state.setLoggedIn);
+
+  async function logoutUser() {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/project_backend/rest/users/logout",
+        {
+          method: "POST",
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.text();
+
+        setLoggedIn(false);
+        navigate("/");
+        sessionStorage.clear();
+      } else {
+        const error = await response.text();
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+    }
+  }
+
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
@@ -113,7 +151,7 @@ function Header(props) {
               <span className="navbar-toggler-bar bar3" />
             </button>
           </div>
-          <NavbarBrand href="/">{getBrand()}</NavbarBrand>
+          <NavbarBrand>{getBrand()}</NavbarBrand>
         </div>
         <NavbarToggler onClick={toggle}>
           <span className="navbar-toggler-bar navbar-kebab" />
@@ -121,9 +159,7 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          
           <Nav navbar>
-            
             <Dropdown
               nav
               isOpen={dropdownOpen}
@@ -150,8 +186,15 @@ function Header(props) {
               </Link>
             </NavItem>
             <NavItem>
-              <Link to="/auth/login" className="nav-link btn-rotate">
-                <i className="nc-icon nc-settings-gear-65" />
+              <Link
+                className="nav-link btn-rotate"
+                onClick={logoutUser}
+              >
+                <FontAwesomeIcon
+                  icon={faRightFromBracket}
+                  size="lg"
+                  style={{ marginRight: "10px" }}
+                />
                 <p>
                   <span className="d-lg-none d-md-block">Log out</span>
                 </p>
