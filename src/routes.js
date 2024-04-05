@@ -51,7 +51,7 @@ var routes = [
   },
   {
     path: "/user-page",
-    name: "User Profile",
+    name: "My Profile",
     icon: "nc-icon nc-single-02",
     component: <UserPage />,
     layout: "/agile-up",

@@ -32,10 +32,11 @@ import {
   Container,
 } from "reactstrap";
 
+
 import routes from "routes.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 
 import { useState } from "react";
 import useUserStore from "../../store/useUserStore.jsx";
@@ -44,6 +45,8 @@ function Header(props) {
   const token = useUserStore((state) => state.token);
   const navigate = useNavigate();
   const setLoggedIn = useUserStore((state) => state.setLoggedIn);
+  
+  const firstName = useUserStore((state) => state.firstName);
 
   async function logoutUser() {
     try {
@@ -178,10 +181,19 @@ function Header(props) {
               </DropdownMenu>
             </Dropdown>
             <NavItem>
-              <Link to="#pablo" className="nav-link btn-rotate">
-                <i className="nc-icon nc-settings-gear-65" />
+              <Link 
+              to={"/agile-up/user-page"}
+              className="nav-link btn-rotate">
+              <FontAwesomeIcon
+                  icon={faUser}
+                  size="lg"
+                  style={{ marginRight: "10px" }}
+                />
+                
+                
                 <p>
-                  <span className="d-lg-none d-md-block">Account</span>
+                  <span className="d-lg-none d-md-block"></span>
+                  <span>{firstName}</span>
                 </p>
               </Link>
             </NavItem>

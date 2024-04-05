@@ -33,14 +33,65 @@ import {
   Col,
 } from "reactstrap";
 
+import useUserStore from "../store/useUserStore.jsx";
+
+
 function User() {
+
+  const userImg = useUserStore((state) => state.imgURL); 
+  const firstName = useUserStore((state) => state.firstName);
+
   return (
     <>
       <div className="content">
-        <Row className="d-flex justify-content-center align-items-center">
-          
-          <Col md="8" >
-            <Card className="card-user ">
+        <Row>
+          <Col md="4">
+            <Card className="card-user">
+              
+              <CardBody>
+                <div className="author" style={{marginTop: '20px'}}> 
+                  <a onClick={(e) => e.preventDefault()}>
+                    <img
+                      alt="..."
+                      className="avatar border-gray"
+                      src={userImg}
+                    />
+                    <h5 className="title" style={{color: "#34b5b8"}}>{firstName}</h5>
+                  </a>
+                  
+                </div>
+               
+              </CardBody>
+              <CardFooter>
+                <hr />
+                <div className="button-container">
+                  <Row>
+                    <Col className="ml-auto" lg="3" md="6" xs="6">
+                      <h5>
+                        12 <br />
+                        <small>Files</small>
+                      </h5>
+                    </Col>
+                    <Col className="ml-auto mr-auto" lg="4" md="6" xs="6">
+                      <h5>
+                        2GB <br />
+                        <small>Used</small>
+                      </h5>
+                    </Col>
+                    <Col className="mr-auto" lg="3">
+                      <h5>
+                        24,6$ <br />
+                        <small>Spent</small>
+                      </h5>
+                    </Col>
+                  </Row>
+                </div>
+              </CardFooter>
+            </Card>
+            
+          </Col>
+          <Col md="8">
+            <Card className="card-user">
               <CardHeader>
                 <CardTitle tag="h5">Edit Profile</CardTitle>
               </CardHeader>
