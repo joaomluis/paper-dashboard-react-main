@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // reactstrap components
 import {
@@ -34,12 +34,73 @@ import {
 } from "reactstrap";
 
 import useUserStore from "../store/useUserStore.jsx";
+import { Link, useNavigate } from "react-router-dom";
 
+async function getUserByToken(token) {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/project_backend/rest/users/user",
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          token: token,
+        },
+      }
+    );
+
+    if (response.ok) {
+      const user = await response.json();
+
+      return user;
+    } else {
+      console.error("Failed to fetch user data");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return null;
+  }
+}
 
 function User() {
-
-  const userImg = useUserStore((state) => state.imgURL); 
+  const userImg = useUserStore((state) => state.imgURL);
   const firstName = useUserStore((state) => state.firstName);
+  const token = useUserStore((state) => state.token);
+
+  const [userFetched, setUserFetched] = useState(null);
+
+  useEffect(() => {
+    getUserByToken(token).then((userFetched) => {
+      setUserFetched(userFetched);
+      setUpdateUsername(userFetched.username);
+      setUpdateEmail(userFetched.email);
+      setUpdateFirstName(userFetched.firstName);
+      setUpdateLastName(userFetched.lastName);
+      setUpdatePhone(userFetched.phoneNumber);
+      setUpdateImgUrl(userFetched.imgURL);
+      setRole(userFetched.typeOfUser);
+    });
+  }, [token]);
+
+  //dados dos inputs
+  const [updateUsername, setUpdateUsername] = useState("");
+  const [updatePassword, setUpdatePassword] = useState("");
+  const [updateEmail, setUpdateEmail] = useState("");
+  const [updateFirstName, setUpdateFirstName] = useState("");
+  const [updateLastName, setUpdateLastName] = useState("");
+  const [updatePhone, setUpdatePhone] = useState("");
+  const [updateImgUrl, setUpdateImgUrl] = useState("");
+  const [role, setRole] = useState("");
+
+  if (role === "product_owner") {
+    setRole("Product Owner");
+  } else if (role === "scrum_master") {
+    setRole("Scrum Master");
+  } else if (role === "developer") {
+    setRole("Developer");
+  }
 
   return (
     <>
@@ -47,20 +108,19 @@ function User() {
         <Row>
           <Col md="4">
             <Card className="card-user">
-              
               <CardBody>
-                <div className="author" style={{marginTop: '20px'}}> 
+                <div className="author" style={{ marginTop: "20px" }}>
                   <a onClick={(e) => e.preventDefault()}>
                     <img
                       alt="..."
                       className="avatar border-gray"
                       src={userImg}
                     />
-                    <h5 className="title" style={{color: "#34b5b8"}}>{firstName}</h5>
+                    <h5 className="title" style={{ color: "#34b5b8" }}>
+                      {firstName}
+                    </h5>
                   </a>
-                  
                 </div>
-               
               </CardBody>
               <CardFooter>
                 <hr />
@@ -88,43 +148,43 @@ function User() {
                 </div>
               </CardFooter>
             </Card>
-            
+           
           </Col>
           <Col md="8">
             <Card className="card-user">
               <CardHeader>
-                <CardTitle tag="h5">Edit Profile</CardTitle>
+                <Row>
+                  <Col md="6">
+                    <CardTitle tag="h5">Edit Profile</CardTitle>
+                  </Col>
+                  <Col md="3"></Col>
+                  <Col md="3">
+                    <CardTitle
+                      tag="h6"
+                      style={{
+                        backgroundColor: "#51cbce",
+                        textAlign: "center",
+                        borderRadius: "5px",
+                      }}
+                    >
+                      {role}
+                    </CardTitle>
+                  </Col>
+                </Row>
               </CardHeader>
               <CardBody>
                 <Form>
                   <Row>
-                    <Col className="pr-1" md="5">
-                      <FormGroup>
-                        <label>Company (disabled)</label>
-                        <Input
-                          defaultValue="Creative Code Inc."
-                          disabled
-                          placeholder="Company"
-                          type="text"
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col className="px-1" md="3">
+                    <Col className="pr-1" md="6">
                       <FormGroup>
                         <label>Username</label>
-                        <Input
-                          defaultValue="michael23"
-                          placeholder="Username"
-                          type="text"
-                        />
+                        <Input type="text" disabled value={updateUsername} />
                       </FormGroup>
                     </Col>
-                    <Col className="pl-1" md="4">
+                    <Col className="pl-1" md="6">
                       <FormGroup>
-                        <label htmlFor="exampleInputEmail1">
-                          Email address
-                        </label>
-                        <Input placeholder="Email" type="email" />
+                        <label>Email</label>
+                        <Input type="text" value={updateEmail} />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -132,76 +192,33 @@ function User() {
                     <Col className="pr-1" md="6">
                       <FormGroup>
                         <label>First Name</label>
-                        <Input
-                          defaultValue="Chet"
-                          placeholder="Company"
-                          type="text"
-                        />
+                        <Input type="text" value={updateFirstName} />
                       </FormGroup>
                     </Col>
                     <Col className="pl-1" md="6">
                       <FormGroup>
                         <label>Last Name</label>
-                        <Input
-                          defaultValue="Faker"
-                          placeholder="Last Name"
-                          type="text"
-                        />
+                        <Input type="text" value={updateLastName} />
                       </FormGroup>
                     </Col>
                   </Row>
                   <Row>
-                    <Col md="12">
+                    <Col className="pr-1" md="6">
                       <FormGroup>
-                        <label>Address</label>
-                        <Input
-                          defaultValue="Melbourne, Australia"
-                          placeholder="Home Address"
-                          type="text"
-                        />
+                        <label>Image URL</label>
+                        <Input type="text" value={updateImgUrl} />
+                      </FormGroup>
+                    </Col>
+                    <Col className="pl-1" md="6">
+                      <FormGroup>
+                        <label>Phone Number</label>
+                        <Input type="text" value={updatePhone} />
                       </FormGroup>
                     </Col>
                   </Row>
+
                   <Row>
-                    <Col className="pr-1" md="4">
-                      <FormGroup>
-                        <label>City</label>
-                        <Input
-                          defaultValue="Melbourne"
-                          placeholder="City"
-                          type="text"
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col className="px-1" md="4">
-                      <FormGroup>
-                        <label>Country</label>
-                        <Input
-                          defaultValue="Australia"
-                          placeholder="Country"
-                          type="text"
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col className="pl-1" md="4">
-                      <FormGroup>
-                        <label>Postal Code</label>
-                        <Input placeholder="ZIP Code" type="number" />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md="12">
-                      <FormGroup>
-                        <label>About Me</label>
-                        <Input
-                          type="textarea"
-                          defaultValue="Oh so, your weak rhyme You doubt I'll bother, reading into it"
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
+                  <Col className="pl-3" md="6">
                     <div className="update ml-auto mr-auto">
                       <Button
                         className="btn-round"
@@ -210,7 +227,22 @@ function User() {
                       >
                         Update Profile
                       </Button>
+                      
                     </div>
+                  </Col>
+                  <Col className="pl-3" md="6" style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                  <div className="update">
+                      <Button
+                        className="btn-round"
+                        color="danger"
+                        
+                        type="submit"
+                      >
+                        Update Password
+                      </Button>
+                      
+                    </div>
+                  </Col>
                   </Row>
                 </Form>
               </CardBody>
