@@ -9,7 +9,8 @@ import {
 
 import useUserStore from "store/useUserStore";
 import Spinner from "../components/Spinner/Spinner.jsx";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
+import { textFilter } from "react-bootstrap-table2-filter";
+
 import DynamicTable from "components/Dynamic Table/dynamic-table";
 
 
