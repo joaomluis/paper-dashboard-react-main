@@ -33,6 +33,8 @@ import {
   Col,
 } from "reactstrap";
 
+import { toast, Slide } from 'react-toastify';
+
 import useUserStore from "../store/useUserStore.jsx";
 
 import ChangePassword from "components/Modals/Change-password.jsx";
@@ -87,7 +89,7 @@ function User() {
 
   //dados dos inputs
   const [updateUsername, setUpdateUsername] = useState("");
-  const [updatePassword, setUpdatePassword] = useState("");
+  
   const [updateEmail, setUpdateEmail] = useState("");
   const [updateFirstName, setUpdateFirstName] = useState("");
   const [updateLastName, setUpdateLastName] = useState("");
@@ -105,11 +107,66 @@ function User() {
 
   const changePasswordRef = useRef();
 
+  async function handleUpdateProfile(e) {
+    e.preventDefault();
+
+
+    const updatedUser = {
+        firstName: updateFirstName,
+        lastName: updateLastName,
+        email: updateEmail,
+        phoneNumber: updatePhone,
+        imgURL: updateImgUrl
+
+    };
+
+    try {
+        const response = await fetch('http://localhost:8080/project_backend/rest/users/updateUser', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': '*/*',
+                'token': token
+            },
+            body: JSON.stringify(updatedUser)
+        });
+
+        if (response.ok) {
+
+            const data = await response.json();
+            useUserStore.setState({firstName: data.firstName, imgURL: data.imgURL});
+
+            toast.success("Profile updated successfully", {position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            transition: Slide,
+            theme: "colored"
+            });
+            
+            
+    
+          
+          } else {
+            const errorData = await response.text();
+            toast.error(errorData, {position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            transition: Slide,
+            theme: "colored"
+            });
+          }
+        
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
   return (
     <>
       
       <div className="content">
-      <ChangePassword ref={changePasswordRef} />
+      
+        <ChangePassword ref={changePasswordRef} />
         <Row>
           <Col md="4">
             <Card className="card-user">
@@ -153,7 +210,6 @@ function User() {
                 </div>
               </CardFooter>
             </Card>
-           
           </Col>
           <Col md="8">
             <Card className="card-user">
@@ -189,7 +245,11 @@ function User() {
                     <Col className="pl-1" md="6">
                       <FormGroup>
                         <label>Email</label>
-                        <Input type="text" value={updateEmail} />
+                        <Input
+                          type="text"
+                          value={updateEmail}
+                          onChange={(e) => setUpdateEmail(e.target.value)}
+                        />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -197,13 +257,21 @@ function User() {
                     <Col className="pr-1" md="6">
                       <FormGroup>
                         <label>First Name</label>
-                        <Input type="text" value={updateFirstName} />
+                        <Input
+                          type="text"
+                          value={updateFirstName}
+                          onChange={(e) => setUpdateFirstName(e.target.value)}
+                        />
                       </FormGroup>
                     </Col>
                     <Col className="pl-1" md="6">
                       <FormGroup>
                         <label>Last Name</label>
-                        <Input type="text" value={updateLastName} />
+                        <Input
+                          type="text"
+                          value={updateLastName}
+                          onChange={(e) => setUpdateLastName(e.target.value)}
+                        />
                       </FormGroup>
                     </Col>
                   </Row>
@@ -211,43 +279,52 @@ function User() {
                     <Col className="pr-1" md="6">
                       <FormGroup>
                         <label>Image URL</label>
-                        <Input type="text" value={updateImgUrl} />
+                        <Input
+                          type="text"
+                          value={updateImgUrl}
+                          onChange={(e) => setUpdateImgUrl(e.target.value)}
+                        />
                       </FormGroup>
                     </Col>
                     <Col className="pl-1" md="6">
                       <FormGroup>
                         <label>Phone Number</label>
-                        <Input type="text" value={updatePhone} />
+                        <Input
+                          type="text"
+                          value={updatePhone}
+                          onChange={(e) => setUpdatePhone(e.target.value)}
+                        />
                       </FormGroup>
                     </Col>
                   </Row>
 
                   <Row>
-                  <Col className="pl-3" md="6">
-                    <div className="update ml-auto mr-auto">
-                      <Button
-                        className="btn-round"
-                        color="primary"
-                        type="submit"
-                      >
-                        Update Profile
-                      </Button>
-                      
-                    </div>
-                  </Col>
-                  <Col className="pl-3" md="6" style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <div className="update">
-                      <Button
-                        className="btn-round"
-                        color="danger"
-                        onClick={() => changePasswordRef.current.handleShow()}
-                        
-                      >
-                        Update Password
-                      </Button>
-                      
-                    </div>
-                  </Col>
+                    <Col className="pl-3" md="6">
+                      <div className="update ml-auto mr-auto">
+                        <Button
+                          className="btn-round"
+                          color="primary"
+                          onClick={handleUpdateProfile}
+                        >
+                          Update Profile
+                        </Button>
+                      </div>
+                    </Col>
+                    <Col
+                      className="pl-3"
+                      md="6"
+                      style={{ display: "flex", justifyContent: "flex-end" }}
+                    >
+                      <div className="update">
+                        <Button
+                          className="btn-round"
+                          color="danger"
+                          onClick={() => changePasswordRef.current.handleShow()}
+                        >
+                          Update Password
+                        </Button>
+                      </div>
+                    </Col>
                   </Row>
                 </Form>
               </CardBody>
