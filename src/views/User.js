@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 // reactstrap components
 import {
@@ -34,7 +34,8 @@ import {
 } from "reactstrap";
 
 import useUserStore from "../store/useUserStore.jsx";
-import { Link, useNavigate } from "react-router-dom";
+
+import ChangePassword from "components/Modals/Change-password.jsx";
 
 async function getUserByToken(token) {
   try {
@@ -102,9 +103,13 @@ function User() {
     setRole("Developer");
   }
 
+  const changePasswordRef = useRef();
+
   return (
     <>
+      
       <div className="content">
+      <ChangePassword ref={changePasswordRef} />
         <Row>
           <Col md="4">
             <Card className="card-user">
@@ -235,8 +240,8 @@ function User() {
                       <Button
                         className="btn-round"
                         color="danger"
+                        onClick={() => changePasswordRef.current.handleShow()}
                         
-                        type="submit"
                       >
                         Update Password
                       </Button>
