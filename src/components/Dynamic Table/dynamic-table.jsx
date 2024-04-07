@@ -1,16 +1,12 @@
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import overlayFactory from "react-bootstrap-table2-overlay";
+import {useNavigate} from "react-router-dom";
 
-function DynamicTable({ data, columns }) {
-  const rowEvents = {
-    onClick: (e, row, rowIndex) => {
-      console.log(`clicked on row with index: ${rowIndex}`);
-    },
-    onMouseEnter: (e, row, rowIndex) => {
-      console.log(`enter on row with index: ${rowIndex}`);
-    },
-  };
+function DynamicTable({ data, columns, rowEvents }) {
+
+  const navigate = useNavigate();
+
 
   return (
     <>
@@ -21,6 +17,10 @@ function DynamicTable({ data, columns }) {
                 top: 0;
                 z-index: 1;
                 background-color: white;
+              }
+              .table-fixed {
+                height: 300px; /* Adjust this value to your needs */
+                overflow: auto;
               }
             `}
       </style>

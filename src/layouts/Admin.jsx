@@ -51,21 +51,23 @@ function Dashboard(props) {
     document.scrollingElement.scrollTop = 0;
   }, [location]);
 
-  const filteredRoutes = routes.filter(route => route.layout !== "/auth");
+  
+  const sidebarRoutes = routes.filter(route => route.layout !== "/auth" && !route.hidden);
+const routeComponents = routes.filter(route => route.layout !== "/auth");
 
 
   return (
     <div className="wrapper">
       <Sidebar
         {...props}
-        routes={filteredRoutes}
+        routes={sidebarRoutes}
         bgColor={backgroundColor}
         activeColor={activeColor}
       />
       <div className="main-panel" ref={mainPanel}>
         <DemoNavbar {...props} />
         <Routes>
-          {filteredRoutes.map((prop, key) => {
+          {routeComponents.map((prop, key) => {
             return (
               <Route
                 path={prop.path}

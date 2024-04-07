@@ -55,6 +55,7 @@ var routes = [
     icon: "nc-icon nc-single-02",
     component: <UserPage />,
     layout: "/agile-up",
+    hidden: true,
   },
   {
     path: "/tables",
@@ -99,6 +100,15 @@ var routes = [
     icon: "nc-icon nc-single-02",
     component: <RecoverPassword />,
     layout: "/auth",
+  },
+
+  {
+    path: "/user/:username",
+    name: "User",
+    icon: "nc-icon nc-single-02",
+    component: <UserPage />, // replace <User /> with the component you want to render
+    layout: "/agile-up",
+    hidden: true,
   },
 ];
 export default routes;

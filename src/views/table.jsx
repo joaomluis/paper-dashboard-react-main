@@ -10,6 +10,7 @@ import {
 import useUserStore from "store/useUserStore";
 import Spinner from "../components/Spinner/Spinner.jsx";
 import { textFilter } from "react-bootstrap-table2-filter";
+import { useNavigate } from "react-router-dom";
 
 import DynamicTable from "components/Dynamic Table/dynamic-table";
 
@@ -45,7 +46,7 @@ async function getActiveUsers() {
 function UsersTable() {
 
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   
 
   const [users, setData] = useState([]);
@@ -104,7 +105,11 @@ function UsersTable() {
     
   ];
   
-
+  const rowEvents = {
+    onClick: (e, row, rowIndex) => {
+      navigate(`/agile-up/user/${row.username}`);
+    }
+  };
  
   
 
@@ -125,7 +130,7 @@ function UsersTable() {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             ) : (
-              <DynamicTable data={users} columns={columns}/>
+              <DynamicTable data={users} columns={columns} rowEvents={rowEvents}/>
             )}
                 
               </CardBody>
