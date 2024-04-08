@@ -17,7 +17,10 @@
 
 */
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+import "../assets/css/general-css.css";
 
 // reactstrap components
 import {
@@ -34,38 +37,44 @@ import {
   Col,
 } from "reactstrap";
 
-import { toast, Slide } from 'react-toastify';
+import { toast, Slide } from "react-toastify";
 
 import useUserStore from "../store/useUserStore.jsx";
 import useAllUsersStore from "../store/useAllUsersStore.jsx";
 
 import ChangePassword from "components/Modals/Change-password.jsx";
-
-
-
+import ChangeUserRole from "components/Modals/Change-user-role.jsx";
 
 function User() {
   const usernameFromStore = useUserStore((state) => state.username);
-  
+
   const token = useUserStore((state) => state.token);
   const { username: paramUsername } = useParams();
   const [user, setUser] = useState(null);
 
-  
+  const [isOwner, setIsOwner] = useState(false); //verifica se o user é dono do perfil para poder editar ou não
+  const [showChangeRole, setShowChangeRole] = useState(false); // determines which button to show
 
-
-  
+  useEffect(() => {
+    setIsOwner(!paramUsername);
+    if (paramUsername) {
+      setShowChangeRole(true);
+    } else {
+      setShowChangeRole(false);
+    }
+  }, [paramUsername]);
 
   useEffect(() => {
     const fetchUser = async () => {
       const username = paramUsername || usernameFromStore;
-      const fetchedUser = await useAllUsersStore.getState().getUserByUsername(username, token);
+      const fetchedUser = await useAllUsersStore
+        .getState()
+        .getUserByUsername(username, token);
       setUser(fetchedUser);
     };
 
     fetchUser();
   }, [paramUsername, usernameFromStore, token]);
-
 
   useEffect(() => {
     if (user) {
@@ -79,17 +88,15 @@ function User() {
     }
   }, [user]);
 
-
   //dados dos inputs
   const [updateUsername, setUpdateUsername] = useState("");
-  
+
   const [updateEmail, setUpdateEmail] = useState("");
   const [updateFirstName, setUpdateFirstName] = useState("");
   const [updateLastName, setUpdateLastName] = useState("");
   const [updatePhone, setUpdatePhone] = useState("");
   const [updateImgUrl, setUpdateImgUrl] = useState("");
   const [role, setRole] = useState("");
-
 
   if (role === "product_owner") {
     setRole("Product Owner");
@@ -100,67 +107,67 @@ function User() {
   }
 
   const changePasswordRef = useRef();
+  const changeUserRoleRef = useRef();
 
   async function handleUpdateProfile(e) {
     e.preventDefault();
 
-
     const updatedUser = {
-        firstName: updateFirstName,
-        lastName: updateLastName,
-        email: updateEmail,
-        phoneNumber: updatePhone,
-        imgURL: updateImgUrl
-
+      firstName: updateFirstName,
+      lastName: updateLastName,
+      email: updateEmail,
+      phoneNumber: updatePhone,
+      imgURL: updateImgUrl,
     };
 
     try {
-        const response = await fetch('http://localhost:8080/project_backend/rest/users/updateUser', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': '*/*',
-                'token': token
-            },
-            body: JSON.stringify(updatedUser)
+      const response = await fetch(
+        "http://localhost:8080/project_backend/rest/users/updateUser",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "*/*",
+            token: token,
+          },
+          body: JSON.stringify(updatedUser),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        useUserStore.setState({
+          firstName: data.firstName,
+          imgURL: data.imgURL,
         });
 
-        if (response.ok) {
-
-            const data = await response.json();
-            useUserStore.setState({firstName: data.firstName, imgURL: data.imgURL});
-
-            toast.success("Profile updated successfully", {position: "top-center",
-            autoClose: 3000,
-            hideProgressBar: true,
-            transition: Slide,
-            theme: "colored"
-            });
-            
-            
-    
-          
-          } else {
-            const errorData = await response.text();
-            toast.error(errorData, {position: "top-center",
-            autoClose: 3000,
-            hideProgressBar: true,
-            transition: Slide,
-            theme: "colored"
-            });
-          }
-        
+        toast.success("Profile updated successfully", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored",
+        });
+      } else {
+        const errorData = await response.text();
+        toast.error(errorData, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored",
+        });
+      }
     } catch (error) {
-        console.error('Error:', error);
+      console.error("Error:", error);
     }
-}
+  }
 
   return (
     <>
-      
       <div className="content">
-      
         <ChangePassword ref={changePasswordRef} />
+        <ChangeUserRole ref={changeUserRoleRef} />
         <Row>
           <Col md="4">
             <Card className="card-user">
@@ -210,7 +217,16 @@ function User() {
               <CardHeader>
                 <Row>
                   <Col md="6">
-                    <CardTitle tag="h5">Edit Profile</CardTitle>
+                    <CardTitle tag="h5">
+                      Edit Profile{" "}
+                      {!isOwner && (
+                        <FontAwesomeIcon
+                          icon={faPen}
+                          className="hoverable-icon"
+                          onClick={() => setIsOwner(true)}
+                        />
+                      )}
+                    </CardTitle>
                   </Col>
                   <Col md="3"></Col>
                   <Col md="3">
@@ -242,6 +258,7 @@ function User() {
                         <Input
                           type="text"
                           value={updateEmail}
+                          disabled={!isOwner}
                           onChange={(e) => setUpdateEmail(e.target.value)}
                         />
                       </FormGroup>
@@ -254,6 +271,7 @@ function User() {
                         <Input
                           type="text"
                           value={updateFirstName}
+                          disabled={!isOwner}
                           onChange={(e) => setUpdateFirstName(e.target.value)}
                         />
                       </FormGroup>
@@ -264,6 +282,7 @@ function User() {
                         <Input
                           type="text"
                           value={updateLastName}
+                          disabled={!isOwner}
                           onChange={(e) => setUpdateLastName(e.target.value)}
                         />
                       </FormGroup>
@@ -276,6 +295,7 @@ function User() {
                         <Input
                           type="text"
                           value={updateImgUrl}
+                          disabled={!isOwner}
                           onChange={(e) => setUpdateImgUrl(e.target.value)}
                         />
                       </FormGroup>
@@ -286,6 +306,7 @@ function User() {
                         <Input
                           type="text"
                           value={updatePhone}
+                          disabled={!isOwner}
                           onChange={(e) => setUpdatePhone(e.target.value)}
                         />
                       </FormGroup>
@@ -310,13 +331,27 @@ function User() {
                       style={{ display: "flex", justifyContent: "flex-end" }}
                     >
                       <div className="update">
-                        <Button
-                          className="btn-round"
-                          color="danger"
-                          onClick={() => changePasswordRef.current.handleShow()}
-                        >
-                          Update Password
-                        </Button>
+                        {showChangeRole ? (
+                          <Button
+                            className="btn-round"
+                            color="danger"
+                            onClick={() =>
+                              changeUserRoleRef.current.handleShow()
+                            }
+                          >
+                            Change Role
+                          </Button>
+                        ) : (
+                          <Button
+                            className="btn-round"
+                            color="danger"
+                            onClick={() =>
+                              changePasswordRef.current.handleShow()
+                            }
+                          >
+                            Update Password
+                          </Button>
+                        )}
                       </div>
                     </Col>
                   </Row>
