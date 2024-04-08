@@ -108,6 +108,57 @@ const useAllUsersStore = create((set, get) => {
     }
  }
 
+ const updatePassowrd = async (currentPassword, newPassword, confirmNewPassword) => {
+
+  const url = `http://localhost:8080/project_backend/rest/users/updatePassword`;
+
+  const token = useUserStore.getState().token;
+
+  const data = {
+    currentPassword: currentPassword,
+    newPassword: newPassword,
+    confirmPassword: confirmNewPassword
+  }
+
+  try {
+      const response = await fetch(url, {
+          method: "PUT",
+          headers: {
+              'Accept': '*/*',
+              "Content-Type": "application/json",
+              token: token
+          },
+          body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+          
+          
+          toast.success('Password updated successfully', {position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+          });
+
+          return Promise.resolve();
+      }else{
+        const errorMessage = await response.text();
+        
+        toast.error(errorMessage, {position: "top-center",
+        autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+          });
+
+      }
+    }catch(error){
+      console.log("Something went wrong");
+    }
+  }
+
+
  const createUser = async (user) => {
 
   const token = useUserStore.getState().token;
@@ -212,7 +263,6 @@ const useAllUsersStore = create((set, get) => {
 
       if (response.ok) {
         const user = await response.json();
-        console.log(user);
         
         return user;
 
@@ -238,6 +288,7 @@ const useAllUsersStore = create((set, get) => {
     getAllUsers,
     softDeleteUser,
     updateProfile,
+    updatePassowrd,
     createUser, 
     getUserByUsername
   };
