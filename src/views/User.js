@@ -17,6 +17,7 @@
 
 */
 import React, { useEffect, useState, useRef } from "react";
+import { useParams } from 'react-router-dom';
 
 // reactstrap components
 import {
@@ -36,56 +37,48 @@ import {
 import { toast, Slide } from 'react-toastify';
 
 import useUserStore from "../store/useUserStore.jsx";
+import useAllUsersStore from "../store/useAllUsersStore.jsx";
 
 import ChangePassword from "components/Modals/Change-password.jsx";
 
-async function getUserByToken(token) {
-  try {
-    const response = await fetch(
-      "http://localhost:8080/project_backend/rest/users/user",
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          token: token,
-        },
-      }
-    );
 
-    if (response.ok) {
-      const user = await response.json();
 
-      return user;
-    } else {
-      console.error("Failed to fetch user data");
-      return null;
-    }
-  } catch (error) {
-    console.error("Error fetching user data:", error);
-    return null;
-  }
-}
 
 function User() {
-  const userImg = useUserStore((state) => state.imgURL);
-  const firstName = useUserStore((state) => state.firstName);
+  const usernameFromStore = useUserStore((state) => state.username);
+  
   const token = useUserStore((state) => state.token);
+  const { username: paramUsername } = useParams();
+  const [user, setUser] = useState(null);
 
-  const [userFetched, setUserFetched] = useState(null);
+  
+
+
+  
 
   useEffect(() => {
-    getUserByToken(token).then((userFetched) => {
-      setUserFetched(userFetched);
-      setUpdateUsername(userFetched.username);
-      setUpdateEmail(userFetched.email);
-      setUpdateFirstName(userFetched.firstName);
-      setUpdateLastName(userFetched.lastName);
-      setUpdatePhone(userFetched.phoneNumber);
-      setUpdateImgUrl(userFetched.imgURL);
-      setRole(userFetched.typeOfUser);
-    });
-  }, [token]);
+    const fetchUser = async () => {
+      const username = paramUsername || usernameFromStore;
+      const fetchedUser = await useAllUsersStore.getState().getUserByUsername(username, token);
+      setUser(fetchedUser);
+    };
+
+    fetchUser();
+  }, [paramUsername, usernameFromStore, token]);
+
+
+  useEffect(() => {
+    if (user) {
+      setUpdateUsername(user.username);
+      setUpdateEmail(user.email);
+      setUpdateFirstName(user.firstName);
+      setUpdateLastName(user.lastName);
+      setUpdatePhone(user.phoneNumber);
+      setUpdateImgUrl(user.imgURL);
+      setRole(user.typeOfUser);
+    }
+  }, [user]);
+
 
   //dados dos inputs
   const [updateUsername, setUpdateUsername] = useState("");
@@ -96,6 +89,7 @@ function User() {
   const [updatePhone, setUpdatePhone] = useState("");
   const [updateImgUrl, setUpdateImgUrl] = useState("");
   const [role, setRole] = useState("");
+
 
   if (role === "product_owner") {
     setRole("Product Owner");
@@ -176,10 +170,10 @@ function User() {
                     <img
                       alt="..."
                       className="avatar border-gray"
-                      src={userImg}
+                      src={updateImgUrl}
                     />
                     <h5 className="title" style={{ color: "#34b5b8" }}>
-                      {firstName}
+                      {updateFirstName}
                     </h5>
                   </a>
                 </div>

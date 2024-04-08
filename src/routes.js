@@ -22,7 +22,7 @@ import Icons from "views/Icons.js";
 import Typography from "views/Typography.js";
 import TableList from "views/Tables.js";
 import UserPage from "views/User.js";
-import DynamicTable from "views/table.jsx";
+import UsersTable from "views/usersTable.jsx";
 import Login from "views/login.jsx";
 import Register from "views/register.jsx";
 import RecoverPassword from "views/RecoverPassword.jsx";
@@ -75,7 +75,7 @@ var routes = [
     path: "/users",
     name: "Users",
     icon: "nc-icon nc-single-02",
-    component: <DynamicTable />,
+    component: <UsersTable />,
     layout: "/agile-up",
   },
   {

@@ -8,6 +8,7 @@ import {
 } from "reactstrap";
 
 import useUserStore from "store/useUserStore";
+import useAllUsersStore from "store/useAllUsersStore.jsx";
 import Spinner from "../components/Spinner/Spinner.jsx";
 import { textFilter } from "react-bootstrap-table2-filter";
 import { useNavigate } from "react-router-dom";
@@ -17,43 +18,20 @@ import DynamicTable from "components/Dynamic Table/dynamic-table";
 
 import { useEffect, useState } from "react";
 
-async function getActiveUsers() {
-  const activeUsersRequest =
-    "http://localhost:8080/project_backend/rest/users/all";
-    const token = useUserStore.getState().token;
 
-  try {
-    const response = await fetch(activeUsersRequest, {
-      method: "GET",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        token: token,
-      },
-    });
-
-    if (response.ok) {
-      const activeUsers = await response.json();
-
-      console.log("Active users: ", activeUsers);
-      return activeUsers;
-    }
-  } catch (error) {
-    console.error("Failed to fetch categories", error);
-  }
-}
 
 function UsersTable() {
 
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   
+  
 
   const [users, setData] = useState([]);
 
   useEffect(() => {
-    getActiveUsers().then(activeUsers => {
-      setData(activeUsers);
+    useAllUsersStore.getState().getAllUsers().then(allUsers => {
+      setData(allUsers);
       setLoading(false);
     });
   }, []);
@@ -127,7 +105,7 @@ function UsersTable() {
               
               {loading ? (
               <Spinner animation="border" role="status">
-                <span className="visually-hidden">Loading...</span>
+                <span className="visually-hidden"></span>
               </Spinner>
             ) : (
               <DynamicTable data={users} columns={columns} rowEvents={rowEvents}/>
