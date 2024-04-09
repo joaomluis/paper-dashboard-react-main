@@ -158,6 +158,55 @@ const useAllUsersStore = create((set, get) => {
     }
   }
 
+  const updateUserRole = async (username, newRole) => {
+
+  
+    const token = useUserStore.getState().token;
+
+    const url = `http://localhost:8080/project_backend/rest/users/${username}/updateUserRole`;
+
+    
+
+
+    try {
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                'Accept': '*/*',
+                "Content-Type": "application/json",
+                token: token,
+                newRole: newRole
+            },
+            
+        });
+
+        if (response.ok) {
+            
+            toast.success('Role updated successfully', {position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            transition: Slide,
+            theme: "colored"
+            });
+
+            return Promise.resolve();
+        }else{
+          const errorMessage = await response.text();
+          
+          toast.error(errorMessage, {position: "top-center",
+          autoClose: 3000,
+            hideProgressBar: true,
+            transition: Slide,
+            theme: "colored"
+            });
+
+        }
+      }catch(error){
+        console.log("Something went wrong");
+      }
+    
+  }
+
 
  const createUser = async (user) => {
 
@@ -289,6 +338,7 @@ const useAllUsersStore = create((set, get) => {
     softDeleteUser,
     updateProfile,
     updatePassowrd,
+    updateUserRole,
     createUser, 
     getUserByUsername
   };

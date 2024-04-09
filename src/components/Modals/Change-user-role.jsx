@@ -1,15 +1,26 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
+import { useParams } from 'react-router-dom';
 
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 
 import { Button, FormGroup, Row, Col, Container } from "reactstrap";
 
+import useAllUsersStore from "../../store/useAllUsersStore.jsx";
+
 const ChangeUserRole = forwardRef((props, ref) => {
   const [show, setShow] = useState(false);
+  const [selectedRole, setSelectedRole] = useState('');
+  const { username } = useParams();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleUpdateRole = () => {
+    handleClose();
+    useAllUsersStore.getState().updateUserRole(username, selectedRole);
+  };
+
 
   useImperativeHandle(ref, () => ({
     handleShow,
@@ -39,7 +50,7 @@ const ChangeUserRole = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <Form.Select size="lg">
+                    <Form.Select size="lg"  value={selectedRole} onChange={e => setSelectedRole(e.target.value)}>
                       <option value="developer">Developer</option>
                       <option value="scrum_master">Scrum Master</option>
                       <option value="product_owner">Product Owner</option>
@@ -54,7 +65,7 @@ const ChangeUserRole = forwardRef((props, ref) => {
           <Button color="danger" onClick={handleClose}>
             Close
           </Button>
-          <Button color="primary" onClick={handleClose}>
+          <Button color="primary" onClick={handleUpdateRole}>
             Save Changes
           </Button>
         </Modal.Footer>
