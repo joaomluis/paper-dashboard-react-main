@@ -1,3 +1,22 @@
 .hoverable-icon:hover {
     cursor: pointer;
 }
+
+@media (max-width: 768px) {
+    .add-user-button {
+      width: 95%;
+      padding-left: 0px;
+    }
+
+    .all-users-table-tittle {
+        text-align: center;
+    }
+  }
+
+  .large-select {
+    font-size: 15x; 
+    padding: 10px;  
+    height: 40px; 
+    width: 100%;  
+  }
+

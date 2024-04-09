@@ -8,13 +8,17 @@ import {
   Button,
 } from "reactstrap";
 
+import { useRef } from "react";
 
 import useAllUsersStore from "store/useAllUsersStore.jsx";
 import Spinner from "../components/Spinner/Spinner.jsx";
 import { textFilter } from "react-bootstrap-table2-filter";
 import { useNavigate } from "react-router-dom";
 
+import "../assets/css/general-css.css";
+
 import DynamicTable from "components/Dynamic Table/dynamic-table";
+import CreateUser from "components/Modals/Create-user.jsx";
 
 import { useEffect, useState } from "react";
 
@@ -102,15 +106,36 @@ function UsersTable() {
     },
   };
 
+  const changeCreateUserRef = useRef();
+
   return (
     <>
       <div className="content">
+        <CreateUser ref={changeCreateUserRef} />
         <Row>
           <Col md="12">
             <Card>
-              <CardHeader>
-                <CardTitle tag="h4">All Users</CardTitle>
-              </CardHeader>
+              <Row>
+                <Col md="10">
+                  <CardHeader>
+                    <CardTitle tag="h4" className="all-users-table-tittle">
+                      All Users
+                    </CardTitle>
+                  </CardHeader>
+                </Col>
+                <Col
+                  md="2"
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <Button
+                    className="btn-round add-user-button"
+                    style={{ backgroundColor: "#3f74a6" }}
+                    onClick={() => changeCreateUserRef.current.handleShow()}
+                  >
+                    Add User
+                  </Button>
+                </Col>
+              </Row>
 
               <CardBody>
                 {loading ? (

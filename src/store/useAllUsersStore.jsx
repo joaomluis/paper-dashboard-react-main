@@ -99,7 +99,7 @@ const useAllUsersStore = create((set, get) => {
             theme: "colored"
             });
 
-            getActiveUsers();
+            getAllUsers();
         }else{
           const errorMessage = await response.text();
           
@@ -109,7 +109,7 @@ const useAllUsersStore = create((set, get) => {
           transition: Slide,
           theme: "colored"
           });
-          
+
        }
      
     }catch(error){
