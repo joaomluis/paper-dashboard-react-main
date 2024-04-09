@@ -6,6 +6,9 @@ import { useEffect, useState } from 'react';
 
 
 const useAllUsersStore = create((set, get) => {
+
+  
+
   const getActiveUsers = async () => {
 
     const token = useUserStore.getState().token;
@@ -70,7 +73,7 @@ const useAllUsersStore = create((set, get) => {
     
   }};
 
-  const updateProfile = async (username, updatedUserData) => {
+  const updateOtherUserProfile = async (username, updatedUserData) => {
 
     const token = useUserStore.getState().token;
 
@@ -89,7 +92,7 @@ const useAllUsersStore = create((set, get) => {
         if (response.ok) {
             const data = await response.json();
             
-            toast.info('User updated successfully', {position: "top-center",
+            toast.success('User updated successfully', {position: "top-center",
             autoClose: 3000,
             hideProgressBar: true,
             transition: Slide,
@@ -99,8 +102,14 @@ const useAllUsersStore = create((set, get) => {
             getActiveUsers();
         }else{
           const errorMessage = await response.text();
-          console.log(errorMessage);
-          return errorMessage;
+          
+          toast.error(errorMessage, {position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+          });
+          
        }
      
     }catch(error){
@@ -165,7 +174,10 @@ const useAllUsersStore = create((set, get) => {
 
     const url = `http://localhost:8080/project_backend/rest/users/${username}/updateUserRole`;
 
-    
+    const data = {
+
+      typeOfUser: newRole
+    }
 
 
     try {
@@ -175,9 +187,8 @@ const useAllUsersStore = create((set, get) => {
                 'Accept': '*/*',
                 "Content-Type": "application/json",
                 token: token,
-                newRole: newRole
             },
-            
+            body: JSON.stringify(data)
         });
 
         if (response.ok) {
@@ -325,18 +336,16 @@ const useAllUsersStore = create((set, get) => {
 
 
   return {
-    headers: ['Username', 'Email', 'Phone', 'Role', 'User Edition'],
+  
     data: [],
     allUsers: [],
-    tableTitle: 'Active Users',
-    excludeKeys: ['idCategory'],
-    displayOrder: ['username', 'email', 'phoneNumber', 'typeOfUser'],
+    
     setData: (data) => set(state => ({ data })),
     setAllUsers: (allUsers) => set(state => ({ allUsers })),
     getActiveUsers,
     getAllUsers,
     softDeleteUser,
-    updateProfile,
+    updateOtherUserProfile,
     updatePassowrd,
     updateUserRole,
     createUser, 

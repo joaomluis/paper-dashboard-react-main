@@ -55,6 +55,8 @@ function User() {
   const [isOwner, setIsOwner] = useState(false); //verifica se o user é dono do perfil para poder editar ou não
   const [showChangeRole, setShowChangeRole] = useState(false); // determines which button to show
 
+  const updateOtherUserProfile = useAllUsersStore((state) => state.updateOtherUserProfile);
+
   useEffect(() => {
     setIsOwner(!paramUsername);
     if (paramUsername) {
@@ -85,6 +87,7 @@ function User() {
       setUpdatePhone(user.phoneNumber);
       setUpdateImgUrl(user.imgURL);
       setRole(user.typeOfUser);
+
     }
   }, [user]);
 
@@ -108,6 +111,22 @@ function User() {
 
   const changePasswordRef = useRef();
   const changeUserRoleRef = useRef();
+
+  async function handleUpdateOtherUserProfile(e) {
+
+    e.preventDefault();
+
+    const updatedUser = {
+      firstName: updateFirstName,
+      lastName: updateLastName,
+      email: updateEmail,
+      phoneNumber: updatePhone,
+      imgURL: updateImgUrl,
+    };
+
+    updateOtherUserProfile(paramUsername, updatedUser);
+
+  }
 
   async function handleUpdateProfile(e) {
     e.preventDefault();
@@ -319,7 +338,14 @@ function User() {
                         <Button
                           className="btn-round"
                           color="primary"
-                          onClick={handleUpdateProfile}
+                          disabled={!isOwner}
+                          onClick={(e) => {
+                            if (!paramUsername) {
+                              handleUpdateProfile(e);
+                            } else {
+                              handleUpdateOtherUserProfile(e);
+                            }
+                          }}
                         >
                           Update Profile
                         </Button>
