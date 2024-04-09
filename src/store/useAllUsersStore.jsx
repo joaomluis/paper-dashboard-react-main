@@ -239,24 +239,21 @@ const useAllUsersStore = create((set, get) => {
   
           if (response.ok) {
 
-            
-
-            toast.info('User created successfully', {position: "top-center",
+            toast.success('User created successfully', {position: "top-center",
               autoClose: 3000,
               hideProgressBar: true,
               transition: Slide,
               theme: "colored"
               });
 
-              getActiveUsers();
+              getAllUsers();
 
               return Promise.resolve();
              
               
           } else {
             const errorMessage = await response.text(); 
-            
-            console.error("Failed to create user:", errorMessage);
+          
 
             toast.error(errorMessage, {position: "top-center",
               autoClose: 4000,
@@ -265,7 +262,7 @@ const useAllUsersStore = create((set, get) => {
               theme: "colored"
               })
 
-            return Promise.reject(new Error(errorMessage));
+            
 
             }
       } catch (error) {

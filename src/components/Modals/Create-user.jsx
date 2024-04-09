@@ -23,13 +23,18 @@ const CreateUser = forwardRef((props, ref) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
-    setCurrentPassword("");
+    setUsernameValue("");
+    setEmailValue("");
+    setFirstNameValue("");
+    setLastNameValue("");
+    setPhoneValue("");
+    setImgValue("");
+    setRoleValue("");
 
     setShow(false);
   };
   const handleShow = () => setShow(true);
 
-  const [currentPassword, setCurrentPassword] = useState("");
 
   const [usernameValue, setUsernameValue] = useState("");
   const [emailValue, setEmailValue] = useState("");
@@ -42,6 +47,24 @@ const CreateUser = forwardRef((props, ref) => {
   useImperativeHandle(ref, () => ({
     handleShow,
   }));
+
+  const createUser = useAllUsersStore((state) => state.createUser);
+
+  async function handleCreateUser() {
+
+    const newUser = {
+      username: usernameValue,
+      email: emailValue,
+      firstName: firstNameValue,
+      lastName: lastNameValue,
+      phoneNumber: phoneValue,
+      imgURL: imgValue,
+      typeOfUser: roleValue,
+    };
+
+    createUser(newUser);
+
+  }
 
   return (
     <>
@@ -139,6 +162,7 @@ const CreateUser = forwardRef((props, ref) => {
                       value={roleValue}
                       onChange={(e) => setRoleValue(e.target.value)}
                     >
+                      <option value="" disabled>Select a role</option>
                       <option value="developer">Developer</option>
                       <option value="scrum_master">Scrum Master</option>
                       <option value="product_owner">Product Owner</option>
@@ -153,7 +177,7 @@ const CreateUser = forwardRef((props, ref) => {
           <Button color="danger" onClick={handleClose}>
             Close
           </Button>
-          <Button color="primary">Create User</Button>
+          <Button color="primary" onClick={() => {handleCreateUser()}}>Create User</Button>
         </Modal.Footer>
       </Modal>
     </>

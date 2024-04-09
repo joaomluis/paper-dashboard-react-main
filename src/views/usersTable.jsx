@@ -27,13 +27,14 @@ function UsersTable() {
   const navigate = useNavigate();
 
   const [users, setData] = useState([]);
+  const allUsers = useAllUsersStore((state) => state.allUsers);
 
   useEffect(() => {
     useAllUsersStore
       .getState()
       .getAllUsers()
-      .then((allUsers) => {
-        setData(allUsers);
+      .then(() => {
+        
         setLoading(false);
       });
   }, []);
@@ -142,7 +143,7 @@ function UsersTable() {
                   <Spinner animation="border" role="status"></Spinner>
                 ) : (
                   <DynamicTable
-                    data={users}
+                    data={allUsers}
                     columns={columns}
                     rowEvents={rowEvents}
                   />
