@@ -26,6 +26,7 @@ import UsersTable from "views/usersTable.jsx";
 import Login from "views/login.jsx";
 import Register from "views/register.jsx";
 import RecoverPassword from "views/RecoverPassword.jsx";
+import ConfirmAccount from "views/Confirm-Account.jsx";
 
 var routes = [
   {
@@ -110,5 +111,13 @@ var routes = [
     layout: "/agile-up",
     hidden: true,
   },
+
+  {
+    path: "/define-password",
+    name: "Confirm Account",
+    icon: "nc-icon nc-single-02",
+    component: <ConfirmAccount />,
+    layout: "/auth",
+  }
 ];
 export default routes;

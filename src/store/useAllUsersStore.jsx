@@ -216,6 +216,23 @@ const useAllUsersStore = create((set, get) => {
         console.log("Something went wrong");
       }
     
+  } 
+
+  const sendUserPasswordResetEmail = async (email) => {
+
+    const url = `http://localhost:8080/project_backend/rest/email/password`;
+
+  }
+
+  const sendUserVerificationEmail = async (email) => {
+
+    const url = `http://localhost:8080/project_backend/rest/email/activate`;
+
+    const data = {
+      email: email,
+
+    }
+
   }
 
 
