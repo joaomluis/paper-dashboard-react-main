@@ -220,7 +220,44 @@ const useAllUsersStore = create((set, get) => {
 
   const sendUserPasswordResetEmail = async (email) => {
 
-    const url = `http://localhost:8080/project_backend/rest/email/password`;
+    const url = `http://localhost:8080/project_backend/rest/users/recoverPassword/${email}`;
+
+    try {
+      const response = await fetch(url, {
+          method: "POST",
+          headers: {
+              'Accept': '*/*',
+              "Content-Type": "application/json",
+          },
+          
+      });
+
+      if (response.ok) {
+          
+          toast.success('Password reset email sent successfully', {position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+          });
+
+          return Promise.resolve();
+      }else{
+        const errorMessage = await response.text();
+        
+        toast.error(errorMessage, {position: "top-center",
+        autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+          });
+
+      }
+    } catch (error) {
+      console.log("Something went wrong");
+    }
+
+
 
   }
 
@@ -363,7 +400,8 @@ const useAllUsersStore = create((set, get) => {
     updatePassowrd,
     updateUserRole,
     createUser, 
-    getUserByUsername
+    getUserByUsername,
+    sendUserPasswordResetEmail
   };
 });
 

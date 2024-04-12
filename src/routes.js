@@ -113,7 +113,7 @@ var routes = [
   },
 
   {
-    path: "/define-password",
+    path: "/define-password/:token",
     name: "Confirm Account",
     icon: "nc-icon nc-single-02",
     component: <ConfirmAccount />,

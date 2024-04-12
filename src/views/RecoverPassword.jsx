@@ -18,23 +18,21 @@
 
 // reactstrap components
 import {
-    Button,
-    Card,
-    CardHeader,
-    CardBody,
-    FormGroup,
-    Form,
-    Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
     Row,
     Col,
   } from "reactstrap";
   
   import {Link} from 'react-router-dom';
+  import {useState} from 'react';
+
+  import useAllUsersStore from "../store/useAllUsersStore.jsx";
   
   const RecoverPassword = () => {
+
+    const [emailValue, setEmailValue] = useState("");
+
+    const sendUserPasswordResetEmail = useAllUsersStore((state) => state.sendUserPasswordResetEmail);
+
     return (
       <>
         <div className="login template d-flex justify-content-center align-items-center vh-100 bg-transparent">
@@ -49,12 +47,15 @@ import {
                       type="email"
                       placeholder="Enter your email here"
                       className="form-control"
+                      value={emailValue}
+                      onChange={(e) => setEmailValue(e.target.value)}
                     />
                   </div>
                   
   
                   <div className="d-flex justify-content-center align-items-center">
-                    <button className="btn btn-primary ">Recover Password </button>
+                    <button className="btn btn-primary " onClick={()=> {console.log(emailValue)}}
+                    >Recover Password </button>
                   </div>
                   <div
                     style={{ display: "flex", justifyContent: "space-between", marginTop: "15px"}}
