@@ -19,7 +19,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPen,
+  faEnvelopeCircleCheck,
+  faUserSlash,
+  faArrowRotateLeft,
+  faTrashCan,
+  faClipboardList,
+  faMessage,
+} from "@fortawesome/free-solid-svg-icons";
 import "../assets/css/general-css.css";
 
 // reactstrap components
@@ -39,11 +47,14 @@ import {
 
 import { toast, Slide } from "react-toastify";
 
+import "../assets/css/general-css.css";
+
 import useUserStore from "../store/useUserStore.jsx";
 import useAllUsersStore from "../store/useAllUsersStore.jsx";
 
 import ChangePassword from "components/Modals/Change-password.jsx";
 import ChangeUserRole from "components/Modals/Change-user-role.jsx";
+import ResendVerification from "components/Modals/Resend-verification-mail.jsx";
 
 function User() {
   const usernameFromStore = useUserStore((state) => state.username);
@@ -55,7 +66,9 @@ function User() {
   const [isOwner, setIsOwner] = useState(false); //verifica se o user é dono do perfil para poder editar ou não
   const [showChangeRole, setShowChangeRole] = useState(false); // determines which button to show
 
-  const updateOtherUserProfile = useAllUsersStore((state) => state.updateOtherUserProfile);
+  const updateOtherUserProfile = useAllUsersStore(
+    (state) => state.updateOtherUserProfile
+  );
 
   useEffect(() => {
     setIsOwner(!paramUsername);
@@ -87,7 +100,6 @@ function User() {
       setUpdatePhone(user.phoneNumber);
       setUpdateImgUrl(user.imgURL);
       setRole(user.typeOfUser);
-
     }
   }, [user]);
 
@@ -111,9 +123,9 @@ function User() {
 
   const changePasswordRef = useRef();
   const changeUserRoleRef = useRef();
+  const resendVerificationRef = useRef();
 
   async function handleUpdateOtherUserProfile(e) {
-
     e.preventDefault();
 
     const updatedUser = {
@@ -125,7 +137,6 @@ function User() {
     };
 
     updateOtherUserProfile(paramUsername, updatedUser);
-
   }
 
   async function handleUpdateProfile(e) {
@@ -187,6 +198,105 @@ function User() {
       <div className="content">
         <ChangePassword ref={changePasswordRef} />
         <ChangeUserRole ref={changeUserRoleRef} />
+        <ResendVerification ref={resendVerificationRef} />
+        <Row>
+          <Col md="8"></Col>
+          <Col md="4">
+            <Card className="card-user">
+              <CardHeader style={{ paddingTop: "0px" }}>
+                <Row>
+                  <Col md="2">
+                    <Button
+                      style={{ backgroundColor: "#3f74a6" }}
+                      className="btn-round add-user-button"
+                      color="primary"
+                      title="Resend confirmation email"
+                      size="sm"
+                      onClick={() =>
+                        resendVerificationRef.current.handleShow()
+                      }
+                    >
+                      <FontAwesomeIcon
+                        icon={faEnvelopeCircleCheck}
+                        className="hoverable-icon"
+                      />
+                    </Button>
+                  </Col>
+                  <Col md="2">
+                    <Button
+                      style={{ backgroundColor: "#3f74a6" }}
+                      className="btn-round add-user-button"
+                      color="primary"
+                      title="Deactivate user"
+                      size="sm"
+                    >
+                      <FontAwesomeIcon
+                        icon={faUserSlash}
+                        className="hoverable-icon"
+                      />
+                    </Button>
+                  </Col>
+                  <Col md="2">
+                    <Button
+                      style={{ backgroundColor: "#3f74a6" }}
+                      className="btn-round add-user-button"
+                      color="primary"
+                      title="Reactivate user"
+                      size="sm"
+                    >
+                      <FontAwesomeIcon
+                        icon={faArrowRotateLeft}
+                        className="hoverable-icon"
+                      />
+                    </Button>
+                  </Col>
+                  <Col md="2">
+                    <Button
+                      style={{ backgroundColor: "#3f74a6" }}
+                      className="btn-round add-user-button"
+                      color="danger"
+                      title="Delete user"
+                      size="sm"
+                    >
+                      <FontAwesomeIcon
+                        icon={faTrashCan}
+                        className="hoverable-icon"
+                      />
+                    </Button>
+                  </Col>
+                  <Col md="2">
+                    <Button
+                      style={{ backgroundColor: "#3f74a6" }}
+                      className="btn-round add-user-button"
+                      color="primary"
+                      title="Delete user tasks"
+                      size="sm"
+                    >
+                      <FontAwesomeIcon
+                        icon={faClipboardList}
+                        className="hoverable-icon"
+                      />
+                    </Button>
+                  </Col>
+                  <Col md="2">
+                    <Button
+                      style={{ backgroundColor: "#3f74a6" }}
+                      className="btn-round add-user-button"
+                      color="primary"
+                      title="Open chat"
+                      size="sm"
+                    >
+                      <FontAwesomeIcon
+                        icon={faMessage}
+                        className="hoverable-icon"
+                      />
+                    </Button>
+                  </Col>
+                </Row>
+              </CardHeader>
+            </Card>
+          </Col>
+        </Row>
         <Row>
           <Col md="4">
             <Card className="card-user">

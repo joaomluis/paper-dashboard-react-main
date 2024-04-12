@@ -80,25 +80,7 @@ function UsersTable() {
       text: "Email",
     },
 
-    {
-      dataField: "action",
-      text: "Action",
-      formatter: () => {
-        return (
-          <Button
-            className="btn-round"
-            color="primary"
-            size="sm"
-            onClick={(e) => {
-              e.stopPropagation();
-              console.log("click");
-            }}
-          >
-            Actions
-          </Button>
-        );
-      },
-    },
+    
   ];
 
   const rowEvents = {
