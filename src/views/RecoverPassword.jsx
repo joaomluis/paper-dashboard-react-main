@@ -31,7 +31,6 @@ const RecoverPassword = () => {
     (state) => state.sendUserPasswordResetEmail
   );
 
-
   return (
     <>
       <div className="login template d-flex justify-content-center align-items-center vh-100 bg-transparent">
@@ -70,8 +69,7 @@ const RecoverPassword = () => {
                   }}
                 >
                   <Link to="/auth/login">
-                    {" "}
-                    <a>Back to Sign in</a>{" "}
+                    <a>Back to Sign in</a>
                   </Link>
                 </div>
               </form>

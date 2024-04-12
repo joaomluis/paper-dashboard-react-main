@@ -25,16 +25,19 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const RecoverPassword = () => {
-  const { token } = useParams();
+  const { token, mode } = useParams();
   const recoverPassword = useAllUsersStore((state) => state.recoverPassword);
+  const confirmAccount = useAllUsersStore((state) => state.confirmAccount);
   const navigate = useNavigate();
+
 
   const [passwordValue, setPasswordValue] = useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
 
   const handleRecoverPassword = (event) => {
     event.preventDefault();
-    recoverPassword(token, passwordValue, confirmPasswordValue).then(
+    const action = mode === 'recover' ? recoverPassword : confirmAccount;
+    action(token, passwordValue, confirmPasswordValue).then(
       (response) => {
         if (response.success) {
           setPasswordValue("");

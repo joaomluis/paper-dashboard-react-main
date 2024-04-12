@@ -65,6 +65,12 @@ const useAllUsersStore = create((set, get) => {
       
     } else {
       const errorMessage = await response.text();
+      toast.error(errorMessage, {position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: true,
+      transition: Slide,
+      theme: "colored"
+      });
      
     }
   } catch (error) {
@@ -89,7 +95,7 @@ const useAllUsersStore = create((set, get) => {
         });
  
         if (response.ok) {
-            const data = await response.json();
+            
             
             toast.success('User updated successfully', {position: "top-center",
             autoClose: 3000,
@@ -306,8 +312,53 @@ const useAllUsersStore = create((set, get) => {
       console.log("Something went wrong");
     }
 
+  }
 
+  const confirmAccount = async (token, password, confirmPassword) => {
 
+    const url = `http://localhost:8080/project_backend/rest/users/confirmAccount/${token}`;
+
+    const data = {
+      newPassword: password,
+      confirmPassword: confirmPassword
+    }
+
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          'Accept': '*/*',
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        toast.success('Account confirmed successfully', {position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+        });
+
+        return Promise.resolve({ success: true }); // para ter uma response e possa usar then em caso de sucesso no componente
+      } else {
+        const errorMessage = await response.text();
+
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+        });
+
+        return Promise.resolve({ success: false });
+
+      }
+    } catch (error) {
+      console.log("Something went wrong");
+    }
   }
 
   const sendUserVerificationEmail = async (email) => {
@@ -451,7 +502,8 @@ const useAllUsersStore = create((set, get) => {
     createUser, 
     getUserByUsername,
     sendUserPasswordResetEmail, 
-    recoverPassword
+    recoverPassword,
+    confirmAccount,
   };
 });
 
