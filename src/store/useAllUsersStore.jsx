@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import useUserStore from './useUserStore';
 import { toast, Slide } from 'react-toastify';
-import { useEffect, useState } from 'react';
 
 
 
@@ -234,7 +233,7 @@ const useAllUsersStore = create((set, get) => {
 
       if (response.ok) {
           
-          toast.success('Password reset email sent successfully', {position: "top-center",
+          toast.info('Password reset email sent successfully', {position: "top-center",
           autoClose: 3000,
           hideProgressBar: true,
           transition: Slide,
@@ -251,6 +250,56 @@ const useAllUsersStore = create((set, get) => {
           transition: Slide,
           theme: "colored"
           });
+
+      }
+    } catch (error) {
+      console.log("Something went wrong");
+    }
+
+  }
+
+  const recoverPassword = async (token, newPassword, confirmNewPassword) => {
+
+    const url = `http://localhost:8080/project_backend/rest/users/resetPassword/${token}`;
+
+    const data = {
+      newPassword: newPassword,
+      confirmPassword: confirmNewPassword
+    }
+
+    try {
+      const response = await fetch(url, {
+          method: "PUT",
+          headers: {
+              'Accept': '*/*',
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+          
+          toast.success('Password reset successfully', {position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+          });
+
+          
+
+          return Promise.resolve({ success: true }); // para ter uma response e possa usar then em caso de sucesso no componente
+      }else{
+        const errorMessage = await response.text();
+        
+        toast.error(errorMessage, {position: "top-center",
+        autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored"
+          });
+
+          return Promise.resolve({ success: false });
 
       }
     } catch (error) {
@@ -401,7 +450,8 @@ const useAllUsersStore = create((set, get) => {
     updateUserRole,
     createUser, 
     getUserByUsername,
-    sendUserPasswordResetEmail
+    sendUserPasswordResetEmail, 
+    recoverPassword
   };
 });
 

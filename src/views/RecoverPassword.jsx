@@ -17,60 +17,70 @@
 */
 
 // reactstrap components
-import {
-    Row,
-    Col,
-  } from "reactstrap";
-  
-  import {Link} from 'react-router-dom';
-  import {useState} from 'react';
+import { Row, Col } from "reactstrap";
 
-  import useAllUsersStore from "../store/useAllUsersStore.jsx";
-  
-  const RecoverPassword = () => {
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
-    const [emailValue, setEmailValue] = useState("");
+import useAllUsersStore from "../store/useAllUsersStore.jsx";
 
-    const sendUserPasswordResetEmail = useAllUsersStore((state) => state.sendUserPasswordResetEmail);
+const RecoverPassword = () => {
+  const [emailValue, setEmailValue] = useState("");
 
-    return (
-      <>
-        <div className="login template d-flex justify-content-center align-items-center vh-100 bg-transparent">
-          <Row>
-            <Col md={6} lg={12}>
-              <div className=" form_container p-5 rounded bg-white">
-                <form action="">
-                  <h3 className="text-center">Recover Your Password</h3>
-                  <div className="mb-2">
-                    <label htmlFor="email">Email</label>
-                    <input
-                      type="email"
-                      placeholder="Enter your email here"
-                      className="form-control"
-                      value={emailValue}
-                      onChange={(e) => setEmailValue(e.target.value)}
-                    />
-                  </div>
-                  
-  
-                  <div className="d-flex justify-content-center align-items-center">
-                    <button className="btn btn-primary " onClick={()=> {console.log(emailValue)}}
-                    >Recover Password </button>
-                  </div>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between", marginTop: "15px"}}
+  const sendUserPasswordResetEmail = useAllUsersStore(
+    (state) => state.sendUserPasswordResetEmail
+  );
+
+
+  return (
+    <>
+      <div className="login template d-flex justify-content-center align-items-center vh-100 bg-transparent">
+        <Row>
+          <Col md={6} lg={12}>
+            <div className=" form_container p-5 rounded bg-white">
+              <form action="">
+                <h3 className="text-center">Recover Your Password</h3>
+                <div className="mb-2">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    placeholder="Enter your email here"
+                    className="form-control"
+                    value={emailValue}
+                    onChange={(e) => setEmailValue(e.target.value)}
+                  />
+                </div>
+
+                <div className="d-flex justify-content-center align-items-center">
+                  <button
+                    className="btn btn-primary "
+                    onClick={(event) => {
+                      event.preventDefault();
+                      sendUserPasswordResetEmail(emailValue);
+                    }}
                   >
-                    
-                    <Link to="/auth/login"> <a>Back to Sign in</a> </Link>
-                  </div>
-                </form>
-              </div>
-            </Col>
-          </Row>
-        </div>
-      </>
-    );
-  };
-  
-  export default RecoverPassword;
-  
+                    Recover Password{" "}
+                  </button>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    marginTop: "15px",
+                  }}
+                >
+                  <Link to="/auth/login">
+                    {" "}
+                    <a>Back to Sign in</a>{" "}
+                  </Link>
+                </div>
+              </form>
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </>
+  );
+};
+
+export default RecoverPassword;
