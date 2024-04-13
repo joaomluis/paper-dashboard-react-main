@@ -1,13 +1,9 @@
 import BootstrapTable from "react-bootstrap-table-next";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import overlayFactory from "react-bootstrap-table2-overlay";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-function DynamicTable({ data, columns, rowEvents }) {
-
-  const navigate = useNavigate();
-
-
+function DynamicTable({ data, columns, rowEvents, keyField }) {
   return (
     <>
       <style>
@@ -28,7 +24,7 @@ function DynamicTable({ data, columns, rowEvents }) {
         style={{ overflowX: "auto", maxHeight: "500px", position: "relative" }}
       >
         <BootstrapTable
-          keyField="username"
+          keyField={keyField}
           data={data}
           columns={columns}
           filter={filterFactory()}

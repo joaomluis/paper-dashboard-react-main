@@ -10,93 +10,98 @@ import {
 
 import { useRef } from "react";
 
-import useAllUsersStore from "store/useAllUsersStore.jsx";
+import useCategoriesStore from "store/useCategoriesStore.jsx";
 import Spinner from "../components/Spinner/Spinner.jsx";
 import { textFilter } from "react-bootstrap-table2-filter";
-import { useNavigate } from "react-router-dom";
 
 import "../assets/css/general-css.css";
 
 import DynamicTable from "components/Dynamic Table/dynamic-table";
-import CreateUser from "components/Modals/Create-user.jsx";
+import CreateCategory from "components/Modals/Create-category.jsx";
 
 import { useEffect, useState } from "react";
 
-function UsersTable() {
+function CategoriesTable() {
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
-  
-  const allUsers = useAllUsersStore((state) => state.allUsers);
+  const allCategories = useCategoriesStore((state) => state.categories);
 
   useEffect(() => {
-    useAllUsersStore
+    useCategoriesStore
       .getState()
-      .getAllUsers()
+      .fetchCategories()
       .then(() => {
-        
         setLoading(false);
       });
   }, []);
 
   const columns = [
     {
-      dataField: "active",
-      text: "Active Status",
-    },
-    {
-      dataField: "username",
-      text: "Username ",
+      dataField: "title",
+      text: "Title",
       filter: textFilter(),
       sort: true,
     },
     {
-      dataField: "typeOfUser",
-      text: "Role ",
-      filter: textFilter(),
-      formatter: (cell) => {
-        switch (cell) {
-          case "product_owner":
-            return "Product Owner";
-          case "scrum_master":
-            return "Scrum Master";
-          case "developer":
-            return "Developer";
-          default:
-            return cell;
-        }
+      dataField: 'description',
+      text: 'Description',
+      formatter: (cell, row) => {
+        return (
+          <div style={{ 
+            width: '150px', 
+            whiteSpace: 'nowrap', 
+            overflow: 'hidden', 
+            textOverflow: 'ellipsis' 
+          }}>
+            {cell}
+          </div>
+        );
+      }
+    },
+    {
+      dataField: "author.username",
+      text: "Author",
+    },
+
+    {
+      dataField: "idCategory",
+      text: "Actions",
+      formatter: (cell, row) => {
+        return (
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <Button
+              className="btn-round"
+              color="primary"
+              size="sm"
+              
+            >
+              Edit
+            </Button>
+            <Button
+              className="btn-round"
+              style={{ marginTop: "15px" }}
+              color="danger"
+              size="sm"
+              onClick={() => {
+                useCategoriesStore.getState().deleteCategory(cell);
+              }}
+            >
+              Delete
+            </Button>
+          </div>
+        );
       },
     },
-    {
-      dataField: "firstName",
-      text: "First Name",
-    },
-    {
-      dataField: "lastName",
-      text: "Last Name",
-    },
-    {
-      dataField: "email",
-      text: "Email",
-    },
-
-    
   ];
 
-  const rowEvents = {
-    onClick: (e, row, rowIndex) => {
-      navigate(`/agile-up/user/${row.username}`);
-    },
-  };
+  const keyField = "idCategory";
 
-  const keyField = "username";
-
-  const changeCreateUserRef = useRef();
+  const changeCreateCategoryRef = useRef();
 
   return (
     <>
       <div className="content">
-        <CreateUser ref={changeCreateUserRef} />
+        <CreateCategory ref={changeCreateCategoryRef} />
         <Row>
           <Col md="12">
             <Card>
@@ -104,7 +109,7 @@ function UsersTable() {
                 <Col md="10">
                   <CardHeader>
                     <CardTitle tag="h4" className="all-users-table-tittle">
-                      All Users
+                      Categories Table
                     </CardTitle>
                   </CardHeader>
                 </Col>
@@ -115,9 +120,9 @@ function UsersTable() {
                   <Button
                     className="btn-round add-user-button"
                     style={{ backgroundColor: "#3f74a6" }}
-                    onClick={() => changeCreateUserRef.current.handleShow()}
+                    onClick={() => changeCreateCategoryRef.current.handleShow()}
                   >
-                    Add User
+                    Add Category
                   </Button>
                 </Col>
               </Row>
@@ -128,9 +133,8 @@ function UsersTable() {
                 ) : (
                   <DynamicTable
                     keyField={keyField}
-                    data={allUsers}
+                    data={allCategories}
                     columns={columns}
-                    rowEvents={rowEvents}
                   />
                 )}
               </CardBody>
@@ -142,4 +146,4 @@ function UsersTable() {
   );
 }
 
-export default UsersTable;
+export default CategoriesTable;

@@ -27,6 +27,7 @@ import Login from "views/login.jsx";
 import Register from "views/register.jsx";
 import RecoverPassword from "views/RecoverPassword.jsx";
 import ConfirmAccount from "views/Confirm-Account.jsx";
+import CategoriesTables from "views/Categories-Table.jsx";
 
 var routes = [
   {
@@ -77,6 +78,13 @@ var routes = [
     name: "Users",
     icon: "nc-icon nc-single-02",
     component: <UsersTable />,
+    layout: "/agile-up",
+  },
+  {
+    path: "/categories",
+    name: "Categories",
+    icon: "nc-icon nc-bullet-list-67",
+    component: <CategoriesTables />,
     layout: "/agile-up",
   },
   {
