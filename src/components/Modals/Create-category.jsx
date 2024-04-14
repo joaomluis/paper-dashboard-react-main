@@ -24,28 +24,57 @@ const CreateCategory = forwardRef((props, ref) => {
     setDescriptionValue("");
     setShow(false);
   };
-  const handleShow = () => setShow(true);
+
+  const [modalFunction, setModalFunction] = useState("Add Category");
+
+  const handleShow = (categoryData) => {
+    if (categoryData) {
+      setTitleValue(categoryData.title);
+      setDescriptionValue(categoryData.description);
+      setCurrentCategory(categoryData);
+      setModalFunction("Edit Category");
+    } else {
+      setTitleValue("");
+      setDescriptionValue("");
+      setCurrentCategory(null);
+      setModalFunction("Add Category");
+    }
+
+    setShow(true);
+  };
 
   const [titleValue, setTitleValue] = useState("");
   const [descriptionValue, setDescriptionValue] = useState("");
+  const [currentCategory, setCurrentCategory] = useState(null);
 
   useImperativeHandle(ref, () => ({
     handleShow,
   }));
 
   const createCategory = useCategoriesStore((state) => state.createCategory);
+  const updateCategory = useCategoriesStore((state) => state.updateCategory);
 
-  async function handleCreateCategory() {
-    const newCategory = {
+  async function handleCreateOrUpdateCategory() {
+    const categoryData = {
       title: titleValue,
       description: descriptionValue,
     };
 
-    createCategory(newCategory).then((response) => {
-      if (response.success) {
-        handleClose();
-      }
-    });
+    if (currentCategory) {
+      updateCategory(categoryData, currentCategory.idCategory).then(
+        (response) => {
+          if (response.success) {
+            handleClose();
+          }
+        }
+      );
+    } else {
+      createCategory(categoryData).then((response) => {
+        if (response.success) {
+          handleClose();
+        }
+      });
+    }
   }
 
   return (
@@ -57,7 +86,7 @@ const CreateCategory = forwardRef((props, ref) => {
         centered
       >
         <Modal.Header>
-          <Modal.Title>Create Category</Modal.Title>
+          <Modal.Title>{modalFunction}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -94,8 +123,8 @@ const CreateCategory = forwardRef((props, ref) => {
           <Button color="danger" onClick={handleClose}>
             Close
           </Button>
-          <Button color="primary" onClick={handleCreateCategory}>
-            Create Category
+          <Button color="primary" onClick={handleCreateOrUpdateCategory}>
+            {modalFunction}
           </Button>
         </Modal.Footer>
       </Modal>

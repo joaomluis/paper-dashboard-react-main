@@ -73,7 +73,7 @@ function CategoriesTable() {
               className="btn-round"
               color="primary"
               size="sm"
-              
+              onClick={() => changeCreateCategoryRef.current.handleShow(row)}
             >
               Edit
             </Button>

@@ -73,6 +73,50 @@ const useCategoriesStore = create((set, get) => {
     }
   }
 
+  const updateCategory = async (category, id) => {
+    const token = useUserStore.getState().user.token;
+    const updateCategoryRequest = `http://localhost:8080/project_backend/rest/categories/update/${id}`;
+    try {
+      const response = await fetch(updateCategoryRequest, {
+        method: "PUT",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          token: token
+        },
+        body: JSON.stringify(category)
+      });
+
+      if (response.ok) {
+        toast.success('Category updated successfully', {position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        transition: Slide,
+        theme: "colored"
+        });
+
+        fetchCategories();
+        return Promise.resolve({ success: true });
+        
+      } else {
+        const errorMessage = await response.text();
+
+        toast.error(errorMessage, {position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        transition: Slide,
+        theme: "colored"
+        });
+
+        return Promise.resolve({ success: false });
+        
+      }
+    } catch (error) {
+      console.error("Error updating category:", error);
+      
+    }
+  }
+
 
 
   const deleteCategory = async (id) => {
@@ -125,6 +169,7 @@ const useCategoriesStore = create((set, get) => {
     setData: (categories) => set(state => ({ categories })),
     fetchCategories,
     createCategory,
+    updateCategory,
     deleteCategory
     
   };
