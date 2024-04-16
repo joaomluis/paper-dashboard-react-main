@@ -55,6 +55,7 @@ import useAllUsersStore from "../store/useAllUsersStore.jsx";
 import ChangePassword from "components/Modals/Change-password.jsx";
 import ChangeUserRole from "components/Modals/Change-user-role.jsx";
 import ResendVerification from "components/Modals/Resend-verification-mail.jsx";
+import Chat from "components/Chat/Chat.jsx";
 
 function User() {
   const usernameFromStore = useUserStore((state) => state.username);
@@ -62,6 +63,7 @@ function User() {
   const token = useUserStore((state) => state.token);
   const { username: paramUsername } = useParams();
   const [user, setUser] = useState(null);
+  const [showChat, setShowChat] = useState(false);
 
   const [isOwner, setIsOwner] = useState(false); //verifica se o user é dono do perfil para poder editar ou não
   const [showChangeRole, setShowChangeRole] = useState(false); // determines which button to show
@@ -199,9 +201,10 @@ function User() {
         <ChangePassword ref={changePasswordRef} />
         <ChangeUserRole ref={changeUserRoleRef} />
         <ResendVerification ref={resendVerificationRef} />
+        
         <Row>
-          <Col md="8"></Col>
-          <Col md="4">
+          <Col md="7"></Col>
+          <Col md="5">
             <Card className="card-user">
               <CardHeader style={{ paddingTop: "0px" }}>
                 <Row>
@@ -212,9 +215,7 @@ function User() {
                       color="primary"
                       title="Resend confirmation email"
                       size="sm"
-                      onClick={() =>
-                        resendVerificationRef.current.handleShow()
-                      }
+                      onClick={() => resendVerificationRef.current.handleShow()}
                     >
                       <FontAwesomeIcon
                         icon={faEnvelopeCircleCheck}
@@ -285,6 +286,7 @@ function User() {
                       color="primary"
                       title="Open chat"
                       size="sm"
+                      onClick={() => setShowChat(!showChat)}
                     >
                       <FontAwesomeIcon
                         icon={faMessage}
@@ -496,6 +498,7 @@ function User() {
             </Card>
           </Col>
         </Row>
+        {showChat && <Chat />}
       </div>
     </>
   );

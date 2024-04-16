@@ -19,6 +19,7 @@
     "react-bootstrap-table2-overlay": "^2.0.0",
     "react-bootstrap-table2-paginator": "^2.1.2",
     "react-chartjs-2": "3.3.0",
+    "react-chat-elements": "^12.0.14",
     "react-dom": ">=16.8.0",
     "react-notification-alert": "0.0.13",
     "react-router-dom": "6.11.1",
