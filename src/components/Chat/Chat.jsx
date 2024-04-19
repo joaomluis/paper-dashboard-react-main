@@ -39,54 +39,68 @@ function Chat() {
 
   const ws = React.useRef(null);
 
+  
   React.useEffect(() => {
-    ws.current = new WebSocket(
-      `ws://localhost:8080/project_backend/websocket/notifier/${websocketToken}`
-    );
 
-    ws.current.onopen = () => {
-      console.log("ws opened");
+    let shouldReconnect = true;
+
+    const connect = () => {
+      ws.current = new WebSocket(
+        `ws://localhost:8080/project_backend/websocket/notifier/${websocketToken}`
+      );
+  
+      ws.current.onopen = () => {
+        console.log("ws opened");
+      };
+  
+      ws.current.onclose = (event) => {
+        console.log("ws closed");
+        if (!event.wasClean && shouldReconnect) {
+          setTimeout(connect, 3000);
+        }
+      };
+  
+      ws.current.onerror = (error) => {
+        console.log("ws error", error);
+      };
+  
+      ws.current.onmessage = (e) => {
+        try {
+          const message = JSON.parse(e.data);
+          const [year, month, day, hour, minute, second, nanosecond] =
+            message.sentTimestamp;
+          message.sentTimestamp = new Date(
+            Date(
+              year,
+              month - 1,
+              day,
+              hour,
+              minute,
+              second,
+              nanosecond / 1000000
+            )
+          );
+          setMessages((prevMessages) => [...prevMessages, message]);
+        } catch (error) {
+          console.error("Error parsing message:", e.data);
+          console.error(error);
+        }
+      };
+  
+      getMessagesBetweenTwoUsers(username, myUsername).then((messages) => {
+        setMessages(messages);
+      });
     };
-
-    ws.current.onclose = () => {
-      console.log("ws closed");
-    };
-
-    ws.current.onerror = (error) => {
-      console.log("ws error", error);
-    };
-
-    ws.current.onmessage = (e) => {
-      try {
-        const message = JSON.parse(e.data);
-        const [year, month, day, hour, minute, second, nanosecond] =
-          message.sentTimestamp;
-        message.sentTimestamp = new Date(
-          Date(
-            year,
-            month - 1,
-            day,
-            hour,
-            minute,
-            second,
-            nanosecond / 1000000
-          )
-        );
-        setMessages((prevMessages) => [...prevMessages, message]);
-      } catch (error) {
-        console.error("Error parsing message:", e.data);
-        console.error(error);
+  
+    connect();
+  
+    return () => {
+      if (ws.current) {
+        shouldReconnect = false;
+        ws.current.close();
       }
     };
-
-    getMessagesBetweenTwoUsers(username, myUsername).then((messages) => {
-      setMessages(messages);
-    });
-
-    return () => {
-      ws.current.close();
-    };
-  }, []);
+  }, [websocketToken]); //faz sentido esta dependency?
 
   const sendMessage = (event) => {
     event.preventDefault();
