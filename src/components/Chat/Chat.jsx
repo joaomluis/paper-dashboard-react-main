@@ -169,12 +169,13 @@ function Chat() {
                 onMouseLeave={() => setIsChatHovered(false)}
               >
                 {messages.map((message) => (
+                  
                   <ChatMessage
                     key={message.id}
                     sender={message.sender}
                     position={message.sender === myUsername ? "right" : "left"}
                     text={message.content}
-                    status={message.status}
+                    status={message.sender === myUsername ? (message.read ? "read" : "sent") : undefined}
                     sentTimestamp={message.sentTimestamp}
                   />
                 ))}
