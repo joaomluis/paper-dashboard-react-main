@@ -480,6 +480,31 @@ const useAllUsersStore = create((set, get) => {
     }
   };
 
+  const getMessagesBetweenTwoUsers = async (sender, recipient) => {
+    const token = useUserStore.getState().token;
+
+    const messagesRequest = `http://localhost:8080/project_backend/rest/messages/${sender}/${recipient}`;
+
+    try {
+      const response = await fetch(messagesRequest, {
+        method: "GET",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          token: token,
+        },
+      });
+
+      if (response.ok) {
+        const messages = await response.json();
+
+        return messages;
+      }
+    } catch (error) {
+      console.error("Failed to fetch categories", error);
+    }
+  };
+
   return {
     data: [],
     allUsers: [],
@@ -498,6 +523,7 @@ const useAllUsersStore = create((set, get) => {
     recoverPassword,
     confirmAccount,
     resendUserVerificationEmail,
+    getMessagesBetweenTwoUsers,
   };
 });
 
