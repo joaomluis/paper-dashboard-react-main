@@ -20,3 +20,23 @@
     width: 100%;  
   }
 
+  .task-column {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    max-height: 500px;
+    margin: 10px;
+    background-color: #f9f9f9;
+    height: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+  .column-header {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  .to-do-column {
+    margin-bottom: 0px;
+  }

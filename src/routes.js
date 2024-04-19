@@ -19,8 +19,7 @@
 import Dashboard from "views/Dashboard.js";
 import Notifications from "views/Notifications.js";
 import Icons from "views/Icons.js";
-import Typography from "views/Typography.js";
-import TableList from "views/Tables.js";
+
 import UserPage from "views/User.js";
 import UsersTable from "views/usersTable.jsx";
 import Login from "views/login.jsx";
@@ -28,8 +27,16 @@ import Register from "views/register.jsx";
 import RecoverPassword from "views/RecoverPassword.jsx";
 import ConfirmAccount from "views/Confirm-Account.jsx";
 import CategoriesTables from "views/Categories-Table.jsx";
+import ScrumPage from "views/ScrumPage.jsx";
 
 var routes = [
+  {
+    path: "/scrum",
+    name: "Scrum",
+    icon: "nc-icon nc-paper",
+    component: <ScrumPage />,
+    layout: "/agile-up",
+  },
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -59,20 +66,7 @@ var routes = [
     layout: "/agile-up",
     hidden: true,
   },
-  {
-    path: "/tables",
-    name: "Table List",
-    icon: "nc-icon nc-tile-56",
-    component: <TableList />,
-    layout: "/agile-up",
-  },
-  {
-    path: "/typography",
-    name: "Typography",
-    icon: "nc-icon nc-caps-small",
-    component: <Typography />,
-    layout: "/agile-up",
-  },
+
   {
     path: "/users",
     name: "Users",
@@ -98,7 +92,6 @@ var routes = [
   {
     path: "/register",
     name: "Register",
-    icon: "nc-icon nc-single-02",
     component: <Register />,
     layout: "/auth",
   },
@@ -106,7 +99,6 @@ var routes = [
   {
     path: "/recover",
     name: "Recover Password",
-    icon: "nc-icon nc-single-02",
     component: <RecoverPassword />,
     layout: "/auth",
   },
@@ -114,8 +106,7 @@ var routes = [
   {
     path: "/user/:username",
     name: "User",
-    icon: "nc-icon nc-single-02",
-    component: <UserPage />, // replace <User /> with the component you want to render
+    component: <UserPage />,
     layout: "/agile-up",
     hidden: true,
   },
@@ -123,9 +114,10 @@ var routes = [
   {
     path: "/define-password/:mode/:token/",
     name: "Confirm Account",
-    icon: "nc-icon nc-single-02",
     component: <ConfirmAccount />,
     layout: "/auth",
   }
+
+  
 ];
 export default routes;
