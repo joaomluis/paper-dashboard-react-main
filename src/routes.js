@@ -17,7 +17,6 @@
 
 */
 import Dashboard from "views/Dashboard.js";
-import Notifications from "views/Notifications.js";
 import Icons from "views/Icons.js";
 
 import UserPage from "views/User.js";
@@ -27,6 +26,7 @@ import Register from "views/register.jsx";
 import RecoverPassword from "views/RecoverPassword.jsx";
 import ConfirmAccount from "views/Confirm-Account.jsx";
 import CategoriesTables from "views/Categories-Table.jsx";
+import InactiveTasksTable from "views/Inactive-Tasks-Table.jsx";
 import ScrumPage from "views/ScrumPage.jsx";
 
 var routes = [
@@ -52,13 +52,6 @@ var routes = [
     layout: "/agile-up",
   },
   {
-    path: "/notifications",
-    name: "Notifications",
-    icon: "nc-icon nc-bell-55",
-    component: <Notifications />,
-    layout: "/agile-up",
-  },
-  {
     path: "/user-page",
     name: "My Profile",
     icon: "nc-icon nc-single-02",
@@ -79,6 +72,13 @@ var routes = [
     name: "Categories",
     icon: "nc-icon nc-bullet-list-67",
     component: <CategoriesTables />,
+    layout: "/agile-up",
+  },
+  {
+    path: "/inactive-tasks",
+    name: "Inactive Tasks",
+    icon: "nc-icon nc-simple-remove",
+    component: <InactiveTasksTable />,
     layout: "/agile-up",
   },
   {

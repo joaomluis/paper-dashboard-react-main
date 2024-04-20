@@ -20,7 +20,8 @@ function SrumPage() {
   const getActiveTasks = useTasksStore((state) => state.getActiveTasks);
   const tasks = useTasksStore((state) => state.activeTasksdata);
   const updateTaskState = useTasksStore((state) => state.updateTaskState);
-  console.log(tasks);
+  
+  
   useEffect(() => {
     getActiveTasks();
   }, []);
@@ -114,7 +115,7 @@ function SrumPage() {
                       }}
                     >
                       <div>
-                        <h3 className="column-header">Doing</h3>
+                        <h3 className="column-header">Done</h3>
                         <hr />
                       </div>
                       <div className="column" id="column3">
@@ -132,9 +133,7 @@ function SrumPage() {
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats">
-                  <i className="fa fa-history" /> Updated 3 minutes ago
-                </div>
+                
               </CardFooter>
             </Card>
           </Col>

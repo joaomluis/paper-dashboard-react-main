@@ -1,6 +1,6 @@
 import useTasksStore from "../../store/useTasksStore";
 import useUserStore from "../../store/useUserStore";
-import { Card} from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { Row, Col } from "reactstrap";
 
 import "../../assets/css/general-css.css";
@@ -29,7 +29,6 @@ const Task = ({ task }) => {
 
   return (
     <Card
-    
       id={task.id}
       data-testid={`task-${task.id}`}
       item={task}
@@ -38,7 +37,6 @@ const Task = ({ task }) => {
       style={{ backgroundColor: backgroundColorTask, color: "black" }}
       onDragStart={(event) => {
         event.dataTransfer.setData("text/plain", task.id);
-        
       }}
     >
       <Card.Body>
@@ -67,7 +65,17 @@ const Task = ({ task }) => {
           <Col md="2">
             {(userType === "scrum_master" || userType === "product_owner") && (
               <div className="icon-container" style={{ cursor: "pointer" }}>
-                <FontAwesomeIcon icon={faTrash} size="lg" />
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  size="lg"
+                  onClick={() =>
+                    updateTaskActiveState(
+                      task.id,
+                      selectedUser,
+                      selectedCategory
+                    )
+                  }
+                />
               </div>
             )}
           </Col>
