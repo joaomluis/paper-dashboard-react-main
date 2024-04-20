@@ -40,3 +40,13 @@
   .to-do-column {
     margin-bottom: 0px;
   }
+
+  .card-container .icon-container {
+    visibility: hidden;
+  }
+  
+  .card-container:hover .icon-container {
+    visibility: visible;
+  }
+
+  
