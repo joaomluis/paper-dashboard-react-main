@@ -26,20 +26,17 @@ function CategoriesTable() {
   const [loading, setLoading] = useState(true);
 
   const allCategories = useCategoriesStore((state) => state.categories);
+  const fetchCategories = useCategoriesStore((state) => state.fetchCategories);
 
   const ws = CategoriesWebsocket();
-  const [lastMessage, setLastMessage] = useState(null);
 
-   
   useEffect(() => {
     if (ws.current) {
-      ws.current.onmessage = (e) => {
-        console.log(e.data);
-        console.log("someone updated the tasks");
-        setLastMessage(e.data); 
+      ws.current.onmessage = () => {
+        fetchCategories(); 
       };
     }
-  }, [ws]);
+  }, [ws, ws.current]);
 
   useEffect(() => {
     useCategoriesStore
