@@ -19,9 +19,8 @@ const useCategoriesWebSocket = () => {
     };
 
     ws.current.onmessage = (e) => {
-      // to do refresh tasks store 
-      console.log(e.data);
-      console.log("someone updated the categories");
+      
+      
     };
 
     return () => {

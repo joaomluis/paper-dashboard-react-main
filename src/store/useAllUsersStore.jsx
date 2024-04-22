@@ -46,12 +46,10 @@ const useAllUsersStore = create((set, get) => {
         toast.info(`${id} status set to inactive`, {
           position: "top-center",
           autoClose: 3000,
+          transition: Slide,
           hideProgressBar: true,
           theme: "colored",
         });
-
-        getActiveUsers();
-        //inactiveUsersStore.getState().getInactiveUsers();
       } else {
         const errorMessage = await response.text();
         toast.error(errorMessage, {
@@ -64,6 +62,82 @@ const useAllUsersStore = create((set, get) => {
       }
     } catch (error) {
       console.error("Error disabling user account:", error);
+    }
+  };
+
+  const restoreUser = async (id) => {
+    const token = useUserStore.getState().user.token;
+    let deleteCategoryRequest = `http://localhost:8080/project_backend/rest/users/restoreUser/${id}`;
+    try {
+      const response = await fetch(deleteCategoryRequest, {
+        method: "PUT",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          token: token,
+        },
+      });
+
+      if (response.ok) {
+        toast.info(`${id} status set to active`, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored",
+        });
+      } else {
+        const errorMessage = await response.text();
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error("Error restoring user:", error);
+    }
+  };
+
+  const deleteUserPerma = async (id) => {
+    const token = useUserStore.getState().user.token;
+    let deleteCategoryRequest = `http://localhost:8080/project_backend/rest/users/removeUser`;
+    try {
+      const response = await fetch(deleteCategoryRequest, {
+        method: "DELETE",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          token: token,
+          username: id,
+        },
+      });
+
+      if (response.ok) {
+        toast.info("User deleted permanently", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          theme: "colored",
+        });
+
+        return Promise.resolve({ success: true }); 
+      } else {
+        const errorMessage = await response.text();
+        toast.error(errorMessage, {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: true,
+          transition: Slide,
+          theme: "colored",
+        });
+
+        return Promise.resolve({ success: false });
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
     }
   };
 
@@ -514,6 +588,8 @@ const useAllUsersStore = create((set, get) => {
     getActiveUsers,
     getAllUsers,
     softDeleteUser,
+    restoreUser,
+    deleteUserPerma,
     updateOtherUserProfile,
     updatePassowrd,
     updateUserRole,

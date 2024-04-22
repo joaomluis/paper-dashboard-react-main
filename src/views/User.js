@@ -51,6 +51,7 @@ import "../assets/css/general-css.css";
 
 import useUserStore from "../store/useUserStore.jsx";
 import useAllUsersStore from "../store/useAllUsersStore.jsx";
+import useTasksStore from "../store/useTasksStore.jsx";
 
 import ChangePassword from "components/Modals/Change-password.jsx";
 import ChangeUserRole from "components/Modals/Change-user-role.jsx";
@@ -66,7 +67,7 @@ function User() {
   const [showChat, setShowChat] = useState(false);
 
   const [isOwner, setIsOwner] = useState(false); //verifica se o user é dono do perfil para poder editar ou não
-  const [showChangeRole, setShowChangeRole] = useState(false); // determines which button to show
+  const [showChangeRole, setShowChangeRole] = useState(false);
 
   const updateOtherUserProfile = useAllUsersStore(
     (state) => state.updateOtherUserProfile
@@ -195,13 +196,18 @@ function User() {
     }
   }
 
+  const softDeleteUser = useAllUsersStore((state) => state.softDeleteUser);
+  const restoreUser = useAllUsersStore((state) => state.restoreUser);
+  const permaDeleteUser = useAllUsersStore((state) => state.deleteUserPerma);
+  const deleteAllUserTasks = useTasksStore((state) => state.deleteTaskByUser);
+
   return (
     <>
       <div className="content">
         <ChangePassword ref={changePasswordRef} />
         <ChangeUserRole ref={changeUserRoleRef} />
         <ResendVerification ref={resendVerificationRef} />
-        
+
         <Row>
           <Col md="7"></Col>
           <Col md="5">
@@ -230,6 +236,7 @@ function User() {
                       color="primary"
                       title="Deactivate user"
                       size="sm"
+                      onClick={() => softDeleteUser(paramUsername)}
                     >
                       <FontAwesomeIcon
                         icon={faUserSlash}
@@ -244,6 +251,7 @@ function User() {
                       color="primary"
                       title="Reactivate user"
                       size="sm"
+                      onClick={() => restoreUser(paramUsername)}
                     >
                       <FontAwesomeIcon
                         icon={faArrowRotateLeft}
@@ -258,6 +266,11 @@ function User() {
                       color="danger"
                       title="Delete user"
                       size="sm"
+                      onClick={() =>
+                        permaDeleteUser(paramUsername).then(() =>
+                          window.location.replace("/agile-up/users")
+                        )
+                      }
                     >
                       <FontAwesomeIcon
                         icon={faTrashCan}
@@ -272,6 +285,7 @@ function User() {
                       color="primary"
                       title="Delete user tasks"
                       size="sm"
+                      onClick={() => deleteAllUserTasks(paramUsername)}
                     >
                       <FontAwesomeIcon
                         icon={faClipboardList}
