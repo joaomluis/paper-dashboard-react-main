@@ -15,6 +15,7 @@ import Spinner from "../components/Spinner/Spinner.jsx";
 import { textFilter } from "react-bootstrap-table2-filter";
 
 import "../assets/css/general-css.css";
+import CategoriesWebsocket from "../assets/websocket/categoriesWebsocket.js";
 
 import DynamicTable from "components/Dynamic Table/dynamic-table";
 import CreateCategory from "components/Modals/Create-category.jsx";
@@ -25,6 +26,20 @@ function CategoriesTable() {
   const [loading, setLoading] = useState(true);
 
   const allCategories = useCategoriesStore((state) => state.categories);
+
+  const ws = CategoriesWebsocket();
+  const [lastMessage, setLastMessage] = useState(null);
+
+   
+  useEffect(() => {
+    if (ws.current) {
+      ws.current.onmessage = (e) => {
+        console.log(e.data);
+        console.log("someone updated the tasks");
+        setLastMessage(e.data); 
+      };
+    }
+  }, [ws]);
 
   useEffect(() => {
     useCategoriesStore

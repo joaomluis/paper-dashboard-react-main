@@ -8,13 +8,14 @@ import {
   Col,
 } from "reactstrap";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 import useTasksStore from "../store/useTasksStore";
 
 import "../assets/css/general-css.css";
 import CreateTask from "../components/Modals/Create-task.jsx";
 import Task from "../components/Task/Task.jsx";
+import TaskWebsocket from "../assets/websocket/tasksWebsocket.js";
 
 function SrumPage() {
   const getActiveTasks = useTasksStore((state) => state.getActiveTasks);
@@ -22,12 +23,22 @@ function SrumPage() {
   const updateTaskState = useTasksStore((state) => state.updateTaskState);
   
   
-  useEffect(() => {
-    getActiveTasks();
-  }, []);
-
   const createTaskRef = useRef();
 
+
+  const ws = TaskWebsocket();
+
+  
+  useEffect(() => {
+    if (ws.current) {
+      ws.current.onmessage = () => {
+        getActiveTasks(); 
+      };
+    }
+  }, [ws, ws.current]);
+  
+
+  
   return (
     <>
       <div className="content">

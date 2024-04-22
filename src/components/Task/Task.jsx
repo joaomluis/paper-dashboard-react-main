@@ -30,7 +30,7 @@ const Task = ({ task }) => {
   return (
     <Card
       id={task.id}
-      data-testid={`task-${task.id}`}
+      
       item={task}
       className="card-container"
       draggable="true"
