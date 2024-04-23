@@ -342,6 +342,35 @@ const useTasksStore = create((set) => {
     }
   };
 
+  const getTasksStatistics = async (username) => {
+
+    const token = useUserStore.getState().user.token;
+
+    let url = `http://localhost:8080/project_backend/rest/tasks/statistics`;
+
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          token: token,
+          username: username,
+        },
+      });
+
+      if (response.ok) {
+        const statistics = await response.json();
+        return statistics;
+      } else {
+        const errorMessage = await response.text();
+        console.error(errorMessage);
+      }
+    } catch (error) {
+      console.error("Fetch Error:", error);
+      return null;
+    }
+  };
+
   return {
     ...initialState,
     activeTasksdata: [],
@@ -354,6 +383,7 @@ const useTasksStore = create((set) => {
     updateTaskActiveState,
     updateTask,
     deleteTaskByUser,
+    getTasksStatistics,
     setData: (data) => set((state) => ({ data })),
     selectedCategory: "",
     selectedUser: "",

@@ -201,6 +201,17 @@ function User() {
   const permaDeleteUser = useAllUsersStore((state) => state.deleteUserPerma);
   const deleteAllUserTasks = useTasksStore((state) => state.deleteTaskByUser);
 
+  const taskStatistics = useTasksStore((state) => state.getTasksStatistics);
+  const [statistics, setStatistics] = useState(null);
+
+  useEffect(() => {
+    taskStatistics(paramUsername).then(data => {
+      setStatistics(data);
+    });
+  }, []);
+
+  console.log(statistics);
+
   return (
     <>
       <div className="content">
@@ -334,23 +345,25 @@ function User() {
                 <hr />
                 <div className="button-container">
                   <Row>
-                    <Col className="ml-auto" lg="3" md="6" xs="6">
-                      <h5>
-                        12 <br />
-                        <small>Files</small>
-                      </h5>
+                    <Col className="ml-auto" md="3">
+                      <p>
+                        Total tasks: {statistics ? statistics.numberOfTasks : 0}
+                      </p>
                     </Col>
-                    <Col className="ml-auto mr-auto" lg="4" md="6" xs="6">
-                      <h5>
-                        2GB <br />
-                        <small>Used</small>
-                      </h5>
+                    <Col className="ml-auto" md="3">
+                      <p>
+                        To do tasks: {statistics ? statistics.numberOfToDoTasks : 0}
+                      </p>
                     </Col>
-                    <Col className="mr-auto" lg="3">
-                      <h5>
-                        24,6$ <br />
-                        <small>Spent</small>
-                      </h5>
+                    <Col className="ml-auto" md="3">
+                      <p>
+                        Doing tasks: {statistics ? statistics.numberOfDoingTasks : 0}
+                      </p>
+                    </Col>
+                    <Col className="ml-auto" md="3">
+                      <p>
+                        Done tasks: {statistics ? statistics.numberOfDoneTasks : 0}
+                      </p>
                     </Col>
                   </Row>
                 </div>
