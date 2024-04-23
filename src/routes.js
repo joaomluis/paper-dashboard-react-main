@@ -17,7 +17,6 @@
 
 */
 import Dashboard from "views/Dashboard.js";
-import Icons from "views/Icons.js";
 
 import UserPage from "views/User.js";
 import UsersTable from "views/usersTable.jsx";
@@ -42,13 +41,6 @@ var routes = [
     name: "Dashboard",
     icon: "nc-icon nc-bank",
     component: <Dashboard />,
-    layout: "/agile-up",
-  },
-  {
-    path: "/icons",
-    name: "Icons",
-    icon: "nc-icon nc-diamond",
-    component: <Icons />,
     layout: "/agile-up",
   },
   {
