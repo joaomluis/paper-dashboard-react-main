@@ -37,24 +37,31 @@ import {
 
 import useDashboardStore from "../store/useDashboardStore.jsx";
 
-import PieChartExample from "../components/Charts/Users-Info-PieChart.jsx";
+import UsersPieChart from "../components/Charts/Users-Info-PieChart.jsx";
+import TasksBarChart from "../components/Charts/Tasks-Count-BarChart.jsx";
 
 function Dashboard() {
-
   const usersData = useDashboardStore((state) => state.usersData);
   const getUsersData = useDashboardStore((state) => state.fetchUsersData);
 
-  
+  const tasksData = useDashboardStore((state) => state.tasksData);
+  const getTasksData = useDashboardStore((state) => state.fetchTasksData);
+
   useEffect(() => {
     getUsersData();
+    getTasksData();
   }, []);
 
   const usersDataForChart = [
-    { name: 'Active Users', value: usersData.activeUsers },
-    { name: 'Inactive Users', value: usersData.inactiveUsers },
-    
+    { name: "Active Users", value: usersData.activeUsers },
+    { name: "Inactive Users", value: usersData.inactiveUsers },
   ];
 
+  const tasksDataForChart = [
+    { name: "To Do Tasks", count: tasksData.toDoTasksQuantity },
+    { name: "Doing Tasks", count: tasksData.doingTasksQuantity },
+    { name: "Done Tasks", count: tasksData.doneTasksQuantity },
+  ];
 
   return (
     <>
@@ -196,42 +203,36 @@ function Dashboard() {
                 <CardTitle tag="h5">Users statistics</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
-                <PieChartExample data={usersDataForChart} />
+                <UsersPieChart data={usersDataForChart} />
               </CardBody>
               <CardFooter>
                 <div className="legend">
-                  <i className="fa fa-circle" style={{color: '#0088FE'}} /> Active Users{" "}
-                  <i className="fa fa-circle" style={{color: '#FFBB28'}}/> Inactive Users{" "}
+                  <i className="fa fa-circle" style={{ color: "#0088FE" }} />{" "}
+                  Active Users{" "}
+                  <i className="fa fa-circle" style={{ color: "#FFBB28" }} />{" "}
+                  Inactive Users{" "}
                 </div>
                 <hr />
                 <div className="stats">
-                  <i className="fa fa-users" /> Total number of users : {usersData.totalUsers}
+                  <i className="fa fa-users" /> Total number of users :{" "}
+                  {usersData.totalUsers}
                 </div>
               </CardFooter>
             </Card>
           </Col>
           <Col md="8">
-            <Card className="card-chart">
+            <Card>
               <CardHeader>
-                <CardTitle tag="h5">NASDAQ: AAPL</CardTitle>
-                <p className="card-category">Line Chart with Points</p>
+                <CardTitle tag="h5">Tasks statistics</CardTitle>
               </CardHeader>
-              <CardBody>
-                <Line
-                  data={dashboardNASDAQChart.data}
-                  options={dashboardNASDAQChart.options}
-                  width={400}
-                  height={100}
-                />
+              <CardBody style={{ height: "266px" }}>
+                <TasksBarChart data={tasksDataForChart} />
               </CardBody>
               <CardFooter>
-                <div className="chart-legend">
-                  <i className="fa fa-circle text-info" /> Tesla Model S{" "}
-                  <i className="fa fa-circle text-warning" /> BMW 5 Series
-                </div>
                 <hr />
-                <div className="card-stats">
-                  <i className="fa fa-check" /> Data information certified
+                <div className="stats">
+                  <i className="fa fa-tasks" /> Total number of tasks :{" "}
+                  {tasksData.totalTasks}
                 </div>
               </CardFooter>
             </Card>

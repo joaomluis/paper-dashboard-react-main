@@ -36,13 +36,45 @@ const useDashboardStore = create((set, get) => {
   }
   
 
+  const fetchTasksData = async () => {
+    const tasksDataRequest = "http://localhost:8080/project_backend/rest/dashboard/tasks-stats";
+    const token = useUserStore.getState().token;
+
+    try {
+      const response = await fetch(tasksDataRequest, {
+        method: "GET",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          token: token
+        }
+      });
+
+      if (response.ok) {
+        const tasksData = await response.json();
+
+        set(() => ({ tasksData: tasksData }));
+        
+        
+      } else {
+        const errorMessage = await response.text();
+
+        console.error('Failed to fetch tasks data', errorMessage);
+      }
+    } catch (error) {
+      console.error('Failed to fetch tasks data', error);
+    }
+  }
 
   
 
   return {
     usersData: [],
+    tasksData: [],
     setUsersData: (usersData) => set(state => ({ usersData })),
+    setTasksData: (tasksData) => set(state => ({ tasksData })),
     fetchUsersData,
+    fetchTasksData,
     
   };
 });
