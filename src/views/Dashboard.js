@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useEffect } from "react";
 // react plugin used to create charts
 import { Line, Pie } from "react-chartjs-2";
 // reactstrap components
@@ -32,11 +32,30 @@ import {
 // core components
 import {
   dashboard24HoursPerformanceChart,
-  dashboardEmailStatisticsChart,
   dashboardNASDAQChart,
 } from "variables/charts.js";
 
+import useDashboardStore from "../store/useDashboardStore.jsx";
+
+import PieChartExample from "../components/Charts/Users-Info-PieChart.jsx";
+
 function Dashboard() {
+
+  const usersData = useDashboardStore((state) => state.usersData);
+  const getUsersData = useDashboardStore((state) => state.fetchUsersData);
+
+  
+  useEffect(() => {
+    getUsersData();
+  }, []);
+
+  const usersDataForChart = [
+    { name: 'Active Users', value: usersData.activeUsers },
+    { name: 'Inactive Users', value: usersData.inactiveUsers },
+    
+  ];
+
+
   return (
     <>
       <div className="content">
@@ -174,25 +193,19 @@ function Dashboard() {
           <Col md="4">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Email Statistics</CardTitle>
-                <p className="card-category">Last Campaign Performance</p>
+                <CardTitle tag="h5">Users statistics</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
-                <Pie
-                  data={dashboardEmailStatisticsChart.data}
-                  options={dashboardEmailStatisticsChart.options}
-                />
+                <PieChartExample data={usersDataForChart} />
               </CardBody>
               <CardFooter>
                 <div className="legend">
-                  <i className="fa fa-circle text-primary" /> Opened{" "}
-                  <i className="fa fa-circle text-warning" /> Read{" "}
-                  <i className="fa fa-circle text-danger" /> Deleted{" "}
-                  <i className="fa fa-circle text-gray" /> Unopened
+                  <i className="fa fa-circle" style={{color: '#0088FE'}} /> Active Users{" "}
+                  <i className="fa fa-circle" style={{color: '#FFBB28'}}/> Inactive Users{" "}
                 </div>
                 <hr />
                 <div className="stats">
-                  <i className="fa fa-calendar" /> Number of emails sent
+                  <i className="fa fa-users" /> Total number of users : {usersData.totalUsers}
                 </div>
               </CardFooter>
             </Card>

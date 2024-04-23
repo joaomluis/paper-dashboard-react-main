@@ -205,7 +205,8 @@ function User() {
   const [statistics, setStatistics] = useState(null);
 
   useEffect(() => {
-    taskStatistics(paramUsername).then(data => {
+    const username = paramUsername || usernameFromStore;
+    taskStatistics(username).then(data => {
       setStatistics(data);
     });
   }, []);
