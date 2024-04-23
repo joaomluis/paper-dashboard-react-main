@@ -17,6 +17,8 @@ import { useNavigate } from "react-router-dom";
 
 import "../assets/css/general-css.css";
 
+import UsersWebsocket from "../assets/websocket/usersWebsocket.js";
+
 import DynamicTable from "components/Dynamic Table/dynamic-table";
 import CreateUser from "components/Modals/Create-user.jsx";
 
@@ -28,6 +30,7 @@ function UsersTable() {
 
   
   const allUsers = useAllUsersStore((state) => state.allUsers);
+  const getAllUsers = useAllUsersStore((state) => state.getAllUsers);
 
   useEffect(() => {
     useAllUsersStore
@@ -38,6 +41,16 @@ function UsersTable() {
         setLoading(false);
       });
   }, []);
+
+  const ws = UsersWebsocket();
+
+  useEffect(() => {
+    if (ws.current) {
+      ws.current.onmessage = () => {
+        getAllUsers(); 
+      };
+    }
+  }, [ws, ws.current]);
 
   const columns = [
     {

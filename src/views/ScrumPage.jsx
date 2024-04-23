@@ -28,6 +28,9 @@ function SrumPage() {
 
   const ws = TaskWebsocket();
 
+  useEffect(() => {
+    getActiveTasks();
+  }, []);
   
   useEffect(() => {
     if (ws.current) {
