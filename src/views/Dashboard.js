@@ -58,9 +58,9 @@ function Dashboard() {
   ];
 
   const tasksDataForChart = [
-    { name: "To Do Tasks", count: tasksData.toDoTasksQuantity },
-    { name: "Doing Tasks", count: tasksData.doingTasksQuantity },
-    { name: "Done Tasks", count: tasksData.doneTasksQuantity },
+    { name: "To Do", count: tasksData.toDoTasksQuantity },
+    { name: "Doing", count: tasksData.doingTasksQuantity },
+    { name: "Done", count: tasksData.doneTasksQuantity },
   ];
 
   return (
@@ -197,6 +197,100 @@ function Dashboard() {
           </Col>
         </Row>
         <Row>
+          <Col lg="3" md="6" sm="6">
+            <Card className="card-stats">
+              <CardBody>
+                <Row>
+                  <Col md="4" xs="5">
+                    <div className="icon-big text-center icon-warning">
+                      <i className="fa fa-tasks text-success" />
+                    </div>
+                  </Col>
+                  <Col md="8" xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Number of tasks</p>
+                      <CardTitle tag="p">{tasksData.totalTasks}</CardTitle>
+                      <p />
+                    </div>
+                  </Col>
+                </Row>
+              </CardBody>
+              <CardFooter>
+                <hr />
+              </CardFooter>
+            </Card>
+          </Col>
+          <Col lg="3" md="6" sm="6">
+            <Card className="card-stats">
+              <CardBody>
+                <Row>
+                  <Col md="4" xs="5">
+                    <div className="icon-big text-center icon-warning">
+                      <i className="fa fa-users text-danger" />
+                    </div>
+                  </Col>
+                  <Col md="8" xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Number of users</p>
+                      <CardTitle tag="p">{usersData.totalUsers}</CardTitle>
+                      <p />
+                    </div>
+                  </Col>
+                </Row>
+              </CardBody>
+              <CardFooter>
+                <hr />
+              </CardFooter>
+            </Card>
+          </Col>
+          <Col lg="3" md="6" sm="6">
+            <Card className="card-stats">
+              <CardBody>
+                <Row>
+                  <Col md="4" xs="5">
+                    <div className="icon-big text-center icon-warning">
+                      <i className="fas fa-user-clock text-warning" />
+                    </div>
+                  </Col>
+                  <Col md="8" xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Average tasks per user</p>
+                      <CardTitle tag="p">{tasksData.avgTaskPerUser}</CardTitle>
+                      <p />
+                    </div>
+                  </Col>
+                </Row>
+              </CardBody>
+              <CardFooter>
+                <hr />
+              </CardFooter>
+            </Card>
+          </Col>
+          <Col lg="3" md="6" sm="6">
+            <Card className="card-stats">
+              <CardBody>
+                <Row>
+                  <Col md="4" xs="5">
+                    <div className="icon-big text-center icon-warning">
+                    <i className="fas fa-hourglass-half text-primary" />
+                    </div>
+                  </Col>
+                  <Col md="8" xs="7">
+                    <div className="numbers">
+                      <p className="card-category">Time to finish task</p>
+                      <CardTitle tag="p">+placeholder</CardTitle>
+                      <p />
+                    </div>
+                  </Col>
+                </Row>
+              </CardBody>
+              <CardFooter>
+                <hr />
+              </CardFooter>
+            </Card>
+          </Col>
+        </Row>
+        <Row>
           <Col md="4">
             <Card>
               <CardHeader>
@@ -213,10 +307,6 @@ function Dashboard() {
                   Inactive Users{" "}
                 </div>
                 <hr />
-                <div className="stats">
-                  <i className="fa fa-users" /> Total number of users :{" "}
-                  {usersData.totalUsers}
-                </div>
               </CardFooter>
             </Card>
           </Col>
@@ -230,14 +320,11 @@ function Dashboard() {
               </CardBody>
               <CardFooter>
                 <hr />
-                <div className="stats">
-                  <i className="fa fa-tasks" /> Total number of tasks :{" "}
-                  {tasksData.totalTasks}
-                </div>
               </CardFooter>
             </Card>
           </Col>
         </Row>
+        
       </div>
     </>
   );
