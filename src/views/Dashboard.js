@@ -40,6 +40,7 @@ import useDashboardStore from "../store/useDashboardStore.jsx";
 import UsersPieChart from "../components/Charts/Users-Info-PieChart.jsx";
 import TasksBarChart from "../components/Charts/Tasks-Count-BarChart.jsx";
 import UsersRegistrationChart from "../components/Charts/Users-Registration-LineChart.jsx";
+import CategoryUsageChart from "../components/Charts/Category-Usage-BarChart.jsx";
 
 function Dashboard() {
   const usersData = useDashboardStore((state) => state.usersData);
@@ -63,6 +64,13 @@ function Dashboard() {
     { name: "Doing", count: tasksData.doingTasksQuantity },
     { name: "Done", count: tasksData.doneTasksQuantity },
   ];
+
+  const categoryUsageData = tasksData.categoryUsage 
+  ? tasksData.categoryUsage.map(item => ({
+      name: item.title,
+      count: item.count
+    }))
+  : [];
 
   return (
     <>
@@ -149,7 +157,7 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Average tasks per user</p>
+                      <p className="card-category">Tasks per user</p>
                       <CardTitle tag="p">{tasksData.avgTaskPerUser}</CardTitle>
                       <p />
                     </div>
@@ -221,13 +229,13 @@ function Dashboard() {
         </Row>
 
         <Row>
-          <Col md="8">
+          <Col md="12">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Users registration data</CardTitle>
+                <CardTitle tag="h5">Category Usage</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
-                <UsersRegistrationChart />
+                <CategoryUsageChart data={categoryUsageData} />
               </CardBody>
               <CardFooter>
                 <hr />
