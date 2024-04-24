@@ -72,6 +72,14 @@ function Dashboard() {
     }))
   : [];
 
+  const usersRegistrationData = usersData.userRegistration 
+  ? usersData.userRegistration.map(item => ({
+      date: item.registrationDate,
+      count: item.count
+    }))
+  : [];
+
+  
   return (
     <>
       <div className="content">
@@ -180,8 +188,8 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Time to finish task</p>
-                      <CardTitle tag="p">+placeholder</CardTitle>
+                      <p className="card-category">Avg Completion Time</p>
+                      <CardTitle tag="p">{tasksData.avgCompletionTime} Days</CardTitle>
                       <p />
                     </div>
                   </Col>
@@ -197,7 +205,7 @@ function Dashboard() {
           <Col md="4">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Users statistics</CardTitle>
+                <CardTitle tag="h5">Users Statistics</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <UsersPieChart data={usersDataForChart} />
@@ -216,7 +224,7 @@ function Dashboard() {
           <Col md="8">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Tasks statistics</CardTitle>
+                <CardTitle tag="h5">Tasks Statistics</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <TasksBarChart data={tasksDataForChart} />
@@ -229,13 +237,26 @@ function Dashboard() {
         </Row>
 
         <Row>
-          <Col md="12">
+          <Col md="6">
             <Card>
               <CardHeader>
                 <CardTitle tag="h5">Category Usage</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <CategoryUsageChart data={categoryUsageData} />
+              </CardBody>
+              <CardFooter>
+                <hr />
+              </CardFooter>
+            </Card>
+          </Col>
+          <Col md="6">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h5">Users Registration Timeline</CardTitle>
+              </CardHeader>
+              <CardBody style={{ height: "266px" }}>
+                <UsersRegistrationChart data={usersRegistrationData}/>
               </CardBody>
               <CardFooter>
                 <hr />

@@ -35,7 +35,7 @@ export default class Example extends PureComponent {
           <YAxis allowDecimals={false} />
           <Tooltip />
 
-          <Bar dataKey="count" barSize={200}>
+          <Bar dataKey="count" barSize={120}>
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
