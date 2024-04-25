@@ -117,6 +117,8 @@ const useTasksStore = create((set) => {
         });
 
         getActiveTasks(selectedUser, selectedCategory);
+
+        return Promise.resolve({success: true});
       } else {
         const error = await response.text();
         console.error("Failed to create task:", error);
@@ -129,6 +131,8 @@ const useTasksStore = create((set) => {
           transition: Slide,
           theme: "colored",
         });
+
+         return Promise.resolve({success: false});
       }
     } catch (error) {
       console.error("Error creating task:", error);
@@ -139,7 +143,6 @@ const useTasksStore = create((set) => {
     taskId,
     idCategory,
     taskToUpdate,
-    setShowModal,
     selectedUser,
     selectedCategory
   ) => {
@@ -168,8 +171,9 @@ const useTasksStore = create((set) => {
           transition: Slide,
           theme: "colored",
         });
-        setShowModal();
         getActiveTasks(selectedUser, selectedCategory);
+
+         return Promise.resolve({success: true});
       } else {
         const errorMessage = await response.text();
         toast.error(errorMessage, {
@@ -180,6 +184,8 @@ const useTasksStore = create((set) => {
           transition: Slide,
           theme: "colored",
         });
+
+         return Promise.resolve({success: false});
       }
     } catch (error) {
       console.error("Error updating task:", error);

@@ -11,6 +11,7 @@ import {
 import { useRef, useEffect, useState } from "react";
 
 import useTasksStore from "../store/useTasksStore";
+import useCategoriesStore from "../store/useCategoriesStore";
 
 import "../assets/css/general-css.css";
 import CreateTask from "../components/Modals/Create-task.jsx";
@@ -21,6 +22,7 @@ function SrumPage() {
   const getActiveTasks = useTasksStore((state) => state.getActiveTasks);
   const tasks = useTasksStore((state) => state.activeTasksdata);
   const updateTaskState = useTasksStore((state) => state.updateTaskState);
+  const fetchCategories = useCategoriesStore((state) => state.fetchCategories);
   
   
   const createTaskRef = useRef();
@@ -30,6 +32,7 @@ function SrumPage() {
 
   useEffect(() => {
     getActiveTasks();
+    fetchCategories();
   }, []);
   
   useEffect(() => {

@@ -21,7 +21,28 @@ import useCategoriesStore from "../../store/useCategoriesStore";
 import useTasksStore from "../../store/useTasksStore";
 
 const CreateTask = forwardRef((props, ref) => {
+  const { task } = props;
+
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (show && task) {
+      setTitleValue(task.title);
+      setDescriptionValue(task.description);
+      setInitialDateValue(task.initialDate);
+      setEndDateValue(task.endDate);
+      setSelectedOption(task.priority);
+      setCategoryValue(task.category.idCategory);
+    } else {
+      setTitleValue("");
+      setDescriptionValue("");
+      setInitialDateValue("");
+      setEndDateValue("");
+      setSelectedOption(100);
+    }
+  }, [show, task]);
+
+  const modalTitle = task ? "Edit Task" : "Create Task";
 
   const handleClose = () => {
     setTitleValue("");
@@ -52,23 +73,37 @@ const CreateTask = forwardRef((props, ref) => {
   };
 
   const createTask = useTasksStore((state) => state.createTask);
+  const updateTask = useTasksStore((state) => state.updateTask);
 
   const handleSubmit = () => {
-    createTask({
-      title: titleValue,
-      description: descriptionValue,
-      initialDate: initialDateValue,
-      endDate: endDateValue,
-      priority: selectedOption,
-    }, categoryValue);
-    handleClose();
+    if (!task) {
+      createTask(
+        {
+          title: titleValue,
+          description: descriptionValue,
+          initialDate: initialDateValue,
+          endDate: endDateValue,
+          priority: selectedOption,
+        },
+        categoryValue
+      ).then(() => {
+        handleClose();
+      });
+    } else {
+      updateTask(task.id, categoryValue, {
+        title: titleValue,
+        description: descriptionValue,
+        initialDate: initialDateValue,
+        endDate: endDateValue,
+        priority: selectedOption,
+        state: task.state,
+      }).then(() => {
+        handleClose();
+      });
+    }
   };
 
   const categories = useCategoriesStore((state) => state.categories);
-  const fetchCategories = useCategoriesStore((state) => state.fetchCategories);
-  useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
 
   return (
     <>
@@ -79,7 +114,7 @@ const CreateTask = forwardRef((props, ref) => {
         centered
       >
         <Modal.Header>
-          <Modal.Title>Create Task</Modal.Title>
+          <Modal.Title>{modalTitle}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -219,7 +254,10 @@ const CreateTask = forwardRef((props, ref) => {
                         Select a category
                       </option>
                       {categories.map((category) => (
-                        <option key={category.idCategory} value={category.idCategory}>
+                        <option
+                          key={category.idCategory}
+                          value={category.idCategory}
+                        >
                           {category.title}
                         </option>
                       ))}
@@ -234,7 +272,9 @@ const CreateTask = forwardRef((props, ref) => {
           <Button color="danger" onClick={handleClose}>
             Close
           </Button>
-          <Button color="primary" onClick={handleSubmit}>Create Task</Button>
+          <Button color="primary" onClick={handleSubmit}>
+            {modalTitle}
+          </Button>
         </Modal.Footer>
       </Modal>
     </>

@@ -211,7 +211,6 @@ function User() {
     });
   }, []);
 
-  console.log(statistics);
 
   return (
     <>
