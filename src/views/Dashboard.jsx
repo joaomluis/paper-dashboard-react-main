@@ -30,6 +30,7 @@ import {
 } from "reactstrap";
 
 import useDashboardStore from "../store/useDashboardStore.jsx";
+import DashboardWebsocket from "../assets/websocket/dashboardWebsocket.js";
 
 import UsersPieChart from "../components/Charts/Users-Info-PieChart.jsx";
 import TasksBarChart from "../components/Charts/Tasks-Count-BarChart.jsx";
@@ -38,6 +39,25 @@ import CategoryUsageChart from "../components/Charts/Category-Usage-BarChart.jsx
 import TaskCompletionChart from "../components/Charts/Task-Completion-LineChart.jsx";
 
 function Dashboard() {
+
+  //websocket
+  const ws = DashboardWebsocket();
+
+  useEffect(() => {
+    if (ws.current) {
+      ws.current.onmessage = (event) => {
+        const message = event.data;
+
+      if (message === 'New tasks info detected') {
+        getTasksData();
+      } else if (message === 'New users info detected') {
+        getUsersData();
+      }
+    };
+    }
+  }, [ws, ws.current]);
+
+  //data for the charts
   const usersData = useDashboardStore((state) => state.usersData);
   const getUsersData = useDashboardStore((state) => state.fetchUsersData);
 
@@ -80,8 +100,6 @@ function Dashboard() {
         count: item.count,
       }))
     : [];
-
-  console.log(tasksCompletionData);
 
   return (
     <>
