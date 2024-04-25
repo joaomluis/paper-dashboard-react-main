@@ -23,77 +23,87 @@ function Chat() {
   const myUsername = useUserStore((state) => state.username);
   const websocketToken = myUsername + "-" + username;
 
-  const [timer, setTimer] = React.useState(Date.now()); // Add this line
-
-  
+  const [timer, setTimer] = React.useState(Date.now());
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setTimer(Date.now()); // This will cause a re-render every 60 seconds
+      setTimer(Date.now());
     }, 60000);
 
     return () => {
-      clearInterval(interval); // Clean up on component unmount
+      clearInterval(interval);
     };
   }, []);
 
   const ws = React.useRef(null);
 
-  
   React.useEffect(() => {
-
     let shouldReconnect = true;
 
     const connect = () => {
       ws.current = new WebSocket(
         `ws://localhost:8080/project_backend/websocket/notifier/${websocketToken}`
       );
-  
+
       ws.current.onopen = () => {
         console.log("ws opened");
       };
-  
+
       ws.current.onclose = (event) => {
         console.log("ws closed");
         if (!event.wasClean && shouldReconnect) {
           setTimeout(connect, 3000);
         }
       };
-  
+
       ws.current.onerror = (error) => {
         console.log("ws error", error);
       };
-  
+
       ws.current.onmessage = (e) => {
-        try {
-          const message = JSON.parse(e.data);
-          const [year, month, day, hour, minute, second, nanosecond] =
-            message.sentTimestamp;
-          message.sentTimestamp = new Date(
-            Date(
-              year,
-              month - 1,
-              day,
-              hour,
-              minute,
-              second,
-              nanosecond / 1000000
+        const message = e.data;
+
+        if (
+          message ===
+          "The recipient has opened their chat. Your messages are now marked as read."
+        ) {
+          setMessages((prevMessages) =>
+            prevMessages.map((m) =>
+              m.sender === myUsername ? { ...m, status: "read", read: true } : m
             )
           );
-          setMessages((prevMessages) => [...prevMessages, message]);
-        } catch (error) {
-          console.error("Error parsing message:", e.data);
-          console.error(error);
+        } else {
+          try {
+            const parsedMessage = JSON.parse(message);
+
+            const [year, month, day, hour, minute, second, nanosecond] =
+              parsedMessage.sentTimestamp;
+            parsedMessage.sentTimestamp = new Date(
+              Date(
+                year,
+                month - 1,
+                day,
+                hour,
+                minute,
+                second,
+                nanosecond / 1000000
+              )
+            );
+
+            setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+          } catch (error) {
+            console.error("Error parsing message:", message);
+          }
         }
       };
-  
+
       getMessagesBetweenTwoUsers(username, myUsername).then((messages) => {
         setMessages(messages);
       });
     };
-  
+
     connect();
-  
+
     return () => {
       if (ws.current) {
         shouldReconnect = false;
@@ -169,13 +179,18 @@ function Chat() {
                 onMouseLeave={() => setIsChatHovered(false)}
               >
                 {messages.map((message) => (
-                  
                   <ChatMessage
                     key={message.id}
                     sender={message.sender}
                     position={message.sender === myUsername ? "right" : "left"}
                     text={message.content}
-                    status={message.sender === myUsername ? (message.read ? "read" : "sent") : undefined}
+                    status={
+                      message.sender === myUsername
+                        ? message.read
+                          ? "read"
+                          : "sent"
+                        : undefined
+                    }
                     sentTimestamp={message.sentTimestamp}
                   />
                 ))}
