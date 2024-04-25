@@ -17,8 +17,7 @@
 
 */
 import React, { useEffect } from "react";
-// react plugin used to create charts
-import { Line, Pie } from "react-chartjs-2";
+
 // reactstrap components
 import {
   Card,
@@ -29,11 +28,6 @@ import {
   Row,
   Col,
 } from "reactstrap";
-// core components
-import {
-  dashboard24HoursPerformanceChart,
-  dashboardNASDAQChart,
-} from "variables/charts.js";
 
 import useDashboardStore from "../store/useDashboardStore.jsx";
 
@@ -41,6 +35,7 @@ import UsersPieChart from "../components/Charts/Users-Info-PieChart.jsx";
 import TasksBarChart from "../components/Charts/Tasks-Count-BarChart.jsx";
 import UsersRegistrationChart from "../components/Charts/Users-Registration-LineChart.jsx";
 import CategoryUsageChart from "../components/Charts/Category-Usage-BarChart.jsx";
+import TaskCompletionChart from "../components/Charts/Task-Completion-LineChart.jsx";
 
 function Dashboard() {
   const usersData = useDashboardStore((state) => state.usersData);
@@ -65,48 +60,32 @@ function Dashboard() {
     { name: "Done", count: tasksData.doneTasksQuantity },
   ];
 
-  const categoryUsageData = tasksData.categoryUsage 
-  ? tasksData.categoryUsage.map(item => ({
-      name: item.title,
-      count: item.count
-    }))
-  : [];
+  const categoryUsageData = tasksData.categoryUsage
+    ? tasksData.categoryUsage.map((item) => ({
+        name: item.title,
+        count: item.count,
+      }))
+    : [];
 
-  const usersRegistrationData = usersData.userRegistration 
-  ? usersData.userRegistration.map(item => ({
-      date: item.registrationDate,
-      count: item.count
-    }))
-  : [];
+  const usersRegistrationData = usersData.userRegistration
+    ? usersData.userRegistration.map((item) => ({
+        date: item.registrationDate,
+        count: item.count,
+      }))
+    : [];
 
-  
+  const tasksCompletionData = tasksData.tasksDateCompletion
+    ? tasksData.tasksDateCompletion.map((item) => ({
+        date: item.completionDate,
+        count: item.count,
+      }))
+    : [];
+
+  console.log(tasksCompletionData);
+
   return (
     <>
       <div className="content">
-        <Row>
-          <Col md="12">
-            <Card>
-              <CardHeader>
-                <CardTitle tag="h5">Users Behavior</CardTitle>
-                <p className="card-category">24 Hours performance</p>
-              </CardHeader>
-              <CardBody>
-                <Line
-                  data={dashboard24HoursPerformanceChart.data}
-                  options={dashboard24HoursPerformanceChart.options}
-                  width={400}
-                  height={100}
-                />
-              </CardBody>
-              <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="fa fa-history" /> Updated 3 minutes ago
-                </div>
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
         <Row>
           <Col lg="3" md="6" sm="6">
             <Card className="card-stats">
@@ -166,7 +145,11 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Tasks per user</p>
-                      <CardTitle tag="p">{tasksData.avgTaskPerUser}</CardTitle>
+                      <CardTitle tag="p">
+                        {tasksData.avgTaskPerUser % 1 !== 0
+                          ? parseFloat(tasksData.avgTaskPerUser).toFixed(1)
+                          : Math.floor(tasksData.avgTaskPerUser)}
+                      </CardTitle>
                       <p />
                     </div>
                   </Col>
@@ -189,7 +172,12 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Avg Completion Time</p>
-                      <CardTitle tag="p">{tasksData.avgCompletionTime} Days</CardTitle>
+                      <CardTitle tag="p">
+                        {tasksData.avgCompletionTime % 1 !== 0
+                          ? parseFloat(tasksData.avgCompletionTime).toFixed(1)
+                          : Math.floor(tasksData.avgCompletionTime)}{" "}
+                        Days
+                      </CardTitle>
                       <p />
                     </div>
                   </Col>
@@ -201,6 +189,7 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
+
         <Row>
           <Col md="4">
             <Card>
@@ -256,7 +245,23 @@ function Dashboard() {
                 <CardTitle tag="h5">Users Registration Timeline</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
-                <UsersRegistrationChart data={usersRegistrationData}/>
+                <UsersRegistrationChart data={usersRegistrationData} />
+              </CardBody>
+              <CardFooter>
+                <hr />
+              </CardFooter>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md="12">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h5">Tasks Completion Date</CardTitle>
+              </CardHeader>
+              <CardBody style={{ height: "266px" }}>
+                <TaskCompletionChart data={tasksCompletionData} />
               </CardBody>
               <CardFooter>
                 <hr />
