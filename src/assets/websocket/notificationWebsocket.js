@@ -1,10 +1,10 @@
 import { useRef, useEffect } from 'react';
 
-const useNotificationsWebSocket = (isLoggedIn) => {
+const useNotificationsWebSocket = () => {
   const ws = useRef(null);
 
-  useEffect(() => {
-    if (isLoggedIn) {
+  const connect = (isLoggedIn) => {
+    if (isLoggedIn && ws.current === null) {
       ws.current = new WebSocket(`ws://localhost:8080/project_backend/websocket/notification`);
 
       ws.current.onopen = () => {
@@ -23,15 +23,17 @@ const useNotificationsWebSocket = (isLoggedIn) => {
         // handle incoming messages
       };
     }
+  }
 
+  useEffect(() => {
     return () => {
       if (ws.current) {
         ws.current.close();
       }
     };
-  }, [isLoggedIn]); // dependency array
+  }, []); 
 
-  return ws;
+  return { connect };
 };
 
 export default useNotificationsWebSocket;
