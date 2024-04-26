@@ -39,6 +39,7 @@ const Admin = (props) => {
   const ws = useRef(null);
 
   const user = useUserStore((state) => state.user);
+  const username = useUserStore((state) => state.username);
 
   useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -46,7 +47,7 @@ const Admin = (props) => {
       document.body.classList.toggle("perfect-scrollbar-on");
     }
 
-    ws.current = new WebSocket('ws://localhost:8080/project_backend/websocket/notification');
+    ws.current = new WebSocket(`ws://localhost:8080/project_backend/websocket/notifications/${username}`);
 
     ws.current.onopen = () => {
       console.log('Notification WebSocket is connected.');

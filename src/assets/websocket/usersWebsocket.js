@@ -7,11 +7,11 @@ const useUsersWebSocket = () => {
     ws.current = new WebSocket(`ws://localhost:8080/project_backend/websocket/users`);
 
     ws.current.onopen = () => {
-      console.log("ws opened");
+      console.log("users ws opened");
     };
 
     ws.current.onclose = (event) => {
-      console.log("ws closed");
+      console.log("users ws closed");
     };
 
     ws.current.onerror = (error) => {

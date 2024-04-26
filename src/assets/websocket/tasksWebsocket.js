@@ -7,11 +7,11 @@ const useTasksWebSocket = () => {
     ws.current = new WebSocket(`ws://localhost:8080/project_backend/websocket/tasks`);
 
     ws.current.onopen = () => {
-      console.log("ws opened");
+      console.log("tasks ws opened");
     };
 
     ws.current.onclose = (event) => {
-      console.log("ws closed");
+      console.log("tasks ws closed");
     };
 
     ws.current.onerror = (error) => {

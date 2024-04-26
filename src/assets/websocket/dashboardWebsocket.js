@@ -9,11 +9,11 @@ const useCategoriesWebSocket = () => {
     );
 
     ws.current.onopen = () => {
-      console.log("ws opened");
+      console.log("dashboard ws opened");
     };
 
     ws.current.onclose = (event) => {
-      console.log("ws closed");
+      console.log("dashboard ws closed");
     };
 
     ws.current.onerror = (error) => {

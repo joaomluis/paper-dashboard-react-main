@@ -7,11 +7,11 @@ const useCategoriesWebSocket = () => {
     ws.current = new WebSocket(`ws://localhost:8080/project_backend/websocket/categories`);
 
     ws.current.onopen = () => {
-      console.log("ws opened");
+      console.log("categories ws opened");
     };
 
     ws.current.onclose = (event) => {
-      console.log("ws closed");
+      console.log("categories ws closed");
     };
 
     ws.current.onerror = (error) => {
