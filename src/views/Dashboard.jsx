@@ -28,6 +28,8 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
+import useAllUsersStore from "store/useAllUsersStore.jsx";
 
 import useDashboardStore from "../store/useDashboardStore.jsx";
 import DashboardWebsocket from "../assets/websocket/dashboardWebsocket.js";
@@ -42,6 +44,15 @@ function Dashboard() {
 
   //websocket
   const ws = DashboardWebsocket();
+
+  const token = useAllUsersStore((state) => state.token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     if (ws.current) {

@@ -43,6 +43,11 @@ const useTasksStore = create((set) => {
         const filteredTasks = await response.json();
         set(() => ({ activeTasksdata: filteredTasks }));
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         return null;
       }
     } catch (error) {
@@ -77,8 +82,13 @@ const useTasksStore = create((set) => {
         console.log("Task state updated");
 
         getActiveTasks(selectedUsername, selectedCategory);
+      } else if (response.status === 401) {
+        
+          
+          useUserStore.setState({ token: null });
+        
       } else {
-        console.error("Failed to update task state");
+        console.error("Error updating task state:");
       }
     } catch (error) {
       console.error("Error updating task state:", error);
@@ -120,8 +130,12 @@ const useTasksStore = create((set) => {
 
         return Promise.resolve({success: true});
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const error = await response.text();
-        console.error("Failed to create task:", error);
 
         toast.error(error, {
           position: "top-center",
@@ -175,6 +189,11 @@ const useTasksStore = create((set) => {
 
          return Promise.resolve({success: true});
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
         toast.error(errorMessage, {
           position: "top-center",
@@ -223,6 +242,11 @@ const useTasksStore = create((set) => {
         getActiveTasks(selectedUsername, selectedCategory);
         getInactiveTasks();
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const error = await response.text();
 
         toast.error(error, {
@@ -264,6 +288,11 @@ const useTasksStore = create((set) => {
         getActiveTasks();
         getInactiveTasks();
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const error = await response.text();
         console.error(error);
         toast.error(error, {
@@ -302,6 +331,11 @@ const useTasksStore = create((set) => {
 
         set(() => ({ data: inactiveTasks }));
       }
+      if (response.status === 401) {
+        
+          useUserStore.setState({ token: null });
+        
+      }
     } catch (error) {
       console.error("Failed to fetch tasks", error);
     }
@@ -332,6 +366,11 @@ const useTasksStore = create((set) => {
 
         getInactiveTasks();
       } else {
+        if (response.status === 401) {
+         
+            useUserStore.setState({ token: null });
+          
+        }
         const error = await response.text();
         console.error(error);
         toast.error(error, {
@@ -368,6 +407,11 @@ const useTasksStore = create((set) => {
         const statistics = await response.json();
         return statistics;
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
         console.error(errorMessage);
       }

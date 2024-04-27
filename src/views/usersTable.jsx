@@ -32,6 +32,15 @@ function UsersTable() {
   const allUsers = useAllUsersStore((state) => state.allUsers);
   const getAllUsers = useAllUsersStore((state) => state.getAllUsers);
 
+  const token = useAllUsersStore((state) => state.token);
+
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
+
   useEffect(() => {
     useAllUsersStore
       .getState()

@@ -9,6 +9,8 @@ const useUserStore = create(persist((set) => ({
     username: null,
     imgURL: null,
     token: null,
+    tokenRefreshTime: null,
+    tokenValiditiy: null,
     setUser: (user) => set((state) => ({...state,
                                         user: user,
                                         userType: user.typeOfUser,
@@ -16,6 +18,8 @@ const useUserStore = create(persist((set) => ({
                                         firstName: user.firstName,
                                         username: user.username,
                                         imgURL: user.imgURL,
+                                        tokenRefreshTime: user.tokenRefreshTime,
+                                        tokenValiditiy: user.confirmationTokenValidity,
                                         token: user.token})),
     setLoggedIn: (value) => set({ isLoggedIn: value }),
 

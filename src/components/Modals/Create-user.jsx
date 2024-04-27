@@ -1,4 +1,5 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import Modal from "react-bootstrap/Modal";
 
@@ -20,6 +21,16 @@ import "../../assets/css/general-css.css";
 import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
 const CreateUser = forwardRef((props, ref) => {
+
+  const token = useAllUsersStore((state) => state.token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => {

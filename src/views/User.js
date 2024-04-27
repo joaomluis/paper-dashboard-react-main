@@ -46,6 +46,7 @@ import {
 } from "reactstrap";
 
 import { toast, Slide } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import "../assets/css/general-css.css";
 
@@ -72,6 +73,14 @@ function User() {
   const updateOtherUserProfile = useAllUsersStore(
     (state) => state.updateOtherUserProfile
   );
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     setIsOwner(!paramUsername);

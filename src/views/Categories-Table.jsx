@@ -7,6 +7,7 @@ import {
   Col,
   Button,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 import { useRef } from "react";
 
@@ -16,6 +17,7 @@ import { textFilter } from "react-bootstrap-table2-filter";
 
 import "../assets/css/general-css.css";
 import CategoriesWebsocket from "../assets/websocket/categoriesWebsocket.js";
+import useAllUsersStore from "store/useAllUsersStore.jsx";
 
 import DynamicTable from "components/Dynamic Table/dynamic-table";
 import CreateCategory from "components/Modals/Create-category.jsx";
@@ -29,6 +31,15 @@ function CategoriesTable() {
   const fetchCategories = useCategoriesStore((state) => state.fetchCategories);
 
   const ws = CategoriesWebsocket();
+
+  const token = useAllUsersStore((state) => state.token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     if (ws.current) {

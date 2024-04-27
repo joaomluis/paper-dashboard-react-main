@@ -1,4 +1,5 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 
 import Modal from "react-bootstrap/Modal";
@@ -12,6 +13,15 @@ const ChangeUserRole = forwardRef((props, ref) => {
   const [show, setShow] = useState(false);
   const [selectedRole, setSelectedRole] = useState('');
   const { username } = useParams();
+
+  const token = useAllUsersStore((state) => state.token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);

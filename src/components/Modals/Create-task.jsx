@@ -12,6 +12,7 @@ import {
   Container,
   Label,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 import FormRBT from "react-bootstrap/Form";
 
@@ -19,11 +20,22 @@ import "../../assets/css/general-css.css";
 
 import useCategoriesStore from "../../store/useCategoriesStore";
 import useTasksStore from "../../store/useTasksStore";
+import useAllUsersStore from "../../store/useAllUsersStore";
 
 const CreateTask = forwardRef((props, ref) => {
   const { task } = props;
 
   const [show, setShow] = useState(false);
+
+
+  const token = useAllUsersStore((state) => state.token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     if (show && task) {

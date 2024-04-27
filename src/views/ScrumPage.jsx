@@ -9,9 +9,11 @@ import {
 } from "reactstrap";
 
 import { useRef, useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import useTasksStore from "../store/useTasksStore";
 import useCategoriesStore from "../store/useCategoriesStore";
+import useUserStore from "store/useUserStore";
 
 import "../assets/css/general-css.css";
 import CreateTask from "../components/Modals/Create-task.jsx";
@@ -23,7 +25,9 @@ function SrumPage() {
   const tasks = useTasksStore((state) => state.activeTasksdata);
   const updateTaskState = useTasksStore((state) => state.updateTaskState);
   const fetchCategories = useCategoriesStore((state) => state.fetchCategories);
-  
+
+  const navigate = useNavigate();
+  const token = useUserStore((state) => state.token);
   
   const createTaskRef = useRef();
 
@@ -43,8 +47,11 @@ function SrumPage() {
     }
   }, [ws, ws.current]);
   
-
-  
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
   return (
     <>
       <div className="content">

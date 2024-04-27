@@ -7,8 +7,10 @@ import {
   Col,
   Button,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 import useTasksStore from "store/useTasksStore.jsx";
+import useAllUsersStore from "store/useAllUsersStore.jsx";
 
 import Spinner from "../components/Spinner/Spinner.jsx";
 import { textFilter } from "react-bootstrap-table2-filter";
@@ -25,6 +27,14 @@ function InactiveTasksTable() {
   const deleteTask = useTasksStore((state) => state.deleteTaskPerma);
   const restoreTask = useTasksStore((state) => state.updateTaskActiveState);
   const inactiveTasks = useTasksStore((state) => state.data);
+  const token = useAllUsersStore((state) => state.token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
 
   useEffect(() => {
     useTasksStore

@@ -57,6 +57,11 @@ const useDashboardStore = create((set, get) => {
         
         
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
 
         console.error('Failed to fetch tasks data', errorMessage);

@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 
 import Modal from "react-bootstrap/Modal";
 
@@ -12,12 +12,23 @@ import {
   Container,
   Label,
 } from "reactstrap";
+import { useNavigate } from "react-router-dom";
 
 import "../../assets/css/general-css.css";
 import useCategoriesStore from "../../store/useCategoriesStore.jsx";
+import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
 const CreateCategory = forwardRef((props, ref) => {
   const [show, setShow] = useState(false);
+
+  const token = useAllUsersStore((state) => state.token);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token === null) {
+      navigate('/auth/login');
+    }
+  }, [token, navigate]);
 
   const handleClose = () => {
     setTitleValue("");

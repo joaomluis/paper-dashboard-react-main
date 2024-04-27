@@ -23,6 +23,12 @@ const useAllUsersStore = create((set, get) => {
 
         set(() => ({ data: activeUsers }));
       }
+      if (response.status === 401) {
+       
+          useUserStore.setState({ token: null });
+        
+      }
+      
     } catch (error) {
       console.error("Failed to fetch categories", error);
     }
@@ -51,6 +57,11 @@ const useAllUsersStore = create((set, get) => {
           theme: "colored",
         });
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
         toast.error(errorMessage, {
           position: "top-center",
@@ -87,6 +98,11 @@ const useAllUsersStore = create((set, get) => {
           theme: "colored",
         });
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
         toast.error(errorMessage, {
           position: "top-center",
@@ -125,6 +141,11 @@ const useAllUsersStore = create((set, get) => {
 
         return Promise.resolve({ success: true }); 
       } else {
+        if (response.status === 401) {
+         
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
         toast.error(errorMessage, {
           position: "top-center",
@@ -170,6 +191,11 @@ const useAllUsersStore = create((set, get) => {
 
         getAllUsers();
       } else {
+        if (response.status === 401) {
+         
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
 
         toast.error(errorMessage, {
@@ -222,6 +248,11 @@ const useAllUsersStore = create((set, get) => {
 
         return Promise.resolve();
       } else {
+        if (response.status === 401) {
+         
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
 
         toast.error(errorMessage, {
@@ -268,6 +299,11 @@ const useAllUsersStore = create((set, get) => {
 
         return Promise.resolve();
       } else {
+        if (response.status === 401) {
+          
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
 
         toast.error(errorMessage, {
@@ -485,6 +521,11 @@ const useAllUsersStore = create((set, get) => {
 
         return Promise.resolve();
       } else {
+        if (response.status === 401) {
+         
+            useUserStore.setState({ token: null });
+          
+        }
         const errorMessage = await response.text();
 
         toast.error(errorMessage, {
@@ -523,6 +564,11 @@ const useAllUsersStore = create((set, get) => {
         set(() => ({ allUsers: allUsers }));
 
         return allUsers;
+      }
+      if (response.status === 401) {
+        
+          useUserStore.setState({ token: null });
+        
       }
     } catch (error) {
       console.error("Failed to fetch categories", error);
@@ -573,6 +619,11 @@ const useAllUsersStore = create((set, get) => {
         const messages = await response.json();
 
         return messages;
+      }
+      if (response.status === 401) {
+       
+          useUserStore.setState({ token: null });
+        
       }
     } catch (error) {
       console.error("Failed to fetch categories", error);
