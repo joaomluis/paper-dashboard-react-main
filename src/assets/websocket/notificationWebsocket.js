@@ -4,6 +4,7 @@ import useNotificationsStore from '../../store/useNotificationsStore.jsx';
 const useNotificationsWebSocket = (username) => {
   const ws = useRef(null);
   const setNotifications = useNotificationsStore((state) => state.setNotifications);
+  const notifications = useNotificationsStore((state) => state.notifications);
 
   useEffect(() => {
     ws.current = new WebSocket(`ws://localhost:8080/project_backend/websocket/notifications/${username}`);
@@ -23,8 +24,8 @@ const useNotificationsWebSocket = (username) => {
 
     ws.current.onmessage = (e) => {
       const notification = JSON.parse(e.data);
-      console.log("notification", notification);
       setNotifications(notification);
+      console.log("notifications", notifications);
       
       
     };
