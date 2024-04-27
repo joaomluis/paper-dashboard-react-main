@@ -19,13 +19,11 @@
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 import { Route, Routes, useLocation } from "react-router-dom";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-
-import useUserStore from "../store/useUserStore.jsx";
 
 import routes from "routes.js";
 
@@ -36,10 +34,6 @@ const Admin = (props) => {
   const [activeColor] = React.useState("info");
   const mainPanel = React.useRef();
   const location = useLocation();
-  const ws = useRef(null);
-
-  const user = useUserStore((state) => state.user);
-  const username = useUserStore((state) => state.username);
 
   useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -47,41 +41,23 @@ const Admin = (props) => {
       document.body.classList.toggle("perfect-scrollbar-on");
     }
 
-    ws.current = new WebSocket(`ws://localhost:8080/project_backend/websocket/notifications/${username}`);
-
-    ws.current.onopen = () => {
-      console.log('Notification WebSocket is connected.');
-    };
-
-    ws.current.onerror = (error) => {
-      console.log('WebSocket encountered an error: ', error);
-    };
-
-    ws.current.onmessage = (event) => {
-      console.log('WebSocket message received: ', event.data);
-    };
-
     return function cleanup() {
       if (navigator.platform.indexOf("Win") > -1) {
         ps.destroy();
         document.body.classList.toggle("perfect-scrollbar-on");
       }
-
-      if (ws.current) {
-        ws.current.close();
-      }
     };
-  }, [user]);
+  }, []);
 
   useEffect(() => {
     mainPanel.current.scrollTop = 0;
     document.scrollingElement.scrollTop = 0;
   }, [location]);
 
-  
-  const sidebarRoutes = routes.filter(route => route.layout !== "/auth" && !route.hidden);
-const routeComponents = routes.filter(route => route.layout !== "/auth");
-
+  const sidebarRoutes = routes.filter(
+    (route) => route.layout !== "/auth" && !route.hidden
+  );
+  const routeComponents = routes.filter((route) => route.layout !== "/auth");
 
   return (
     <div className="wrapper">
@@ -109,6 +85,6 @@ const routeComponents = routes.filter(route => route.layout !== "/auth");
       </div>
     </div>
   );
-}
+};
 
 export default Admin;

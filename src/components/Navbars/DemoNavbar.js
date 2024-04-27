@@ -30,22 +30,30 @@ import {
   DropdownMenu,
   DropdownItem,
   Container,
+  Badge,
 } from "reactstrap";
-
 
 import routes from "routes.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
 
-import { useState } from "react";
 import useUserStore from "../../store/useUserStore.jsx";
+import useNotificationsStore from "../../store/useNotificationsStore.jsx";
+import notificationsWebsocket from "../../assets/websocket/notificationWebsocket.js";
 
 function Header(props) {
+
+  const username = useUserStore((state) => state.username);
+
+  const ws = notificationsWebsocket(username);
+
+
+
   const token = useUserStore((state) => state.token);
   const navigate = useNavigate();
   const setLoggedIn = useUserStore((state) => state.setLoggedIn);
-  
+
   const firstName = useUserStore((state) => state.firstName);
 
   async function logoutUser() {
@@ -126,8 +134,10 @@ function Header(props) {
       sidebarToggle.current.classList.toggle("toggled");
     }
   }, [location]);
+
+  const notifications = useNotificationsStore((state) => state.notifications);
+
   return (
-    // add or remove classes depending if we are on full-screen-maps page or not
     <Navbar
       color={
         location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
@@ -169,28 +179,44 @@ function Header(props) {
               toggle={(e) => dropdownToggle(e)}
             >
               <DropdownToggle caret nav>
+              {notifications.length > 0 && <Badge color="danger" pill>{notifications.length}</Badge>}
                 <i className="nc-icon nc-bell-55" />
+                
                 <p>
-                  <span className="d-lg-none d-md-block">Some Actions</span>
+                  <span className="d-lg-none d-md-block"></span>
                 </p>
               </DropdownToggle>
-              <DropdownMenu right style={{ maxHeight: '150px', overflow: 'auto' }}>
-                <DropdownItem tag="a">Action</DropdownItem>
-                <DropdownItem tag="a">Another Action</DropdownItem>
-                <DropdownItem tag="a">Something else here</DropdownItem>
+              <DropdownMenu
+                right
+                style={{ maxHeight: "150px", overflow: "auto" }}
+              >
+                {notifications.map((notification) => {
+                  const date = new Date(notification.timestamp);
+
+                  const formattedDate = new Intl.DateTimeFormat("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  }).format(date);
+
+                  return (
+                    <DropdownItem key={notification.timestamp}>
+                      {`Message from ${notification.sender} at ${formattedDate}`}
+                    </DropdownItem>
+                  );
+                })}
               </DropdownMenu>
             </Dropdown>
             <NavItem>
-              <Link 
-              to={"/agile-up/user-page"}
-              className="nav-link btn-rotate">
-              <FontAwesomeIcon
+              <Link to={"/agile-up/user-page"} className="nav-link btn-rotate">
+                <FontAwesomeIcon
                   icon={faUser}
                   size="lg"
                   style={{ marginRight: "10px" }}
                 />
-                
-                
+
                 <p>
                   <span className="d-lg-none d-md-block"></span>
                   <span>{firstName}</span>
@@ -198,10 +224,7 @@ function Header(props) {
               </Link>
             </NavItem>
             <NavItem>
-              <Link
-                className="nav-link btn-rotate"
-                onClick={logoutUser}
-              >
+              <Link className="nav-link btn-rotate" onClick={logoutUser}>
                 <FontAwesomeIcon
                   icon={faRightFromBracket}
                   size="lg"
