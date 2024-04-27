@@ -43,12 +43,16 @@ import useNotificationsStore from "../../store/useNotificationsStore.jsx";
 import notificationsWebsocket from "../../assets/websocket/notificationWebsocket.js";
 
 function Header(props) {
-
   const username = useUserStore((state) => state.username);
 
   const ws = notificationsWebsocket(username);
 
-
+  const notifications = useNotificationsStore((state) => state.notifications);
+  const unreadCount = useNotificationsStore((state) => state.unreadCount);
+  const markAsRead = useNotificationsStore((state) => state.markAsRead);
+  const markNotificationAsRead = useNotificationsStore(
+    (state) => state.markNotificationAsRead
+  );
 
   const token = useUserStore((state) => state.token);
   const navigate = useNavigate();
@@ -98,8 +102,26 @@ function Header(props) {
     setIsOpen(!isOpen);
   };
   const dropdownToggle = (e) => {
+    if (
+      !dropdownOpen &&
+      ws.current &&
+      ws.current.readyState === WebSocket.OPEN
+    ) {
+      ws.current.send(
+        JSON.stringify({
+          type: "MARK_AS_READ",
+          recipient: username,
+        })
+      );
+
+      markAsRead();
+    } else if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
+      console.log("WebSocket connection is not open");
+    }
+
     setDropdownOpen(!dropdownOpen);
   };
+
   const getBrand = () => {
     let brandName = "";
     routes.map((prop, key) => {
@@ -134,8 +156,6 @@ function Header(props) {
       sidebarToggle.current.classList.toggle("toggled");
     }
   }, [location]);
-
-  const notifications = useNotificationsStore((state) => state.notifications);
 
   return (
     <Navbar
@@ -179,9 +199,13 @@ function Header(props) {
               toggle={(e) => dropdownToggle(e)}
             >
               <DropdownToggle caret nav>
-              {notifications.length > 0 && <Badge color="danger" pill>{notifications.length}</Badge>}
+                {unreadCount > 0 && (
+                  <Badge color="danger" pill>
+                    {unreadCount}
+                  </Badge>
+                )}
                 <i className="nc-icon nc-bell-55" />
-                
+
                 <p>
                   <span className="d-lg-none d-md-block"></span>
                 </p>
@@ -202,7 +226,16 @@ function Header(props) {
                   }).format(date);
 
                   return (
-                    <DropdownItem key={notification.timestamp}>
+                    <DropdownItem
+                      key={notification.timestamp}
+                      className={
+                        notification.not_read ? "font-weight-bold" : ""
+                      }
+                      onClick={() => {
+                        navigate(`/agile-up/user/${notification.sender}`);
+                        markNotificationAsRead(notification.timestamp);
+                      }}
+                    >
                       {`Message from ${notification.sender} at ${formattedDate}`}
                     </DropdownItem>
                   );
