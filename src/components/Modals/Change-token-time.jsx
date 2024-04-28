@@ -1,6 +1,5 @@
 import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
 
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -9,10 +8,10 @@ import { Button, FormGroup, Row, Col, Container } from "reactstrap";
 
 import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
-const ChangeTokenTime = forwardRef((props, ref) => {
+const ChangeUserRole = forwardRef((props, ref) => {
   const [show, setShow] = useState(false);
   const [selectedRole, setSelectedRole] = useState('');
-  const { username } = useParams();
+
 
   const token = useAllUsersStore((state) => state.token);
   const navigate = useNavigate();
@@ -26,15 +25,13 @@ const ChangeTokenTime = forwardRef((props, ref) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleUpdateRole = () => {
-    handleClose();
-    useAllUsersStore.getState().updateUserRole(username, selectedRole);
-  };
-
+ 
 
   useImperativeHandle(ref, () => ({
     handleShow,
   }));
+
+  const udpateTokenTime = useAllUsersStore((state) => state.udpateTokenTime);
 
   return (
     <>
@@ -45,7 +42,7 @@ const ChangeTokenTime = forwardRef((props, ref) => {
         centered
       >
         <Modal.Header>
-          <Modal.Title>Update User Role</Modal.Title>
+          <Modal.Title>Update Token Time Validity</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -53,7 +50,7 @@ const ChangeTokenTime = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Select new role</label>
+                    <label>Select new time for token validity</label>
                   </FormGroup>
                 </Col>
               </Row>
@@ -61,9 +58,13 @@ const ChangeTokenTime = forwardRef((props, ref) => {
                 <Col className="pr-1" md="12">
                   <FormGroup>
                     <Form.Select size="lg"  value={selectedRole} onChange={e => setSelectedRole(e.target.value)}>
-                      <option value="developer">Developer</option>
-                      <option value="scrum_master">Scrum Master</option>
-                      <option value="product_owner">Product Owner</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                      <option value="45">45</option>
+                      <option value="60">60</option>
                     </Form.Select>
                   </FormGroup>
                 </Col>
@@ -75,7 +76,7 @@ const ChangeTokenTime = forwardRef((props, ref) => {
           <Button color="danger" onClick={handleClose}>
             Close
           </Button>
-          <Button color="primary" onClick={handleUpdateRole}>
+          <Button color="primary" onClick={()=> udpateTokenTime(selectedRole)}>
             Save Changes
           </Button>
         </Modal.Footer>
@@ -84,4 +85,4 @@ const ChangeTokenTime = forwardRef((props, ref) => {
   );
 });
 
-export default ChangeTokenTime;
+export default ChangeUserRole;

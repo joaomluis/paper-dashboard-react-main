@@ -34,9 +34,12 @@ import {
 } from "reactstrap";
 
 import routes from "routes.js";
+import { useRef } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faGear, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
+
+import ChangeTokenTime from "../Modals/Change-token-time.jsx";
 
 import useUserStore from "../../store/useUserStore.jsx";
 import useNotificationsStore from "../../store/useNotificationsStore.jsx";
@@ -157,7 +160,12 @@ function Header(props) {
     }
   }, [location]);
 
+  const changeTokenTimeRef = useRef();
+
   return (
+    <>
+
+    <ChangeTokenTime ref={changeTokenTimeRef} />
     <Navbar
       color={
         location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
@@ -257,6 +265,18 @@ function Header(props) {
               </Link>
             </NavItem>
             <NavItem>
+              <Link className="nav-link btn-rotate" onClick={() => changeTokenTimeRef.current.handleShow()}>
+                <FontAwesomeIcon
+                  icon={faGear}
+                  size="lg"
+                  style={{ marginRight: "10px" }}
+                />
+                <p>
+                  <span className="d-lg-none d-md-block">Log out</span>
+                </p>
+              </Link>
+            </NavItem>
+            <NavItem>
               <Link className="nav-link btn-rotate" onClick={logoutUser}>
                 <FontAwesomeIcon
                   icon={faRightFromBracket}
@@ -272,6 +292,7 @@ function Header(props) {
         </Collapse>
       </Container>
     </Navbar>
+    </>
   );
 }
 
