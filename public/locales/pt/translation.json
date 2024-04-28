@@ -91,7 +91,10 @@
     "backToSignIn": "Voltar ao Login",
 
     "welcome": "Bem-vindo!",
-    "welcomeText": "AgileUp, a melhor plataforma para gerir as suas tarefas de forma eficiente!"
+    "welcomeText": "AgileUp, a melhor plataforma para gerir as suas tarefas de forma eficiente!",
+
+    "filterByUser" : "Filtrar por User",
+    "filterByCategory" : "Filtrar por Categoria"
 
     
 
