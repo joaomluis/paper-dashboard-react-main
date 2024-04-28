@@ -5,10 +5,13 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 
 import { Button, FormGroup, Row, Col, Container } from "reactstrap";
+import { useTranslation } from 'react-i18next';
 
 import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
 const ChangeUserRole = forwardRef((props, ref) => {
+  const { t, i18n } = useTranslation();
+
   const [show, setShow] = useState(false);
   const [selectedRole, setSelectedRole] = useState("");
 
@@ -48,7 +51,7 @@ const ChangeUserRole = forwardRef((props, ref) => {
         centered
       >
         <Modal.Header>
-          <Modal.Title>Update Token Time Validity</Modal.Title>
+          <Modal.Title>{t("updateTokenValidty")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -56,7 +59,7 @@ const ChangeUserRole = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Select new time for token validity</label>
+                    <label>{t("selectNewTokenValidity")}</label>
                   </FormGroup>
                 </Col>
               </Row>
@@ -84,10 +87,10 @@ const ChangeUserRole = forwardRef((props, ref) => {
         </Modal.Body>
         <Modal.Footer>
           <Button color="danger" onClick={handleClose}>
-            Close
+          {t("closeButton")}
           </Button>
           <Button color="primary" onClick={()=> handleSubmit(selectedRole)}>
-            Save Changes
+          {t("saveButton")}
           </Button>
         </Modal.Footer>
       </Modal>

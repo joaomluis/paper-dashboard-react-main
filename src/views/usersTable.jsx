@@ -9,6 +9,7 @@ import {
 } from "reactstrap";
 
 import { useRef } from "react";
+import { useTranslation } from 'react-i18next';
 
 import useAllUsersStore from "store/useAllUsersStore.jsx";
 import useUserStore from "store/useUserStore.jsx";
@@ -26,6 +27,8 @@ import CreateUser from "components/Modals/Create-user.jsx";
 import { useEffect, useState } from "react";
 
 function UsersTable() {
+  const { t, i18n } = useTranslation();
+
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -67,13 +70,13 @@ function UsersTable() {
   const columns = [
     {
       dataField: "active",
-      text: "Active Status",
+      text: "Status",
       formatter: (cell) => {
         switch (cell) {
           case true:
-            return "Active";
+            return t("active");
           case false:
-            return "Inactive";
+            return t("inactive");
           default:
             return cell;
         }
@@ -87,7 +90,7 @@ function UsersTable() {
     },
     {
       dataField: "typeOfUser",
-      text: "Role ",
+      text: t("role"),
       filter: textFilter(),
       formatter: (cell) => {
         switch (cell) {
@@ -104,11 +107,11 @@ function UsersTable() {
     },
     {
       dataField: "firstName",
-      text: "First Name",
+      text: t("firstName"),
     },
     {
       dataField: "lastName",
-      text: "Last Name",
+      text: t("lastName"),
     },
     {
       dataField: "email",
@@ -139,7 +142,7 @@ function UsersTable() {
                 <Col md="10">
                   <CardHeader>
                     <CardTitle tag="h4" className="all-users-table-tittle">
-                      All Users
+                    {t('allUsers')}
                     </CardTitle>
                   </CardHeader>
                 </Col>
@@ -153,7 +156,7 @@ function UsersTable() {
                     style={{ backgroundColor: "#3f74a6" }}
                     onClick={() => changeCreateUserRef.current.handleShow()}
                   >
-                    Add User
+                    {t('addUser')}
                   </Button>
                 </Col>
                 ) : null}

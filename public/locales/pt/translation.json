@@ -1,0 +1,101 @@
+{
+    "addTask": "Adicionar Tarefa",
+    "toDo": "A Fazer",
+    "doing": "Em Progresso",
+    "done": "Feito",
+
+    "createTaskTitle": "Criar Tarefa",
+    "editTaskTitle": "Editar Tarefa",
+    "title": "Título",
+    "description": "Descrição",
+    "initialDate": "Data de Início",
+    "endDate": "Data de Fim",
+    "taskSelectPriority": "Selecione a Prioridade",
+    "taskLowPriority": "Baixa",
+    "taskMediumPriority": "Média",
+    "taskHighPriority": "Alta",
+    "taskSelectCategory": "Selecione a Categoria",
+    "closeButton": "Fechar",
+
+    "messageFromSender": "Mensagem de {{sender}} às {{date}}",
+
+    "activeUsers": "Users Ativos",
+    "inactiveUsers": "Users Inativos",
+    "tasksNumber": "Número de Tarefas",
+    "usersNumber": "Número de Users",
+    "tasksPerUserNumber": "Tarefas por User",
+    "tasksAvgCompletionTime": "Tempo Médio de Conclusão",
+    "usersStats": "Estatísticas de Users",
+    "tasksStats": "Estatísticas de Tarefas",
+    "categoryStats": "Estatísticas de Categorias",
+    "usersTimeline": "Registos ao Longo do Tempo",
+    "tasksCompletionTime": "Conclusão de Tarefas ao Longo do Tempo",
+
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "role": "Função",
+    "firstName": "Nome",
+    "lastName": "Apelido",
+    "allUsers": "Todos os Users",
+    "addUser": "Adicionar User",
+
+    "createUser": "Criar User",
+    "phone": "Telefone",
+    "imageURL": "Imagem de Perfil",
+    "selectUserRole": "Selecione a Função do User",
+
+    "author": "Autor",
+    "actions": "Ações",
+    "edit": "Editar",
+    "delete": "Apagar",
+    "restore": "Restaurar",
+    "categoriesTable": "Tabela de Categorias",
+    "addCategory": "Adicionar Categoria",
+    "editCategory": "Editar Categoria",
+
+    "totalTasks": "Total de Tarefas",
+    "editProfile": "Editar Perfil",
+    "profile": "Perfil",
+    "updateRole": "Atualizar Função",
+    "updatePassword": "Atualizar Password",
+
+    "updateUserRole": "Atualizar Função do User",
+    "selectRole": "Selecione a Função",
+    "saveButton": "Guardar",
+    "inactiveTasksTable": "Tabela de Tarefas Inativas",
+
+    "updateTokenValidty": "Atualizar Validade do Token",
+    "selectNewTokenValidity": "Selecione a nova validade do token",
+
+    "currentPassword": "Password Atual",
+    "newPassword": "Nova Password",
+    "confirmPassword": "Confirme a Password",
+    "showPassword": "Mostrar Password",
+
+    "scrum": "Tabela Scrum",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "categories": "Categorias",
+    "myProfile": "Meu Perfil",
+    "inactiveTasks": "Tarefas Inativas",
+
+    "Select Language": "Selecionar Idioma",
+
+    "signIn": "Entrar",
+    "enterUsername": "Introduza Username",
+    "enterPassword": "Introduza Password",
+    "forgotPassword": "Esqueceu-se da Password?",
+
+    "recoverPassword": "Recuperar Password",
+    "enterEmail": "Introduza o seu email",
+    "backToSignIn": "Voltar ao Login",
+
+    "welcome": "Bem-vindo!",
+    "welcomeText": "AgileUp, a melhor plataforma para gerir as suas tarefas de forma eficiente!"
+
+    
+
+    
+
+
+  }

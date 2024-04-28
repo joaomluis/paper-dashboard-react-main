@@ -16,8 +16,9 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import Dashboard from "views/Dashboard.jsx";
+import i18next from 'i18next';
 
+import Dashboard from "views/Dashboard.jsx";
 import UserPage from "views/User.js";
 import UsersTable from "views/usersTable.jsx";
 import Login from "views/login.jsx";
@@ -30,7 +31,7 @@ import ScrumPage from "views/ScrumPage.jsx";
 var routes = [
   {
     path: "/scrum",
-    name: "Scrum",
+    name: "scrum",
     icon: "nc-icon nc-paper",
     component: <ScrumPage />,
     layout: "/agile-up",
@@ -38,7 +39,7 @@ var routes = [
   },
   {
     path: "/dashboard",
-    name: "Dashboard",
+    name: "dashboard",
     icon: "nc-icon nc-bank",
     component: <Dashboard />,
     layout: "/agile-up",
@@ -46,7 +47,7 @@ var routes = [
   },
   {
     path: "/user-page",
-    name: "My Profile",
+    name: "myProfile",
     icon: "nc-icon nc-single-02",
     component: <UserPage />,
     layout: "/agile-up",
@@ -56,7 +57,7 @@ var routes = [
 
   {
     path: "/users",
-    name: "Users",
+    name: "users",
     icon: "nc-icon nc-single-02",
     component: <UsersTable />,
     layout: "/agile-up",
@@ -64,7 +65,7 @@ var routes = [
   },
   {
     path: "/categories",
-    name: "Categories",
+    name: "categories",
     icon: "nc-icon nc-bullet-list-67",
     component: <CategoriesTables />,
     layout: "/agile-up",
@@ -72,7 +73,7 @@ var routes = [
   },
   {
     path: "/inactive-tasks",
-    name: "Inactive Tasks",
+    name: "inactiveTasks",
     icon: "nc-icon nc-simple-remove",
     component: <InactiveTasksTable />,
     layout: "/agile-up",
@@ -80,7 +81,7 @@ var routes = [
   },
   {
     path: "/login",
-    name: "Login",
+    name: i18next.t("login"),
     icon: "nc-icon nc-single-02",
     component: <Login />,
     layout: "/auth",
@@ -89,7 +90,7 @@ var routes = [
 
   {
     path: "/recover",
-    name: "Recover Password",
+    name: i18next.t("recoverPassword"),
     component: <RecoverPassword />,
     layout: "/auth",
     roles: [],
@@ -97,7 +98,7 @@ var routes = [
 
   {
     path: "/user/:username",
-    name: "User",
+    name: i18next.t("user"),
     component: <UserPage />,
     layout: "/agile-up",
     hidden: true,
@@ -106,7 +107,7 @@ var routes = [
 
   {
     path: "/define-password/:mode/:token/",
-    name: "Confirm Account",
+    name: i18next.t("confirmAccount"),
     component: <ConfirmAccount />,
     layout: "/auth",
     roles: [],

@@ -1,5 +1,6 @@
 import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Modal from "react-bootstrap/Modal";
 
@@ -21,6 +22,7 @@ import "../../assets/css/general-css.css";
 import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
 const CreateUser = forwardRef((props, ref) => {
+  const { t, i18n } = useTranslation();
 
   const token = useAllUsersStore((state) => state.token);
   const navigate = useNavigate();
@@ -86,7 +88,7 @@ const CreateUser = forwardRef((props, ref) => {
         centered
       >
         <Modal.Header>
-          <Modal.Title>Create User</Modal.Title>
+          <Modal.Title>{t('createUser')}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -116,7 +118,7 @@ const CreateUser = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="6">
                   <FormGroup>
-                    <label>First Name</label>
+                    <label>{t('firstName')}</label>
                     <Input
                       type="text"
                       value={firstNameValue}
@@ -126,7 +128,7 @@ const CreateUser = forwardRef((props, ref) => {
                 </Col>
                 <Col className="pr-1" md="6">
                   <FormGroup>
-                    <label>Last Name</label>
+                    <label>{t('lastName')}</label>
                     <Input
                       type="text"
                       value={lastNameValue}
@@ -138,7 +140,7 @@ const CreateUser = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="6">
                   <FormGroup>
-                    <label>Phone Number</label>
+                    <label>{t('phone')}</label>
                     <Input
                       type="text"
                       value={phoneValue}
@@ -148,7 +150,7 @@ const CreateUser = forwardRef((props, ref) => {
                 </Col>
                 <Col className="pr-1" md="6">
                   <FormGroup>
-                    <label>Image URL</label>
+                    <label>{t('imageURL')}</label>
                     <Input
                       type="text"
                       value={imgValue}
@@ -160,7 +162,7 @@ const CreateUser = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Select user role</label>
+                    <label>{t('selectUserRole')}</label>
                   </FormGroup>
                 </Col>
               </Row>
@@ -173,7 +175,7 @@ const CreateUser = forwardRef((props, ref) => {
                       value={roleValue}
                       onChange={(e) => setRoleValue(e.target.value)}
                     >
-                      <option value="" disabled>Select a role</option>
+                      <option value="" disabled>{t('selectUserRole')}</option>
                       <option value="developer">Developer</option>
                       <option value="scrum_master">Scrum Master</option>
                       <option value="product_owner">Product Owner</option>
@@ -186,9 +188,9 @@ const CreateUser = forwardRef((props, ref) => {
         </Modal.Body>
         <Modal.Footer>
           <Button color="danger" onClick={handleClose}>
-            Close
+          {t('closeButton')}
           </Button>
-          <Button color="primary" onClick={() => {handleCreateUser()}}>Create User</Button>
+          <Button color="primary" onClick={() => {handleCreateUser()}}>{t('createUser')}</Button>
         </Modal.Footer>
       </Modal>
     </>

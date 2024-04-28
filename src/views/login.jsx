@@ -17,26 +17,27 @@
 */
 
 // reactstrap components
+import { Row, Col } from "reactstrap";
+import { useTranslation } from "react-i18next";
 import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  InputGroupAddon,
-  InputGroupText,
-  InputGroup,
-  Row,
-  Col,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from "reactstrap";
+
 
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useUserStore from "../store/useUserStore.jsx";
 
 const Login = () => {
+  const { t, i18n } = useTranslation();
+  const [dropdownOpenLanguage, setDropdownOpenLanguage] = useState(false);
+  const dropdownToggleLanguage = (e) => {
+    setDropdownOpenLanguage(!dropdownOpenLanguage);
+  };
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const setUser = useUserStore((state) => state.setUser);
@@ -60,7 +61,6 @@ const Login = () => {
 
       if (response.ok) {
         const data = await response.json();
-        
 
         setUser(data);
 
@@ -82,12 +82,12 @@ const Login = () => {
           <Col md={6} lg={12}>
             <div className=" form_container p-5 rounded bg-white">
               <form action="" onSubmit={handleSubmit}>
-                <h3 className="text-center">Sign In</h3>
+                <h3 className="text-center">{t("signIn")}</h3>
                 <div className="mb-2">
                   <label htmlFor="email">Username</label>
                   <input
                     type="text"
-                    placeholder="Enter Username"
+                    placeholder={t("enterUsername")}
                     className="form-control"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -98,7 +98,7 @@ const Login = () => {
                   <label htmlFor="email">Password</label>
                   <input
                     type="password"
-                    placeholder="Enter Password"
+                    placeholder={t("enterPassword")}
                     className="form-control"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -107,9 +107,7 @@ const Login = () => {
                 </div>
 
                 <div className="d-flex justify-content-center align-items-center">
-                  
-                    <button className="btn btn-primary ">Sign in</button>
-                  
+                  <button className="btn btn-primary ">{t("signIn")}</button>
                 </div>
                 <div
                   style={{
@@ -120,8 +118,32 @@ const Login = () => {
                 >
                   <Link to="/auth/recover">
                     {" "}
-                    <a>Forgot Password?</a>{" "}
+                    <a>{t("forgotPassword")}</a>{" "}
                   </Link>
+                  <Dropdown
+                    nav
+                    isOpen={dropdownOpenLanguage}
+                    toggle={(e) => dropdownToggleLanguage(e)}
+                  >
+                    <DropdownToggle caret nav>
+                      <i
+                        className="fas fa-globe"
+                        style={{ display: "inline" }}
+                      />
+                      <p style={{ display: "inline" }}>
+                        <span className="d-lg-none d-md-block"></span>
+                      </p>
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                      <DropdownItem header>{t("Select Language")}</DropdownItem>
+                      <DropdownItem onClick={() => i18n.changeLanguage("en")}>
+                        English
+                      </DropdownItem>
+                      <DropdownItem onClick={() => i18n.changeLanguage("pt")}>
+                        Portuguese
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </Dropdown>
                 </div>
               </form>
             </div>

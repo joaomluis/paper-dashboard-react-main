@@ -18,6 +18,7 @@
 
 // reactstrap components
 import { Row, Col } from "reactstrap";
+import { useTranslation } from 'react-i18next';
 
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -25,6 +26,8 @@ import { useState } from "react";
 import useAllUsersStore from "../store/useAllUsersStore.jsx";
 
 const RecoverPassword = () => {
+ const { t, i18n } = useTranslation();
+
   const [emailValue, setEmailValue] = useState("");
 
   const sendUserPasswordResetEmail = useAllUsersStore(
@@ -38,12 +41,12 @@ const RecoverPassword = () => {
           <Col md={6} lg={12}>
             <div className=" form_container p-5 rounded bg-white">
               <form action="">
-                <h3 className="text-center">Recover Your Password</h3>
+                <h3 className="text-center">{t("recoverPassword")}</h3>
                 <div className="mb-2">
                   <label htmlFor="email">Email</label>
                   <input
                     type="email"
-                    placeholder="Enter your email here"
+                    placeholder={t("enterEmail")}
                     className="form-control"
                     value={emailValue}
                     onChange={(e) => setEmailValue(e.target.value)}
@@ -58,7 +61,7 @@ const RecoverPassword = () => {
                       sendUserPasswordResetEmail(emailValue);
                     }}
                   >
-                    Recover Password{" "}
+                    {t("recoverPassword")}{" "}
                   </button>
                 </div>
                 <div
@@ -69,7 +72,7 @@ const RecoverPassword = () => {
                   }}
                 >
                   <Link to="/auth/login">
-                    <a>Back to Sign in</a>
+                    <a>{t("backToSignIn")}</a>
                   </Link>
                 </div>
               </form>

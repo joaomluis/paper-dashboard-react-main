@@ -16,8 +16,10 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import {
   Collapse,
   Navbar,
@@ -50,9 +52,10 @@ import useNotificationsStore from "../../store/useNotificationsStore.jsx";
 import notificationsWebsocket from "../../assets/websocket/notificationWebsocket.js";
 
 function Header(props) {
+  const { t, i18n } = useTranslation();
+
   const username = useUserStore((state) => state.username);
   const typeOfUser = useUserStore((state) => state.userType);
-  
 
   const ws = notificationsWebsocket(username);
 
@@ -99,6 +102,7 @@ function Header(props) {
 
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  const [dropdownOpenLanguage, setDropdownOpenLanguage] = React.useState(false);
   const [color, setColor] = React.useState("transparent");
   const sidebarToggle = React.useRef();
   const location = useLocation();
@@ -129,6 +133,10 @@ function Header(props) {
     }
 
     setDropdownOpen(!dropdownOpen);
+  };
+
+  const dropdownToggleLanguage = (e) => {
+    setDropdownOpenLanguage(!dropdownOpenLanguage);
   };
 
   const getBrand = () => {
@@ -197,7 +205,6 @@ function Header(props) {
                 <span className="navbar-toggler-bar bar3" />
               </button>
             </div>
-            <NavbarBrand>{getBrand()}</NavbarBrand>
           </div>
           <NavbarToggler onClick={toggle}>
             <span className="navbar-toggler-bar navbar-kebab" />
@@ -249,7 +256,10 @@ function Header(props) {
                           markNotificationAsRead(notification.timestamp);
                         }}
                       >
-                        {`Message from ${notification.sender} at ${formattedDate}`}
+                        {t("messageFromSender", {
+                          sender: notification.sender,
+                          date: formattedDate,
+                        })}
                       </DropdownItem>
                     );
                   })}
@@ -272,23 +282,51 @@ function Header(props) {
                   </p>
                 </Link>
               </NavItem>
-              {typeOfUser === "product_owner" ?(
-              <NavItem>
-                <Link
-                  className="nav-link btn-rotate"
-                  onClick={() => changeTokenTimeRef.current.handleShow()}
-                >
-                  <FontAwesomeIcon
-                    icon={faGear}
-                    size="lg"
-                    style={{ marginRight: "10px" }}
-                  />
-                  <p>
-                    <span className="d-lg-none d-md-block">Log out</span>
-                  </p>
-                </Link>
-              </NavItem>
+              {typeOfUser === "product_owner" ? (
+                <NavItem>
+                  <Link
+                    className="nav-link btn-rotate"
+                    onClick={() => changeTokenTimeRef.current.handleShow()}
+                  >
+                    <FontAwesomeIcon
+                      icon={faGear}
+                      size="lg"
+                      style={{ marginRight: "10px" }}
+                    />
+                    <p>
+                      <span className="d-lg-none d-md-block">Log out</span>
+                    </p>
+                  </Link>
+                </NavItem>
               ) : null}
+              <NavItem>
+                <Dropdown
+                  nav
+                  isOpen={dropdownOpenLanguage}
+                  toggle={(e) => dropdownToggleLanguage(e)}
+                >
+                  <DropdownToggle caret nav>
+                    {unreadCount > 0 && (
+                      <Badge color="danger" pill>
+                        {unreadCount}
+                      </Badge>
+                    )}
+                    <i className="fas fa-globe" />
+                    <p>
+                      <span className="d-lg-none d-md-block"></span>
+                    </p>
+                  </DropdownToggle>
+                  <DropdownMenu right>
+                    <DropdownItem header>{t("Select Language")}</DropdownItem>
+                    <DropdownItem onClick={() => i18n.changeLanguage("en")}>
+                      English
+                    </DropdownItem>
+                    <DropdownItem onClick={() => i18n.changeLanguage("pt")}>
+                      Portuguese
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </NavItem>
               <NavItem>
                 <Link className="nav-link btn-rotate" onClick={logoutUser}>
                   <FontAwesomeIcon

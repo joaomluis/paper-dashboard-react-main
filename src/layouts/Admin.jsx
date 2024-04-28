@@ -20,6 +20,7 @@
 import PerfectScrollbar from "perfect-scrollbar";
 import { Route, Routes, useLocation } from "react-router-dom";
 import React, { useEffect, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 
 import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Footer from "components/Footer/Footer.js";
@@ -32,6 +33,7 @@ import routes from "routes.js";
 var ps;
 
 const Admin = (props) => {
+
   const [backgroundColor] = React.useState("black");
   const [activeColor] = React.useState("info");
   const mainPanel = React.useRef();

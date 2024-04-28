@@ -17,6 +17,7 @@
 
 */
 import React, { useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
 // reactstrap components
 import {
@@ -41,6 +42,7 @@ import CategoryUsageChart from "../components/Charts/Category-Usage-BarChart.jsx
 import TaskCompletionChart from "../components/Charts/Task-Completion-LineChart.jsx";
 
 function Dashboard() {
+  const { t, i18n } = useTranslation();
 
   //websocket
   const ws = DashboardWebsocket();
@@ -81,14 +83,14 @@ function Dashboard() {
   }, []);
 
   const usersDataForChart = [
-    { name: "Active Users", value: usersData.activeUsers },
-    { name: "Inactive Users", value: usersData.inactiveUsers },
+    { name: t('activeUsers'), value: usersData.activeUsers },
+    { name: t('inactiveUsers'), value: usersData.inactiveUsers },
   ];
 
   const tasksDataForChart = [
-    { name: "To Do", count: tasksData.toDoTasksQuantity },
-    { name: "Doing", count: tasksData.doingTasksQuantity },
-    { name: "Done", count: tasksData.doneTasksQuantity },
+    { name: t('toDo'), count: tasksData.toDoTasksQuantity },
+    { name: t('doing'), count: tasksData.doingTasksQuantity },
+    { name: t('done'), count: tasksData.doneTasksQuantity },
   ];
 
   const categoryUsageData = tasksData.categoryUsage
@@ -127,7 +129,7 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Number of tasks</p>
+                      <p className="card-category">{t('tasksNumber')}</p>
                       <CardTitle tag="p">{tasksData.totalTasks}</CardTitle>
                       <p />
                     </div>
@@ -150,7 +152,7 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Number of users</p>
+                      <p className="card-category">{t('usersNumber')}</p>
                       <CardTitle tag="p">{usersData.totalUsers}</CardTitle>
                       <p />
                     </div>
@@ -173,7 +175,7 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Tasks per user</p>
+                      <p className="card-category">{t('tasksPerUserNumber')}</p>
                       <CardTitle tag="p">
                         {tasksData.avgTaskPerUser % 1 !== 0
                           ? parseFloat(tasksData.avgTaskPerUser).toFixed(1)
@@ -200,12 +202,12 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Avg Completion Time</p>
+                      <p className="card-category">{t('tasksAvgCompletionTime')}</p>
                       <CardTitle tag="p">
                         {tasksData.avgCompletionTime % 1 !== 0
                           ? parseFloat(tasksData.avgCompletionTime).toFixed(1)
                           : Math.floor(tasksData.avgCompletionTime)}{" "}
-                        Days
+                        {t('days')}
                       </CardTitle>
                       <p />
                     </div>
@@ -223,7 +225,7 @@ function Dashboard() {
           <Col md="4">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Users Statistics</CardTitle>
+                <CardTitle tag="h5">{t('usersStats')}</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <UsersPieChart data={usersDataForChart} />
@@ -231,9 +233,9 @@ function Dashboard() {
               <CardFooter>
                 <div className="legend">
                   <i className="fa fa-circle" style={{ color: "#0088FE" }} />{" "}
-                  Active Users{" "}
+                  {t('activeUsers')}{" "}
                   <i className="fa fa-circle" style={{ color: "#FFBB28" }} />{" "}
-                  Inactive Users{" "}
+                  {t('inactiveUsers')}{" "}
                 </div>
                 <hr />
               </CardFooter>
@@ -242,7 +244,7 @@ function Dashboard() {
           <Col md="8">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Tasks Statistics</CardTitle>
+                <CardTitle tag="h5">{t('tasksStats')}</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <TasksBarChart data={tasksDataForChart} />
@@ -258,7 +260,7 @@ function Dashboard() {
           <Col md="6">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Category Usage</CardTitle>
+                <CardTitle tag="h5">{t('categoryStats')}</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <CategoryUsageChart data={categoryUsageData} />
@@ -271,7 +273,7 @@ function Dashboard() {
           <Col md="6">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Users Registration Timeline</CardTitle>
+                <CardTitle tag="h5">{t('usersTimeline')}</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <UsersRegistrationChart data={usersRegistrationData} />
@@ -287,7 +289,7 @@ function Dashboard() {
           <Col md="12">
             <Card>
               <CardHeader>
-                <CardTitle tag="h5">Tasks Completion Date</CardTitle>
+                <CardTitle tag="h5">{t('tasksCompletionTime')}</CardTitle>
               </CardHeader>
               <CardBody style={{ height: "266px" }}>
                 <TaskCompletionChart data={tasksCompletionData} />

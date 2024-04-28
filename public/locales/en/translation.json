@@ -1,0 +1,96 @@
+{
+  "addTask": "Add Task",
+  "toDo": "To Do",
+  "doing": "Doing",
+  "done": "Done",
+
+    "createTaskTitle": "Create Task",
+    "editTaskTitle": "Edit Task",
+    "title": "Edit Task",
+    "description": "Description",
+    "initialDate": "Initial Date",
+    "endDate": "End Date",
+    "taskSelectPriority": "Select Priority",
+    "taskLowPriority": "Low",
+    "taskMediumPriority": "Medium",
+    "taskHighPriority": "High",
+    "taskSelectCategory": "Select Category",
+    "closeButton": "Close",
+
+    "messageFromSender": "Message from {{sender}} at {{date}}",
+
+    "activeUsers": "Active Users",
+    "inactiveUsers": "Inactive Users",
+    "tasksNumber": "Tasks Number",
+    "usersNumber": "Users Number",
+    "tasksPerUserNumber": "Tasks per User",
+    "tasksAvgCompletionTime": "Avg Completion Time",
+    "usersStats": "Users Stats",
+    "tasksStats": "Tasks Stats",
+    "categoryStats": "Category Stats",
+    "usersTimeline": "Users Timeline",
+    "tasksCompletionTime": "Tasks Completion Time",
+
+    "active": "Active",
+    "inactive": "Inactive",
+    "role": "Role",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "allUsers": "All Users",
+    "addUser": "Add User",
+
+    "createUser": "Create User",
+    "phone": "Phone",
+    "imageURL": "Image URL",
+    "selectUserRole": "Select User Role",
+
+    "author": "Author",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "restore": "Restore",
+    "categoriesTable": "Categories Table",
+    "addCategory": "Add Category",
+    "editCategory": "Edit Category",
+
+    "totalTasks": "Total Tasks",
+    "editProfile": "Edit Profile",
+    "profile": "Profile",
+    "updateRole": "Update Role",
+    "updatePassword": "Update Password",
+
+    "updateUserRole": "Update User Role",
+    "selectRole": "Select Role",
+    "saveButton": "Save",
+    "inactiveTasksTable": "Inactive Tasks Table",
+
+    "updateTokenValidty": "Update Token Validity",
+    "selectNewTokenValidity": "Select new token validity",
+
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "showPassword": "Show Password",
+
+    "scrum": "Scrum",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "categories": "Categories",
+    "myProfile": "My Profile",
+    "inactiveTasks": "Inactive Tasks",
+
+    "Select Language": "Select Language",
+
+    "signIn": "Sign In",
+    "enterUsername": "Enter Username",
+    "enterPassword": "Enter Password",
+    "forgotPassword": "Forgot Password?",
+
+    "recoverPassword": "Recover Password",
+    "enterEmail": "Enter Email",
+    "backToSignIn": "Back to Sign In",
+
+    "welcome": "Welcome!",
+    "welcomeText": "AgileUp, the best way to manage your tasks and projects."
+
+}

@@ -8,6 +8,7 @@ import {
   Button,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 import useTasksStore from "store/useTasksStore.jsx";
 import useAllUsersStore from "store/useAllUsersStore.jsx";
@@ -22,6 +23,8 @@ import DynamicTable from "components/Dynamic Table/dynamic-table";
 import { useEffect, useState } from "react";
 
 function InactiveTasksTable() {
+  const { t, i18n } = useTranslation();
+
   const [loading, setLoading] = useState(true);
 
   const deleteTask = useTasksStore((state) => state.deleteTaskPerma);
@@ -48,13 +51,13 @@ function InactiveTasksTable() {
   const columns = [
     {
       dataField: "title",
-      text: "Title",
+      text: t("title"),
       filter: textFilter(),
       sort: true,
     },
     {
       dataField: "description",
-      text: "Description",
+      text: t("description"),
       formatter: (cell, row) => {
         return (
           <div
@@ -72,20 +75,20 @@ function InactiveTasksTable() {
     },
     {
       dataField: "initialDate",
-      text: "Initial Date",
+      text: t("initialDate"),
     },
     {
       dataField: "endDate",
-      text: "Final Date",
+      text: t("endDate"),
     },
     {
       dataField: "author.username",
-      text: "Author",
+      text: t("author"),
     },
 
     {
       dataField: "idCategory",
-      text: "Actions",
+      text: t("actions"),
       formatter: (cell, row) => {
         return (
           <div style={{ display: "flex", flexDirection: "column" }}>
@@ -95,7 +98,7 @@ function InactiveTasksTable() {
               size="sm"
               onClick={() => restoreTask(row.id)}
             >
-              Restore
+              {t("restore")}
             </Button>
             <Button
               className="btn-round"
@@ -104,7 +107,7 @@ function InactiveTasksTable() {
               size="sm"
               onClick={() => deleteTask(row.id)}
             >
-              Delete
+              {t("delete")}
             </Button>
           </div>
         );
@@ -124,7 +127,7 @@ function InactiveTasksTable() {
                 <Col md="10">
                   <CardHeader>
                     <CardTitle tag="h4" className="all-users-table-tittle">
-                      Inactive Tasks Table
+                    {t("inactiveTasksTable")}
                     </CardTitle>
                   </CardHeader>
                 </Col>

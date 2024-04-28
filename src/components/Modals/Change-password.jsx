@@ -1,4 +1,5 @@
 import { forwardRef, useImperativeHandle, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import Modal from "react-bootstrap/Modal";
 
@@ -16,6 +17,8 @@ import {
 import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
 const ChangePassword = forwardRef((props, ref) => {
+  const { t, i18n } = useTranslation();
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
@@ -45,7 +48,7 @@ const ChangePassword = forwardRef((props, ref) => {
         centered
       >
         <Modal.Header>
-          <Modal.Title>Update Password</Modal.Title>
+          <Modal.Title>{t("updatePassword")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -53,7 +56,7 @@ const ChangePassword = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Current Password</label>
+                    <label>{t("currentPassword")}</label>
                     <Input
                       type={showPassword ? "text" : "password"}
                       value={currentPassword}
@@ -65,7 +68,7 @@ const ChangePassword = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>New Password</label>
+                    <label>{t("newPassword")}</label>
                     <Input
                       type={showPassword ? "text" : "password"}
                       value={newPassword}
@@ -77,7 +80,7 @@ const ChangePassword = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Confirm New Password</label>
+                    <label>{t("confirmPassword")}</label>
                     <Input
                       type={showPassword ? "text" : "password"}
                       value={confirmNewPassword}
@@ -94,7 +97,7 @@ const ChangePassword = forwardRef((props, ref) => {
                     onChange={(e) => setShowPassword(e.target.checked)}
                     
                   />{" "}
-                  Show password
+                  {t("showPassword")}
                 </Label>
               </FormGroup>
             </Form>
@@ -102,7 +105,7 @@ const ChangePassword = forwardRef((props, ref) => {
         </Modal.Body>
         <Modal.Footer>
           <Button color="danger" onClick={handleClose}>
-            Close
+          {t("closeButton")}
           </Button>
           <Button
             color="primary"
@@ -117,7 +120,7 @@ const ChangePassword = forwardRef((props, ref) => {
                 );
             }}
           >
-            Save Changes
+            {t("saveButton")}
           </Button>
         </Modal.Footer>
       </Modal>

@@ -30,6 +30,8 @@ import "react-toastify/dist/ReactToastify.css";
 import AdminLayout from "layouts/Admin.jsx";
 import AuthLayout from "layouts/Auth.jsx";
 
+import './i18n';
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(

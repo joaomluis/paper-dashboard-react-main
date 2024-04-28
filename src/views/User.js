@@ -17,6 +17,7 @@
 
 */
 import React, { useEffect, useState, useRef } from "react";
+import { useTranslation } from 'react-i18next';
 import { useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -60,6 +61,8 @@ import ResendVerification from "components/Modals/Resend-verification-mail.jsx";
 import Chat from "components/Chat/Chat.jsx";
 
 function User() {
+  const { t, i18n } = useTranslation();
+
   const usernameFromStore = useUserStore((state) => state.username);
   const userType = useUserStore((state) => state.userType);
   console.log(userType);
@@ -369,24 +372,24 @@ function User() {
                   <Row>
                     <Col className="ml-auto" md="3">
                       <p>
-                        Total tasks: {statistics ? statistics.numberOfTasks : 0}
+                      {t("totalTasks")}: {statistics ? statistics.numberOfTasks : 0}
                       </p>
                     </Col>
                     <Col className="ml-auto" md="3">
                       <p>
-                        To do tasks:{" "}
+                      {t("toDo")}:{" "}
                         {statistics ? statistics.numberOfToDoTasks : 0}
                       </p>
                     </Col>
                     <Col className="ml-auto" md="3">
                       <p>
-                        Doing tasks:{" "}
+                      {t("doing")}:{" "}
                         {statistics ? statistics.numberOfDoingTasks : 0}
                       </p>
                     </Col>
                     <Col className="ml-auto" md="3">
                       <p>
-                        Done tasks:{" "}
+                      {t("done")}:{" "}
                         {statistics ? statistics.numberOfDoneTasks : 0}
                       </p>
                     </Col>
@@ -402,9 +405,9 @@ function User() {
                   <Col md="6">
                     <CardTitle tag="h5">
                       {userType === "product_owner"
-                        ? "Edit Profile"
-                        : "Profile"}
-                      {!isOwner ||
+                        ? t("editProfile") 
+                        : t("profile")}
+                      {!isOwner &&
                         (userType === "product_owner" && (
                           <FontAwesomeIcon
                             icon={faPen}
@@ -453,7 +456,7 @@ function User() {
                   <Row>
                     <Col className="pr-1" md="6">
                       <FormGroup>
-                        <label>First Name</label>
+                        <label>{t("firstName")}</label>
                         <Input
                           type="text"
                           value={updateFirstName}
@@ -464,7 +467,7 @@ function User() {
                     </Col>
                     <Col className="pl-1" md="6">
                       <FormGroup>
-                        <label>Last Name</label>
+                        <label>{t("lastName")}</label>
                         <Input
                           type="text"
                           value={updateLastName}
@@ -477,7 +480,7 @@ function User() {
                   <Row>
                     <Col className="pr-1" md="6">
                       <FormGroup>
-                        <label>Image URL</label>
+                        <label>{t("imageURL")}</label>
                         <Input
                           type="text"
                           value={updateImgUrl}
@@ -488,7 +491,7 @@ function User() {
                     </Col>
                     <Col className="pl-1" md="6">
                       <FormGroup>
-                        <label>Phone Number</label>
+                        <label>{t("phone")}</label>
                         <Input
                           type="text"
                           value={updatePhone}
@@ -515,7 +518,7 @@ function User() {
                               }
                             }}
                           >
-                            Update Profile
+                            {t("editProfile")}
                           </Button>
                         </div>
                       </Col>
@@ -533,7 +536,7 @@ function User() {
                                 changeUserRoleRef.current.handleShow()
                               }
                             >
-                              Change Role
+                              {t("updateRole")}
                             </Button>
                           ) : (
                             <Button
@@ -543,7 +546,7 @@ function User() {
                                 changePasswordRef.current.handleShow()
                               }
                             >
-                              Update Password
+                              {t("updatePassword")}
                             </Button>
                           )}
                         </div>

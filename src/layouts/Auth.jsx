@@ -19,6 +19,7 @@ import React from "react";
 import { useLocation, Route, Routes, Navigate } from "react-router-dom";
 // reactstrap components
 import { Container, Row, Col } from "reactstrap";
+import { useTranslation } from 'react-i18next';
 
 import '../assets/css/auth-layout.css'
 
@@ -28,6 +29,8 @@ import AuthFooter from "components/Footer/AuthFooter";
 import routes from "routes.js";
 
 const Auth = (props) => {
+  const { t, i18n } = useTranslation();
+
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -64,9 +67,9 @@ const Auth = (props) => {
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
-                  <h1 className="text-white">Welcome!</h1>
+                  <h1 className="text-white">{t("welcome")}</h1>
                   <p className="text-lead text-light" style={{fontSize:"17px"}}>
-                    Agile-Up, the best agile project management tool.
+                  {t("welcomeText")}
                   </p>
                 </Col>
               </Row>

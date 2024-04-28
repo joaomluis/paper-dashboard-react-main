@@ -1,6 +1,7 @@
 import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
@@ -10,6 +11,8 @@ import { Button, FormGroup, Row, Col, Container } from "reactstrap";
 import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
 const ChangeTokenTime = forwardRef((props, ref) => {
+  const { t, i18n } = useTranslation();
+  
   const [show, setShow] = useState(false);
   const [selectedRole, setSelectedRole] = useState('');
   const { username } = useParams();
@@ -45,7 +48,7 @@ const ChangeTokenTime = forwardRef((props, ref) => {
         centered
       >
         <Modal.Header>
-          <Modal.Title>Update User Role</Modal.Title>
+          <Modal.Title>{t("updateUserRole")}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Container>
@@ -53,7 +56,7 @@ const ChangeTokenTime = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Select new role</label>
+                    <label>{t("selectRole")}</label>
                   </FormGroup>
                 </Col>
               </Row>
@@ -73,10 +76,10 @@ const ChangeTokenTime = forwardRef((props, ref) => {
         </Modal.Body>
         <Modal.Footer>
           <Button color="danger" onClick={handleClose}>
-            Close
+          {t("closeButton")}
           </Button>
           <Button color="primary" onClick={handleUpdateRole}>
-            Save Changes
+          {t("saveButton")}
           </Button>
         </Modal.Footer>
       </Modal>

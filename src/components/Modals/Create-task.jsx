@@ -22,7 +22,11 @@ import useCategoriesStore from "../../store/useCategoriesStore";
 import useTasksStore from "../../store/useTasksStore";
 import useAllUsersStore from "../../store/useAllUsersStore";
 
+import React, { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
+
 const CreateTask = forwardRef((props, ref) => {
+  const { t, i18n } = useTranslation();
   const { task } = props;
 
   const [show, setShow] = useState(false);
@@ -54,7 +58,7 @@ const CreateTask = forwardRef((props, ref) => {
     }
   }, [show, task]);
 
-  const modalTitle = task ? "Edit Task" : "Create Task";
+  const modalTitle = task ? t('editTaskTitle') : t('createTaskTitle');
 
   const handleClose = () => {
     setTitleValue("");
@@ -134,7 +138,7 @@ const CreateTask = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Title</label>
+                    <label>{t('title')}</label>
                     <Input
                       type="text"
                       value={titleValue}
@@ -146,7 +150,7 @@ const CreateTask = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Description</label>
+                    <label>{t('description')}</label>
                     <Input
                       name="text"
                       type="textarea"
@@ -159,7 +163,7 @@ const CreateTask = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="6">
                   <FormGroup>
-                    <label>Initial Date</label>
+                    <label>{t('initialDate')}</label>
                     <Input
                       id="exampleDate"
                       name="date"
@@ -171,7 +175,7 @@ const CreateTask = forwardRef((props, ref) => {
                 </Col>
                 <Col className="pr-1" md="6">
                   <FormGroup>
-                    <label>End Date</label>
+                    <label>{t('endDate')}</label>
                     <Input
                       id="exampleDate"
                       name="date"
@@ -185,7 +189,7 @@ const CreateTask = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <Label for="priority-low">Select task priority</Label>
+                    <Label for="priority-low">{t('taskSelectPriority')}</Label>
                   </FormGroup>
                 </Col>
               </Row>
@@ -200,7 +204,7 @@ const CreateTask = forwardRef((props, ref) => {
                         style={{ marginRight: "10px" }}
                         onChange={(e) => setSelectedOption(e.target.value)}
                       />{" "}
-                      Low
+                      {t('taskLowPriority')}
                     </label>
                   </FormGroup>
                 </Col>
@@ -214,7 +218,7 @@ const CreateTask = forwardRef((props, ref) => {
                         style={{ marginRight: "10px" }}
                         onChange={(e) => setSelectedOption(e.target.value)}
                       />{" "}
-                      Medium
+                      {t('taskMediumPriority')}
                     </label>
                   </FormGroup>
                 </Col>
@@ -228,7 +232,7 @@ const CreateTask = forwardRef((props, ref) => {
                         style={{ marginRight: "10px" }}
                         onChange={(e) => setSelectedOption(e.target.value)}
                       />{" "}
-                      High
+                      {t('taskHighPriority')}
                     </label>
                   </FormGroup>
                 </Col>
@@ -249,7 +253,7 @@ const CreateTask = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <label>Select task category</label>
+                    <label>{t('taskSelectCategory')}</label>
                   </FormGroup>
                 </Col>
               </Row>
@@ -263,7 +267,7 @@ const CreateTask = forwardRef((props, ref) => {
                       onChange={(e) => setCategoryValue(e.target.value)}
                     >
                       <option value="" disabled>
-                        Select a category
+                      {t('taskSelectCategory')}
                       </option>
                       {categories.map((category) => (
                         <option
@@ -282,7 +286,7 @@ const CreateTask = forwardRef((props, ref) => {
         </Modal.Body>
         <Modal.Footer>
           <Button color="danger" onClick={handleClose}>
-            Close
+          {t('closeButton')}
           </Button>
           <Button color="primary" onClick={handleSubmit}>
             {modalTitle}

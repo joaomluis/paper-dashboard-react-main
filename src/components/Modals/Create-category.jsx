@@ -13,12 +13,15 @@ import {
   Label,
 } from "reactstrap";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 import "../../assets/css/general-css.css";
 import useCategoriesStore from "../../store/useCategoriesStore.jsx";
 import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
 const CreateCategory = forwardRef((props, ref) => {
+  const { t, i18n } = useTranslation();
+
   const [show, setShow] = useState(false);
 
   const token = useAllUsersStore((state) => state.token);
@@ -43,12 +46,12 @@ const CreateCategory = forwardRef((props, ref) => {
       setTitleValue(categoryData.title);
       setDescriptionValue(categoryData.description);
       setCurrentCategory(categoryData);
-      setModalFunction("Edit Category");
+      setModalFunction(t("editCategory"));
     } else {
       setTitleValue("");
       setDescriptionValue("");
       setCurrentCategory(null);
-      setModalFunction("Add Category");
+      setModalFunction(t("addCategory"));
     }
 
     setShow(true);
@@ -105,7 +108,7 @@ const CreateCategory = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <Label>Title</Label>
+                    <Label>{t("title")}</Label>
                     <Input
                       type="text"
                       value={titleValue}
@@ -117,7 +120,7 @@ const CreateCategory = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <Label>Description</Label>
+                    <Label>{t("description")}</Label>
                     <Input
                       name="text"
                       type="textarea"
@@ -132,7 +135,7 @@ const CreateCategory = forwardRef((props, ref) => {
         </Modal.Body>
         <Modal.Footer>
           <Button color="danger" onClick={handleClose}>
-            Close
+          {t("closeButton")}
           </Button>
           <Button color="primary" onClick={handleCreateOrUpdateCategory}>
             {modalFunction}

@@ -20,7 +20,12 @@ import CreateTask from "../components/Modals/Create-task.jsx";
 import Task from "../components/Task/Task.jsx";
 import TaskWebsocket from "../assets/websocket/tasksWebsocket.js";
 
+import React, { Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
+
 function SrumPage() {
+  const { t, i18n } = useTranslation();
+
   const getActiveTasks = useTasksStore((state) => state.getActiveTasks);
   const tasks = useTasksStore((state) => state.activeTasksdata);
   const updateTaskState = useTasksStore((state) => state.updateTaskState);
@@ -67,7 +72,7 @@ function SrumPage() {
                       style={{ backgroundColor: "#3f74a6" }}
                       onClick={() => createTaskRef.current.handleShow()}
                     >
-                      <i className="fa fa-plus" /> Add Task
+                      <i className="fa fa-plus" /> {t('addTask')}
                     </Button>
                   </Col>
                 </Row>
@@ -87,7 +92,7 @@ function SrumPage() {
                       }}
                     >
                       <div>
-                        <h3 className="column-header">To Do</h3>
+                        <h3 className="column-header">{t('toDo')}</h3>
                         <hr />
                       </div>
                       <div className="column" id="column1">
@@ -113,7 +118,7 @@ function SrumPage() {
                       }}
                     >
                       <div>
-                        <h3 className="column-header">Doing</h3>
+                        <h3 className="column-header">{t('doing')}</h3>
                         <hr />
                       </div>
                       <div className="column" id="column2">
@@ -139,7 +144,7 @@ function SrumPage() {
                       }}
                     >
                       <div>
-                        <h3 className="column-header">Done</h3>
+                        <h3 className="column-header">{t('done')}</h3>
                         <hr />
                       </div>
                       <div className="column" id="column3">

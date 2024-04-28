@@ -7,7 +7,9 @@ import {
   Col,
   Button,
 } from "reactstrap";
+
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 import { useRef } from "react";
 
@@ -25,6 +27,8 @@ import CreateCategory from "components/Modals/Create-category.jsx";
 import { useEffect, useState } from "react";
 
 function CategoriesTable() {
+  const { t, i18n } = useTranslation();
+  
   const [loading, setLoading] = useState(true);
 
   const allCategories = useCategoriesStore((state) => state.categories);
@@ -61,13 +65,13 @@ function CategoriesTable() {
   const columns = [
     {
       dataField: "title",
-      text: "Title",
+      text: t("title"),
       filter: textFilter(),
       sort: true,
     },
     {
       dataField: 'description',
-      text: 'Description',
+      text: t("description"),
       formatter: (cell, row) => {
         return (
           <div style={{ 
@@ -83,12 +87,12 @@ function CategoriesTable() {
     },
     {
       dataField: "author.username",
-      text: "Author",
+      text: t("author"),
     },
 
     {
       dataField: "idCategory",
-      text: "Actions",
+      text: t("actions"),
       formatter: (cell, row) => {
         return (
           <div style={{ display: "flex", flexDirection: "column" }}>
@@ -98,7 +102,7 @@ function CategoriesTable() {
               size="sm"
               onClick={() => changeCreateCategoryRef.current.handleShow(row)}
             >
-              Edit
+              {t("edit")}
             </Button>
             <Button
               className="btn-round"
@@ -109,7 +113,7 @@ function CategoriesTable() {
                 useCategoriesStore.getState().deleteCategory(cell);
               }}
             >
-              Delete
+              {t("delete")}
             </Button>
           </div>
         );
@@ -132,7 +136,7 @@ function CategoriesTable() {
                 <Col md="10">
                   <CardHeader>
                     <CardTitle tag="h4" className="all-users-table-tittle">
-                      Categories Table
+                    {t("categoriesTable")}
                     </CardTitle>
                   </CardHeader>
                 </Col>
@@ -145,7 +149,7 @@ function CategoriesTable() {
                     style={{ backgroundColor: "#3f74a6" }}
                     onClick={() => changeCreateCategoryRef.current.handleShow()}
                   >
-                    Add Category
+                    {t("addCategory")}
                   </Button>
                 </Col>
               </Row>
