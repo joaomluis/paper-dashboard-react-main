@@ -660,7 +660,7 @@ const useAllUsersStore = create((set, get) => {
           theme: "colored",
         });
 
-        return Promise.resolve();
+        return Promise.resolve({ success: true });
       } else {
         if (response.status === 401) {
          
@@ -676,7 +676,10 @@ const useAllUsersStore = create((set, get) => {
           transition: Slide,
           theme: "colored",
         });
+
+        return Promise.resolve({ success: false });
       }
+    
     } catch (error) {
       console.log("Something went wrong");
     }

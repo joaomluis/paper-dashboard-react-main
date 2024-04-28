@@ -64,7 +64,7 @@ const Login = () => {
 
         setUser(data);
 
-        navigate("/agile-up/dashboard");
+        navigate("/agile-up/scrum");
       } else if (response.status === 404) {
         console.log("Wrong username or password");
       } else {
@@ -121,10 +121,6 @@ const Login = () => {
                   <Link to="/auth/recover">
                     {" "}
                     <a>Forgot Password?</a>{" "}
-                  </Link>
-                  <Link to="/auth/register">
-                    {" "}
-                    <a>Sign up</a>{" "}
                   </Link>
                 </div>
               </form>

@@ -65,8 +65,8 @@ const Auth = (props) => {
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
                   <h1 className="text-white">Welcome!</h1>
-                  <p className="text-lead text-light">
-                    Test
+                  <p className="text-lead text-light" style={{fontSize:"17px"}}>
+                    Agile-Up, the best agile project management tool.
                   </p>
                 </Col>
               </Row>

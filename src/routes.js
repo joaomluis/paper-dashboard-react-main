@@ -21,7 +21,6 @@ import Dashboard from "views/Dashboard.jsx";
 import UserPage from "views/User.js";
 import UsersTable from "views/usersTable.jsx";
 import Login from "views/login.jsx";
-import Register from "views/register.jsx";
 import RecoverPassword from "views/RecoverPassword.jsx";
 import ConfirmAccount from "views/Confirm-Account.jsx";
 import CategoriesTables from "views/Categories-Table.jsx";
@@ -35,6 +34,7 @@ var routes = [
     icon: "nc-icon nc-paper",
     component: <ScrumPage />,
     layout: "/agile-up",
+    roles: ["product_owner", "scrum_master", "developer"],
   },
   {
     path: "/dashboard",
@@ -42,6 +42,7 @@ var routes = [
     icon: "nc-icon nc-bank",
     component: <Dashboard />,
     layout: "/agile-up",
+    roles: ["product_owner"],
   },
   {
     path: "/user-page",
@@ -50,6 +51,7 @@ var routes = [
     component: <UserPage />,
     layout: "/agile-up",
     hidden: true,
+    roles: ["product_owner", "scrum_master", "developer"],
   },
 
   {
@@ -58,6 +60,7 @@ var routes = [
     icon: "nc-icon nc-single-02",
     component: <UsersTable />,
     layout: "/agile-up",
+    roles: ["product_owner", "scrum_master", "developer"],
   },
   {
     path: "/categories",
@@ -65,6 +68,7 @@ var routes = [
     icon: "nc-icon nc-bullet-list-67",
     component: <CategoriesTables />,
     layout: "/agile-up",
+    roles: ["product_owner"],
   },
   {
     path: "/inactive-tasks",
@@ -72,6 +76,7 @@ var routes = [
     icon: "nc-icon nc-simple-remove",
     component: <InactiveTasksTable />,
     layout: "/agile-up",
+    roles: ["product_owner", "scrum_master"],
   },
   {
     path: "/login",
@@ -79,13 +84,7 @@ var routes = [
     icon: "nc-icon nc-single-02",
     component: <Login />,
     layout: "/auth",
-  },
-
-  {
-    path: "/register",
-    name: "Register",
-    component: <Register />,
-    layout: "/auth",
+    roles: [],
   },
 
   {
@@ -93,6 +92,7 @@ var routes = [
     name: "Recover Password",
     component: <RecoverPassword />,
     layout: "/auth",
+    roles: [],
   },
 
   {
@@ -101,6 +101,7 @@ var routes = [
     component: <UserPage />,
     layout: "/agile-up",
     hidden: true,
+    roles: ["product_owner", "scrum_master", "developer"],
   },
 
   {
@@ -108,6 +109,7 @@ var routes = [
     name: "Confirm Account",
     component: <ConfirmAccount />,
     layout: "/auth",
+    roles: [],
   }
 
   

@@ -25,7 +25,6 @@ const useNotificationsWebSocket = (username) => {
     ws.current.onmessage = (e) => {
       const notification = JSON.parse(e.data);
       setNotifications(notification);
-      console.log("notifications", notifications);
       
       
     };

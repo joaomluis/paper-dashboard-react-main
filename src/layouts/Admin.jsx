@@ -25,6 +25,8 @@ import DemoNavbar from "components/Navbars/DemoNavbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
+import useUserStore from "store/useUserStore";
+
 import routes from "routes.js";
 
 var ps;
@@ -54,10 +56,15 @@ const Admin = (props) => {
     document.scrollingElement.scrollTop = 0;
   }, [location]);
 
-  const sidebarRoutes = routes.filter(
-    (route) => route.layout !== "/auth" && !route.hidden
-  );
-  const routeComponents = routes.filter((route) => route.layout !== "/auth");
+  const userType = useUserStore((state) => state.userType);
+
+  const sidebarRoutes = routes.filter((route) => {
+    return route.layout !== "/auth" && route.roles.includes(userType) && !route.hidden;
+  });
+
+  const routeComponents = routes.filter((route) => {
+    return route.layout !== "/auth" && route.roles.includes(userType);
+  });
 
   return (
     <div className="wrapper">

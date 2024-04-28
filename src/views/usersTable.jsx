@@ -11,6 +11,7 @@ import {
 import { useRef } from "react";
 
 import useAllUsersStore from "store/useAllUsersStore.jsx";
+import useUserStore from "store/useUserStore.jsx";
 import Spinner from "../components/Spinner/Spinner.jsx";
 import { textFilter } from "react-bootstrap-table2-filter";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +34,8 @@ function UsersTable() {
   const getAllUsers = useAllUsersStore((state) => state.getAllUsers);
 
   const token = useAllUsersStore((state) => state.token);
+
+  const userType = useUserStore((state) => state.userType);
 
 
   useEffect(() => {
@@ -65,6 +68,16 @@ function UsersTable() {
     {
       dataField: "active",
       text: "Active Status",
+      formatter: (cell) => {
+        switch (cell) {
+          case true:
+            return "Active";
+          case false:
+            return "Inactive";
+          default:
+            return cell;
+        }
+      }
     },
     {
       dataField: "username",
@@ -130,6 +143,7 @@ function UsersTable() {
                     </CardTitle>
                   </CardHeader>
                 </Col>
+                {userType === "product_owner" ?(
                 <Col
                   md="2"
                   className="d-flex justify-content-center align-items-center"
@@ -142,6 +156,7 @@ function UsersTable() {
                     Add User
                   </Button>
                 </Col>
+                ) : null}
               </Row>
 
               <CardBody>

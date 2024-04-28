@@ -37,7 +37,11 @@ import routes from "routes.js";
 import { useRef } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear, faRightFromBracket, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faGear,
+  faRightFromBracket,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 import ChangeTokenTime from "../Modals/Change-token-time.jsx";
 
@@ -47,6 +51,8 @@ import notificationsWebsocket from "../../assets/websocket/notificationWebsocket
 
 function Header(props) {
   const username = useUserStore((state) => state.username);
+  const typeOfUser = useUserStore((state) => state.userType);
+  
 
   const ws = notificationsWebsocket(username);
 
@@ -164,134 +170,141 @@ function Header(props) {
 
   return (
     <>
-
-    <ChangeTokenTime ref={changeTokenTimeRef} />
-    <Navbar
-      color={
-        location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
-      }
-      expand="lg"
-      className={
-        location.pathname.indexOf("full-screen-maps") !== -1
-          ? "navbar-absolute fixed-top"
-          : "navbar-absolute fixed-top " +
-            (color === "transparent" ? "navbar-transparent " : "")
-      }
-    >
-      <Container fluid>
-        <div className="navbar-wrapper">
-          <div className="navbar-toggle">
-            <button
-              type="button"
-              ref={sidebarToggle}
-              className="navbar-toggler"
-              onClick={() => openSidebar()}
-            >
-              <span className="navbar-toggler-bar bar1" />
-              <span className="navbar-toggler-bar bar2" />
-              <span className="navbar-toggler-bar bar3" />
-            </button>
-          </div>
-          <NavbarBrand>{getBrand()}</NavbarBrand>
-        </div>
-        <NavbarToggler onClick={toggle}>
-          <span className="navbar-toggler-bar navbar-kebab" />
-          <span className="navbar-toggler-bar navbar-kebab" />
-          <span className="navbar-toggler-bar navbar-kebab" />
-        </NavbarToggler>
-        <Collapse isOpen={isOpen} navbar className="justify-content-end">
-          <Nav navbar>
-            <Dropdown
-              nav
-              isOpen={dropdownOpen}
-              toggle={(e) => dropdownToggle(e)}
-            >
-              <DropdownToggle caret nav>
-                {unreadCount > 0 && (
-                  <Badge color="danger" pill>
-                    {unreadCount}
-                  </Badge>
-                )}
-                <i className="nc-icon nc-bell-55" />
-
-                <p>
-                  <span className="d-lg-none d-md-block"></span>
-                </p>
-              </DropdownToggle>
-              <DropdownMenu
-                right
-                style={{ maxHeight: "150px", overflow: "auto" }}
+      <ChangeTokenTime ref={changeTokenTimeRef} />
+      <Navbar
+        color={
+          location.pathname.indexOf("full-screen-maps") !== -1 ? "dark" : color
+        }
+        expand="lg"
+        className={
+          location.pathname.indexOf("full-screen-maps") !== -1
+            ? "navbar-absolute fixed-top"
+            : "navbar-absolute fixed-top " +
+              (color === "transparent" ? "navbar-transparent " : "")
+        }
+      >
+        <Container fluid>
+          <div className="navbar-wrapper">
+            <div className="navbar-toggle">
+              <button
+                type="button"
+                ref={sidebarToggle}
+                className="navbar-toggler"
+                onClick={() => openSidebar()}
               >
-                {notifications.map((notification) => {
-                  const date = new Date(notification.timestamp);
+                <span className="navbar-toggler-bar bar1" />
+                <span className="navbar-toggler-bar bar2" />
+                <span className="navbar-toggler-bar bar3" />
+              </button>
+            </div>
+            <NavbarBrand>{getBrand()}</NavbarBrand>
+          </div>
+          <NavbarToggler onClick={toggle}>
+            <span className="navbar-toggler-bar navbar-kebab" />
+            <span className="navbar-toggler-bar navbar-kebab" />
+            <span className="navbar-toggler-bar navbar-kebab" />
+          </NavbarToggler>
+          <Collapse isOpen={isOpen} navbar className="justify-content-end">
+            <Nav navbar>
+              <Dropdown
+                nav
+                isOpen={dropdownOpen}
+                toggle={(e) => dropdownToggle(e)}
+              >
+                <DropdownToggle caret nav>
+                  {unreadCount > 0 && (
+                    <Badge color="danger" pill>
+                      {unreadCount}
+                    </Badge>
+                  )}
+                  <i className="nc-icon nc-bell-55" />
 
-                  const formattedDate = new Intl.DateTimeFormat("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  }).format(date);
+                  <p>
+                    <span className="d-lg-none d-md-block"></span>
+                  </p>
+                </DropdownToggle>
+                <DropdownMenu
+                  right
+                  style={{ maxHeight: "150px", overflow: "auto" }}
+                >
+                  {notifications.map((notification) => {
+                    const date = new Date(notification.timestamp);
 
-                  return (
-                    <DropdownItem
-                      key={notification.timestamp}
-                      className={
-                        notification.not_read ? "font-weight-bold" : ""
-                      }
-                      onClick={() => {
-                        navigate(`/agile-up/user/${notification.sender}`);
-                        markNotificationAsRead(notification.timestamp);
-                      }}
-                    >
-                      {`Message from ${notification.sender} at ${formattedDate}`}
-                    </DropdownItem>
-                  );
-                })}
-              </DropdownMenu>
-            </Dropdown>
-            <NavItem>
-              <Link to={"/agile-up/user-page"} className="nav-link btn-rotate">
-                <FontAwesomeIcon
-                  icon={faUser}
-                  size="lg"
-                  style={{ marginRight: "10px" }}
-                />
+                    const formattedDate = new Intl.DateTimeFormat("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }).format(date);
 
-                <p>
-                  <span className="d-lg-none d-md-block"></span>
-                  <span>{firstName}</span>
-                </p>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link className="nav-link btn-rotate" onClick={() => changeTokenTimeRef.current.handleShow()}>
-                <FontAwesomeIcon
-                  icon={faGear}
-                  size="lg"
-                  style={{ marginRight: "10px" }}
-                />
-                <p>
-                  <span className="d-lg-none d-md-block">Log out</span>
-                </p>
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link className="nav-link btn-rotate" onClick={logoutUser}>
-                <FontAwesomeIcon
-                  icon={faRightFromBracket}
-                  size="lg"
-                  style={{ marginRight: "10px" }}
-                />
-                <p>
-                  <span className="d-lg-none d-md-block">Log out</span>
-                </p>
-              </Link>
-            </NavItem>
-          </Nav>
-        </Collapse>
-      </Container>
-    </Navbar>
+                    return (
+                      <DropdownItem
+                        key={notification.timestamp}
+                        className={
+                          notification.not_read ? "font-weight-bold" : ""
+                        }
+                        onClick={() => {
+                          navigate(`/agile-up/user/${notification.sender}`);
+                          markNotificationAsRead(notification.timestamp);
+                        }}
+                      >
+                        {`Message from ${notification.sender} at ${formattedDate}`}
+                      </DropdownItem>
+                    );
+                  })}
+                </DropdownMenu>
+              </Dropdown>
+              <NavItem>
+                <Link
+                  to={"/agile-up/user-page"}
+                  className="nav-link btn-rotate"
+                >
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    size="lg"
+                    style={{ marginRight: "10px" }}
+                  />
+
+                  <p>
+                    <span className="d-lg-none d-md-block"></span>
+                    <span>{firstName}</span>
+                  </p>
+                </Link>
+              </NavItem>
+              {typeOfUser === "product_owner" ?(
+              <NavItem>
+                <Link
+                  className="nav-link btn-rotate"
+                  onClick={() => changeTokenTimeRef.current.handleShow()}
+                >
+                  <FontAwesomeIcon
+                    icon={faGear}
+                    size="lg"
+                    style={{ marginRight: "10px" }}
+                  />
+                  <p>
+                    <span className="d-lg-none d-md-block">Log out</span>
+                  </p>
+                </Link>
+              </NavItem>
+              ) : null}
+              <NavItem>
+                <Link className="nav-link btn-rotate" onClick={logoutUser}>
+                  <FontAwesomeIcon
+                    icon={faRightFromBracket}
+                    size="lg"
+                    style={{ marginRight: "10px" }}
+                  />
+                  <p>
+                    <span className="d-lg-none d-md-block">Log out</span>
+                  </p>
+                </Link>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Container>
+      </Navbar>
     </>
   );
 }

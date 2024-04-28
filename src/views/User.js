@@ -17,7 +17,7 @@
 
 */
 import React, { useEffect, useState, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPen,
@@ -61,6 +61,11 @@ import Chat from "components/Chat/Chat.jsx";
 
 function User() {
   const usernameFromStore = useUserStore((state) => state.username);
+  const userType = useUserStore((state) => state.userType);
+  console.log(userType);
+
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const token = useUserStore((state) => state.token);
   const { username: paramUsername } = useParams();
@@ -78,7 +83,7 @@ function User() {
 
   useEffect(() => {
     if (token === null) {
-      navigate('/auth/login');
+      navigate("/auth/login");
     }
   }, [token, navigate]);
 
@@ -215,11 +220,10 @@ function User() {
 
   useEffect(() => {
     const username = paramUsername || usernameFromStore;
-    taskStatistics(username).then(data => {
+    taskStatistics(username).then((data) => {
       setStatistics(data);
     });
   }, []);
-
 
   return (
     <>
@@ -228,111 +232,120 @@ function User() {
         <ChangeUserRole ref={changeUserRoleRef} />
         <ResendVerification ref={resendVerificationRef} />
 
-        <Row>
-          <Col md="7"></Col>
-          <Col md="5">
-            <Card className="card-user">
-              <CardHeader style={{ paddingTop: "0px" }}>
-                <Row>
-                  <Col md="2">
-                    <Button
-                      style={{ backgroundColor: "#3f74a6" }}
-                      className="btn-round add-user-button"
-                      color="primary"
-                      title="Resend confirmation email"
-                      size="sm"
-                      onClick={() => resendVerificationRef.current.handleShow()}
-                    >
-                      <FontAwesomeIcon
-                        icon={faEnvelopeCircleCheck}
-                        className="hoverable-icon"
-                      />
-                    </Button>
-                  </Col>
-                  <Col md="2">
-                    <Button
-                      style={{ backgroundColor: "#3f74a6" }}
-                      className="btn-round add-user-button"
-                      color="primary"
-                      title="Deactivate user"
-                      size="sm"
-                      onClick={() => softDeleteUser(paramUsername)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faUserSlash}
-                        className="hoverable-icon"
-                      />
-                    </Button>
-                  </Col>
-                  <Col md="2">
-                    <Button
-                      style={{ backgroundColor: "#3f74a6" }}
-                      className="btn-round add-user-button"
-                      color="primary"
-                      title="Reactivate user"
-                      size="sm"
-                      onClick={() => restoreUser(paramUsername)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faArrowRotateLeft}
-                        className="hoverable-icon"
-                      />
-                    </Button>
-                  </Col>
-                  <Col md="2">
-                    <Button
-                      style={{ backgroundColor: "#3f74a6" }}
-                      className="btn-round add-user-button"
-                      color="danger"
-                      title="Delete user"
-                      size="sm"
-                      onClick={() =>
-                        permaDeleteUser(paramUsername).then(() =>
-                          window.location.replace("/agile-up/users")
-                        )
-                      }
-                    >
-                      <FontAwesomeIcon
-                        icon={faTrashCan}
-                        className="hoverable-icon"
-                      />
-                    </Button>
-                  </Col>
-                  <Col md="2">
-                    <Button
-                      style={{ backgroundColor: "#3f74a6" }}
-                      className="btn-round add-user-button"
-                      color="primary"
-                      title="Delete user tasks"
-                      size="sm"
-                      onClick={() => deleteAllUserTasks(paramUsername)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faClipboardList}
-                        className="hoverable-icon"
-                      />
-                    </Button>
-                  </Col>
-                  <Col md="2">
-                    <Button
-                      style={{ backgroundColor: "#3f74a6" }}
-                      className="btn-round add-user-button"
-                      color="primary"
-                      title="Open chat"
-                      size="sm"
-                      onClick={() => setShowChat(!showChat)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faMessage}
-                        className="hoverable-icon"
-                      />
-                    </Button>
-                  </Col>
-                </Row>
-              </CardHeader>
-            </Card>
-          </Col>
-        </Row>
+        {!currentPath.includes("user-page") && (
+          <Row>
+            <Col md={userType === "product_owner" ? "7" : "11"}></Col>
+            <Col md={userType === "product_owner" ? "5" : "1"}>
+              <Card className="card-user">
+                <CardHeader style={{ paddingTop: "0px" }}>
+                  <Row>
+                    {userType === "product_owner" && (
+                      <>
+                        <Col md="2">
+                          <Button
+                            style={{ backgroundColor: "#3f74a6" }}
+                            className="btn-round add-user-button"
+                            color="primary"
+                            title="Resend confirmation email"
+                            size="sm"
+                            onClick={() =>
+                              resendVerificationRef.current.handleShow()
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={faEnvelopeCircleCheck}
+                              className="hoverable-icon"
+                            />
+                          </Button>
+                        </Col>
+
+                        <Col md="2">
+                          <Button
+                            style={{ backgroundColor: "#3f74a6" }}
+                            className="btn-round add-user-button"
+                            color="primary"
+                            title="Deactivate user"
+                            size="sm"
+                            onClick={() => softDeleteUser(paramUsername)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faUserSlash}
+                              className="hoverable-icon"
+                            />
+                          </Button>
+                        </Col>
+                        <Col md="2">
+                          <Button
+                            style={{ backgroundColor: "#3f74a6" }}
+                            className="btn-round add-user-button"
+                            color="primary"
+                            title="Reactivate user"
+                            size="sm"
+                            onClick={() => restoreUser(paramUsername)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faArrowRotateLeft}
+                              className="hoverable-icon"
+                            />
+                          </Button>
+                        </Col>
+                        <Col md="2">
+                          <Button
+                            style={{ backgroundColor: "#3f74a6" }}
+                            className="btn-round add-user-button"
+                            color="danger"
+                            title="Delete user"
+                            size="sm"
+                            onClick={() =>
+                              permaDeleteUser(paramUsername).then(() =>
+                                window.location.replace("/agile-up/users")
+                              )
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={faTrashCan}
+                              className="hoverable-icon"
+                            />
+                          </Button>
+                        </Col>
+                        <Col md="2">
+                          <Button
+                            style={{ backgroundColor: "#3f74a6" }}
+                            className="btn-round add-user-button"
+                            color="primary"
+                            title="Delete user tasks"
+                            size="sm"
+                            onClick={() => deleteAllUserTasks(paramUsername)}
+                          >
+                            <FontAwesomeIcon
+                              icon={faClipboardList}
+                              className="hoverable-icon"
+                            />
+                          </Button>
+                        </Col>
+                      </>
+                    )}
+                    <Col md="2">
+                      <Button
+                        style={{ backgroundColor: "#3f74a6" }}
+                        className="btn-round add-user-button"
+                        color="primary"
+                        title="Open chat"
+                        size="sm"
+                        onClick={() => setShowChat(!showChat)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faMessage}
+                          className="hoverable-icon"
+                        />
+                      </Button>
+                    </Col>
+                  </Row>
+                </CardHeader>
+              </Card>
+            </Col>
+          </Row>
+        )}
         <Row>
           <Col md="4">
             <Card className="card-user">
@@ -361,17 +374,20 @@ function User() {
                     </Col>
                     <Col className="ml-auto" md="3">
                       <p>
-                        To do tasks: {statistics ? statistics.numberOfToDoTasks : 0}
+                        To do tasks:{" "}
+                        {statistics ? statistics.numberOfToDoTasks : 0}
                       </p>
                     </Col>
                     <Col className="ml-auto" md="3">
                       <p>
-                        Doing tasks: {statistics ? statistics.numberOfDoingTasks : 0}
+                        Doing tasks:{" "}
+                        {statistics ? statistics.numberOfDoingTasks : 0}
                       </p>
                     </Col>
                     <Col className="ml-auto" md="3">
                       <p>
-                        Done tasks: {statistics ? statistics.numberOfDoneTasks : 0}
+                        Done tasks:{" "}
+                        {statistics ? statistics.numberOfDoneTasks : 0}
                       </p>
                     </Col>
                   </Row>
@@ -385,14 +401,17 @@ function User() {
                 <Row>
                   <Col md="6">
                     <CardTitle tag="h5">
-                      Edit Profile{" "}
-                      {!isOwner && (
-                        <FontAwesomeIcon
-                          icon={faPen}
-                          className="hoverable-icon"
-                          onClick={() => setIsOwner(true)}
-                        />
-                      )}
+                      {userType === "product_owner"
+                        ? "Edit Profile"
+                        : "Profile"}
+                      {!isOwner ||
+                        (userType === "product_owner" && (
+                          <FontAwesomeIcon
+                            icon={faPen}
+                            className="hoverable-icon"
+                            onClick={() => setIsOwner(true)}
+                          />
+                        ))}
                     </CardTitle>
                   </Col>
                   <Col md="3"></Col>
@@ -480,55 +499,57 @@ function User() {
                     </Col>
                   </Row>
 
-                  <Row>
-                    <Col className="pl-3" md="6">
-                      <div className="update ml-auto mr-auto">
-                        <Button
-                          className="btn-round"
-                          color="primary"
-                          disabled={!isOwner}
-                          onClick={(e) => {
-                            if (!paramUsername) {
-                              handleUpdateProfile(e);
-                            } else {
-                              handleUpdateOtherUserProfile(e);
-                            }
-                          }}
-                        >
-                          Update Profile
-                        </Button>
-                      </div>
-                    </Col>
-                    <Col
-                      className="pl-3"
-                      md="6"
-                      style={{ display: "flex", justifyContent: "flex-end" }}
-                    >
-                      <div className="update">
-                        {showChangeRole ? (
+                  {userType === "product_owner" && (
+                    <Row>
+                      <Col className="pl-3" md="6">
+                        <div className="update ml-auto mr-auto">
                           <Button
                             className="btn-round"
-                            color="danger"
-                            onClick={() =>
-                              changeUserRoleRef.current.handleShow()
-                            }
+                            color="primary"
+                            disabled={!isOwner}
+                            onClick={(e) => {
+                              if (!paramUsername) {
+                                handleUpdateProfile(e);
+                              } else {
+                                handleUpdateOtherUserProfile(e);
+                              }
+                            }}
                           >
-                            Change Role
+                            Update Profile
                           </Button>
-                        ) : (
-                          <Button
-                            className="btn-round"
-                            color="danger"
-                            onClick={() =>
-                              changePasswordRef.current.handleShow()
-                            }
-                          >
-                            Update Password
-                          </Button>
-                        )}
-                      </div>
-                    </Col>
-                  </Row>
+                        </div>
+                      </Col>
+                      <Col
+                        className="pl-3"
+                        md="6"
+                        style={{ display: "flex", justifyContent: "flex-end" }}
+                      >
+                        <div className="update">
+                          {showChangeRole ? (
+                            <Button
+                              className="btn-round"
+                              color="danger"
+                              onClick={() =>
+                                changeUserRoleRef.current.handleShow()
+                              }
+                            >
+                              Change Role
+                            </Button>
+                          ) : (
+                            <Button
+                              className="btn-round"
+                              color="danger"
+                              onClick={() =>
+                                changePasswordRef.current.handleShow()
+                              }
+                            >
+                              Update Password
+                            </Button>
+                          )}
+                        </div>
+                      </Col>
+                    </Row>
+                  )}
                 </Form>
               </CardBody>
             </Card>

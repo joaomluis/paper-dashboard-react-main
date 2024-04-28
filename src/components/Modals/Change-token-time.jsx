@@ -10,28 +10,34 @@ import useAllUsersStore from "../../store/useAllUsersStore.jsx";
 
 const ChangeUserRole = forwardRef((props, ref) => {
   const [show, setShow] = useState(false);
-  const [selectedRole, setSelectedRole] = useState('');
-
+  const [selectedRole, setSelectedRole] = useState("");
 
   const token = useAllUsersStore((state) => state.token);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (token === null) {
-      navigate('/auth/login');
+      navigate("/auth/login");
     }
   }, [token, navigate]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
- 
-
   useImperativeHandle(ref, () => ({
     handleShow,
   }));
 
   const udpateTokenTime = useAllUsersStore((state) => state.udpateTokenTime);
+
+  const handleSubmit = (selectedRole) => {
+    
+    udpateTokenTime(selectedRole).then((response) => {
+      if (response.success) {
+        handleClose();
+      }
+    });
+  };
 
   return (
     <>
@@ -57,7 +63,11 @@ const ChangeUserRole = forwardRef((props, ref) => {
               <Row>
                 <Col className="pr-1" md="12">
                   <FormGroup>
-                    <Form.Select size="lg"  value={selectedRole} onChange={e => setSelectedRole(e.target.value)}>
+                    <Form.Select
+                      size="lg"
+                      value={selectedRole}
+                      onChange={(e) => setSelectedRole(e.target.value)}
+                    >
                       <option value="5">5</option>
                       <option value="10">10</option>
                       <option value="15">15</option>
@@ -76,7 +86,7 @@ const ChangeUserRole = forwardRef((props, ref) => {
           <Button color="danger" onClick={handleClose}>
             Close
           </Button>
-          <Button color="primary" onClick={()=> udpateTokenTime(selectedRole)}>
+          <Button color="primary" onClick={()=> handleSubmit(selectedRole)}>
             Save Changes
           </Button>
         </Modal.Footer>
